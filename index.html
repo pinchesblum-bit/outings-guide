@@ -3,9 +3,9 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Navigation Sukkas outings guide organized by category, with source booklet pages for every listing." />
+    <meta name="description" content="Outings Guide helps families choose trips from the Navigation Sukkas booklet with filters, moods, categories, and saved trip lists." />
     <title>Outings Guide</title>
-    <link rel="stylesheet" href="style.css?v=eb260182" />
+    <link rel="stylesheet" href="style.css?v=planner2" />
   </head>
   <body>
     <div class="site-shell">
@@ -18,9 +18,12 @@
           </span>
         </a>
         <nav class="topnav" aria-label="Main navigation">
-          <a href="#/">Categories</a>
-          <a href="#/all">All places</a>
-          <a href="#/pages">Source pages</a>
+          <a href="#/">Plan a Day</a>
+          <a href="#/group/day-trips-near-home">Browse by Area</a>
+          <a href="#/all">Browse by Type</a>
+          <a href="#/ideas">Ideas</a>
+          <a href="#/saved">My Trip List</a>
+          <a href="#/all">Search</a>
           <a href="https://yazory.com/outings/" target="_blank" rel="noopener">Original booklet</a>
         </nav>
       </header>
@@ -28,7 +31,14 @@
       <main id="app" tabindex="-1"></main>
     </div>
 
+    <nav class="mobile-tabbar" aria-label="Mobile navigation">
+      <a href="#/">Home</a>
+      <a href="#/all">Search</a>
+      <a href="#/all">Filters</a>
+      <a href="#/saved">Saved</a>
+    </nav>
+
     <script src="data.js?v=step1-tags"></script>
-    <script src="app.js?v=eb260182"></script>
+    <script src="app.js?v=planner2"></script>
   </body>
 </html>
