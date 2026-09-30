@@ -1,19 +1,246 @@
-const categories=[
-{id:'outdoor-parks',name:'Outdoor Parks',desc:'Fresh air, open spaces & a change of scenery.',icon:'♧',tint:'#dbeee6',ink:'#186b50',items:[['Lakeside picnic park','A sample outdoor listing with room for a family picnic and a stroll by the water.',['Outdoors','Picnic areas']],['Woodland walking trails','A sample nature outing for a relaxed walk and time together outdoors.',['Outdoors','Walking']]]},
-{id:'indoor-parks',name:'Indoor Parks',desc:'All the fun, whatever the weather.',icon:'◉',tint:'#ddeaf5',ink:'#336a9d',items:[['Indoor adventure park','A sample indoor activity listing with play spaces for an energetic day out.',['Indoors','Active play']],['Family play center','A sample play-center listing for a family outing on a rainy day.',['Indoors','Family activity']]]},
-{id:'amusement-parks',name:'Amusement Parks',desc:'Rides, excitement & big family memories.',icon:'☼',tint:'#ffedcf',ink:'#a9651b',items:[['Family amusement park','A sample listing for rides and a day of family entertainment.',['Rides','Family activity']],['Mini adventure park','A sample outing with smaller attractions and activities.',['Activities','Outdoors']]]},
-{id:'zoos-farms',name:'Zoos & Farms',desc:'Meet the animals. Explore something new.',icon:'♞',tint:'#f1e6d9',ink:'#895e34',items:[['Animal discovery farm','A sample farm listing for an animal-themed family visit.',['Animals','Outdoors']],['Wildlife park','A sample listing for a day discovering wildlife.',['Animals','Walking']]]},
-{id:'museums',name:'Museums & Discovery',desc:'Hands-on discoveries for curious minds.',icon:'▥',tint:'#e9e4f5',ink:'#69518d',items:[['Hands-on discovery museum','A sample museum listing with activities designed to spark curiosity.',['Indoors','Discovery']],['Transport museum','A sample outing to explore vehicles and their stories.',['Indoors','Learning']]]},
-{id:'activities',name:'Family Activities',desc:'A little friendly competition. Lots of fun.',icon:'◎',tint:'#dceff0',ink:'#2b7b80',items:[['Mini golf outing','A sample activity listing for a relaxed family game.',['Games','Family activity']],['Bowling afternoon','A sample indoor outing for time together at the lanes.',['Indoors','Games']]]}
-];
-const app=document.querySelector('#app');let query='';
-function esc(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function search(){return `<label class="search"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="Search outings or categories" aria-label="Search outings or categories" value="${esc(query)}"></label>`}
-function outing(c,i){const x=c.items[i];return `<a class="outing" href="#/category/${c.id}/${i}"><span class="sample">SAMPLE OUTING</span><h2>${x[0]}</h2><p>${x[1]}</p><div class="tags">${x[2].map(t=>`<span>${t}</span>`).join('')}</div><span class="view">View outing details</span></a>`}
-function homeResults(){const q=query.toLowerCase().trim();if(q){let matches=categories.flatMap(c=>c.items.map((x,i)=>({c,x,i}))).filter(({c,x})=>[c.name,...x.flat()].join(' ').toLowerCase().includes(q));return `<div class="section-label"><h2>Search results</h2><span>${matches.length} sample outings</span></div><div class="list">${matches.map(({c,i})=>outing(c,i)).join('')||'<div class="empty"><h2>No outings found</h2><p>Try a different word, such as indoor, farm, or park.</p></div>'}</div>`}return `<div class="section-label"><h2>Explore by category</h2><span>6 sample categories</span></div><div class="grid">${categories.map((c,i)=>`<a class="category" href="#/category/${c.id}" style="--tint:${c.tint};--ink:${c.ink}"><div class="category-top">${i===0?'<img src="park.jpg" alt="A green park beside a lake" width="700" height="400">':`<span class="glyph" aria-hidden="true">${c.icon}</span>`}<span class="number">0${i+1}</span></div><div class="category-body"><h3>${c.name}</h3><p>${c.desc}</p><div class="card-foot"><span>2 sample outings</span><strong>Explore category</strong></div></div></a>`).join('')}</div>`}
-function render(){const parts=location.hash.slice(1).split('/').filter(Boolean);const c=categories.find(c=>c.id===parts[1]);if(!parts.length){document.title='Outings Guide';app.innerHTML=`<div class="intro"><div><p class="eyebrow">Make a day of it</p><h1>Where shall we <em>go?</em></h1><p class="sub">Find your next family outing, one category at a time.</p></div>${search()}</div><section id="results">${homeResults()}</section>`;document.querySelector('#search').addEventListener('input',e=>{query=e.target.value;document.querySelector('#results').innerHTML=homeResults()});return}
-if(parts[0]!=='category'||!c||parts.length>3||(parts.length===3&&!c.items[parts[2]])){app.innerHTML='<div class="empty"><h1>Page not found</h1><a class="back" href="#/">Browse categories</a></div>';return}
-const crumb=`<nav class="crumb" aria-label="Breadcrumb"><a href="#/">All categories</a><span>/</span>${parts.length===3?`<a href="#/category/${c.id}">${c.name}</a><span>/</span><span>Outing details</span>`:`<span>${c.name}</span>`}</nav>`;
-if(parts.length===2){document.title=c.name+' | Outings Guide';app.innerHTML=crumb+`<div class="intro"><div><p class="eyebrow">Explore the category</p><h1>${c.name}</h1><p class="sub">${c.desc}</p></div></div><div class="section-label"><h2>Outings in this category</h2><span>2 sample listings</span></div><div class="list">${c.items.map((x,i)=>outing(c,i)).join('')}</div>`;return}
-const x=c.items[parts[2]];document.title=x[0]+' | Outings Guide';app.innerHTML=crumb+`<div class="intro"><div><p class="eyebrow">${c.name}</p><h1>${x[0]}</h1><span class="sample">SAMPLE OUTING · NOT A REAL VENUE LISTING</span></div></div><div class="detail"><section class="panel"><h2>About this outing</h2><p>${x[1]}</p><div class="tags">${x[2].map(t=>`<span>${t}</span>`).join('')}</div><p>The venue’s description and information from the booklet will appear here once its listings are added.</p><a class="back" href="#/category/${c.id}">Back to ${c.name}</a></section><section class="panel"><h2>Plan your visit</h2><dl class="facts">${['Address','Opening hours','Admission prices','Phone & website'].map(t=>`<div><dt>${t}</dt><dd>To be added from the booklet</dd></div>`).join('')}</dl></section></div>`}
-window.addEventListener('hashchange',()=>{render();window.scrollTo(0,0)});render();
+const DATA = window.OUTINGS_DATA;
+const app = document.getElementById('app');
+
+const byCategory = new Map(DATA.categories.map((cat) => [cat.id, cat]));
+const byListing = new Map(DATA.listings.map((listing) => [listing.id, listing]));
+
+function pageUrl(page) {
+  return DATA.sourceBase.replace('{}', page);
+}
+
+function escapeHtml(value = '') {
+  return String(value)
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;');
+}
+
+function normalize(value = '') {
+  return String(value).toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+}
+
+function textPreview(lines = []) {
+  const joined = lines.filter(Boolean).slice(0, 3).join(' · ');
+  return joined.length > 180 ? joined.slice(0, 177) + '…' : joined;
+}
+
+function statsHtml() {
+  return `
+    <div class="stats" aria-label="Booklet totals">
+      <div class="stat"><strong>${DATA.categories.length}</strong><span>categories</span></div>
+      <div class="stat"><strong>${DATA.listings.length}</strong><span>entries</span></div>
+      <div class="stat"><strong>${DATA.pageCount}</strong><span>source pages</span></div>
+      <div class="stat"><strong>1</strong><span>searchable guide</span></div>
+    </div>`;
+}
+
+function renderHome() {
+  app.innerHTML = `
+    <section class="hero">
+      <div class="hero-content">
+        <p class="kicker">Navigation Sukkas 5787</p>
+        <h1>Where shall we go?</h1>
+        <p>The booklet has been organized into website categories. Every extracted entry links back to its printed source page so the original details stay available.</p>
+        <div class="hero-actions">
+          <a class="btn alt" href="#/all">Search all places</a>
+          <a class="btn light" href="#/pages">Open source pages</a>
+        </div>
+      </div>
+    </section>
+    ${statsHtml()}
+    <section class="section-head">
+      <div>
+        <h2>Categories from the booklet</h2>
+        <p>Choose a category to see every listing extracted from those booklet pages.</p>
+      </div>
+    </section>
+    <div class="grid">
+      ${DATA.categories.map(categoryCard).join('')}
+    </div>
+    <p class="footer-note">Source: ${escapeHtml(DATA.sourceTitle)}. Some extracted text may be compact because it comes from designed booklet artwork; each listing includes the exact source page image for checking the printed details.</p>
+  `;
+}
+
+function categoryCard(cat) {
+  return `
+    <a class="card" href="#/category/${encodeURIComponent(cat.id)}">
+      <div class="pills">
+        <span class="pill green">${cat.count} entries</span>
+        <span class="pill">Pages ${escapeHtml(cat.pageRange)}</span>
+      </div>
+      <h3>${escapeHtml(cat.title)}</h3>
+      <p>${escapeHtml(cat.description)}</p>
+    </a>`;
+}
+
+function listingCard(listing) {
+  return `
+    <a class="listing-card" href="#/listing/${encodeURIComponent(listing.id)}">
+      <div class="pills">
+        <span class="pill">Page ${listing.page}</span>
+        ${listing.info ? '<span class="pill red">Info</span>' : ''}
+      </div>
+      <h3>${escapeHtml(listing.name)}</h3>
+      <p>${escapeHtml(textPreview(listing.details) || 'Open to view extracted details and the source booklet page.')}</p>
+    </a>`;
+}
+
+function renderCategory(id) {
+  const cat = byCategory.get(id);
+  if (!cat) return renderNotFound();
+  const listings = DATA.listings.filter((item) => item.categoryId === id);
+  app.innerHTML = `
+    <div class="breadcrumbs"><a href="#/">Categories</a><span>/</span><span>${escapeHtml(cat.title)}</span></div>
+    <section class="panel">
+      <div class="pills"><span class="pill green">${listings.length} entries</span><span class="pill">Pages ${escapeHtml(cat.pageRange)}</span></div>
+      <h1 class="detail-title">${escapeHtml(cat.title)}</h1>
+      <p>${escapeHtml(cat.description)}</p>
+      <div class="hero-actions">
+        <a class="btn ghost" href="#/all?q=${encodeURIComponent(cat.title)}">Search within all entries</a>
+        <a class="btn ghost" href="#/page/${cat.pages[0]}">First source page</a>
+      </div>
+    </section>
+    <section class="section-head"><div><h2>All ${escapeHtml(cat.title)} entries</h2><p>No sample listings here: these are the extracted entries from the booklet source pages.</p></div></section>
+    <div class="listings">${listings.map(listingCard).join('')}</div>
+  `;
+}
+
+function renderAll() {
+  const params = new URLSearchParams(location.hash.split('?')[1] || '');
+  const q = params.get('q') || '';
+  const results = filterListings(q);
+  app.innerHTML = `
+    <div class="breadcrumbs"><a href="#/">Categories</a><span>/</span><span>All places</span></div>
+    <section class="panel">
+      <h1 class="detail-title">All places</h1>
+      <p>Search names, categories, page numbers and extracted booklet details.</p>
+      <div class="toolbar">
+        <input class="searchbox" id="searchInput" value="${escapeHtml(q)}" placeholder="Search all ${DATA.listings.length} entries…" aria-label="Search all places" />
+        <a class="btn ghost" href="#/pages">Source pages</a>
+      </div>
+      <div id="resultCount" class="pills"><span class="pill green">${results.length} results</span></div>
+    </section>
+    <section class="section-head"><div><h2>Results</h2><p>Open any result to see extracted text and its exact booklet page.</p></div></section>
+    <div id="results" class="listings">${results.length ? results.map(listingCard).join('') : emptyHtml('No matching entries found.')}</div>
+  `;
+  const input = document.getElementById('searchInput');
+  input?.addEventListener('input', (event) => {
+    const value = event.target.value;
+    const next = filterListings(value);
+    document.getElementById('resultCount').innerHTML = `<span class="pill green">${next.length} results</span>`;
+    document.getElementById('results').innerHTML = next.length ? next.map(listingCard).join('') : emptyHtml('No matching entries found.');
+    history.replaceState(null, '', `#/all${value ? `?q=${encodeURIComponent(value)}` : ''}`);
+  });
+}
+
+function filterListings(query) {
+  const q = normalize(query);
+  if (!q) return DATA.listings;
+  return DATA.listings.filter((item) => {
+    const haystack = normalize([
+      item.name,
+      item.categoryTitle,
+      `page ${item.page}`,
+      ...(item.details || [])
+    ].join(' '));
+    return haystack.includes(q);
+  });
+}
+
+function renderListing(id) {
+  const listing = byListing.get(id);
+  if (!listing) return renderNotFound();
+  const category = byCategory.get(listing.categoryId);
+  const siblingEntries = DATA.listings.filter((item) => item.categoryId === listing.categoryId && item.id !== listing.id).slice(0, 6);
+  app.innerHTML = `
+    <div class="breadcrumbs"><a href="#/">Categories</a><span>/</span><a href="#/category/${encodeURIComponent(listing.categoryId)}">${escapeHtml(listing.categoryTitle)}</a><span>/</span><span>${escapeHtml(listing.name)}</span></div>
+    <div class="detail-layout">
+      <article class="panel">
+        <div class="pills"><span class="pill green">${escapeHtml(listing.categoryTitle)}</span><span class="pill">Booklet page ${listing.page}</span>${listing.info ? '<span class="pill red">Info entry</span>' : ''}</div>
+        <h1 class="detail-title">${escapeHtml(listing.name)}</h1>
+        <div class="notice">The exact printed source page is shown on this screen. Use it to check any artwork, Yiddish text, pricing, hours, phone numbers or small print from the booklet.</div>
+        <h2>Extracted details</h2>
+        ${listing.details?.length ? `<ul class="detail-list">${listing.details.map((line) => `<li>${escapeHtml(line)}</li>`).join('')}</ul>` : '<p class="empty">No separate English detail lines were extracted for this entry. Check the source page image for the printed details.</p>'}
+        <div class="hero-actions">
+          <a class="btn ghost" href="#/page/${listing.page}">Open full page ${listing.page}</a>
+          <a class="btn ghost" href="${escapeHtml(listing.sourceUrl)}" target="_blank" rel="noopener">Open SVG source</a>
+        </div>
+      </article>
+      <aside class="panel">
+        <h2>Source booklet page</h2>
+        <img class="source-img" src="${escapeHtml(listing.sourceUrl)}" alt="Source booklet page ${listing.page}" loading="lazy" />
+      </aside>
+    </div>
+    ${siblingEntries.length ? `<section class="section-head"><div><h2>More from ${escapeHtml(category?.title || listing.categoryTitle)}</h2></div></section><div class="listings">${siblingEntries.map(listingCard).join('')}</div>` : ''}
+  `;
+}
+
+function renderPages() {
+  const categoryRanges = DATA.categories.map((cat) => `<a class="listing-card" href="#/page/${cat.pages[0]}"><div class="pills"><span class="pill">Pages ${escapeHtml(cat.pageRange)}</span><span class="pill green">${cat.count} entries</span></div><h3>${escapeHtml(cat.title)}</h3><p>${escapeHtml(cat.description)}</p></a>`).join('');
+  const pages = Array.from({ length: DATA.pageCount }, (_, index) => index + 1);
+  app.innerHTML = `
+    <div class="breadcrumbs"><a href="#/">Categories</a><span>/</span><span>Source pages</span></div>
+    <section class="panel">
+      <h1 class="detail-title">Source pages</h1>
+      <p>Open any booklet page directly. Listing detail pages also show their source page beside the extracted text.</p>
+    </section>
+    <section class="section-head"><div><h2>Category page ranges</h2></div></section>
+    <div class="listings">${categoryRanges}</div>
+    <section class="section-head"><div><h2>All 212 booklet pages</h2><p>This keeps the full original booklet available for checking details.</p></div></section>
+    <div class="page-picker">${pages.map((page) => `<a href="#/page/${page}">${page}</a>`).join('')}</div>
+  `;
+}
+
+function renderPage(pageValue) {
+  const page = Number(pageValue);
+  if (!Number.isInteger(page) || page < 1 || page > DATA.pageCount) return renderNotFound();
+  const listings = DATA.listings.filter((item) => item.page === page);
+  app.innerHTML = `
+    <div class="breadcrumbs"><a href="#/">Categories</a><span>/</span><a href="#/pages">Source pages</a><span>/</span><span>Page ${page}</span></div>
+    <div class="detail-layout">
+      <section class="panel">
+        <div class="pills"><span class="pill">Page ${page}</span><span class="pill green">${listings.length} linked entries</span></div>
+        <h1 class="detail-title">Booklet page ${page}</h1>
+        <div class="hero-actions">
+          ${page > 1 ? `<a class="btn ghost" href="#/page/${page - 1}">Previous page</a>` : ''}
+          ${page < DATA.pageCount ? `<a class="btn ghost" href="#/page/${page + 1}">Next page</a>` : ''}
+          <a class="btn ghost" href="${escapeHtml(pageUrl(page))}" target="_blank" rel="noopener">Open SVG source</a>
+        </div>
+        <h2>Entries linked to this page</h2>
+        ${listings.length ? `<div class="listings">${listings.map(listingCard).join('')}</div>` : emptyHtml('No structured listing was extracted from this page. It may be an ad, review page, divider page, or front/back matter.')}
+      </section>
+      <aside class="panel">
+        <h2>Original page</h2>
+        <img class="source-img" src="${escapeHtml(pageUrl(page))}" alt="Booklet page ${page}" loading="eager" />
+      </aside>
+    </div>
+  `;
+}
+
+function emptyHtml(message) {
+  return `<div class="empty">${escapeHtml(message)}</div>`;
+}
+
+function renderNotFound() {
+  app.innerHTML = `<section class="panel"><h1 class="detail-title">Page not found</h1><p>The item you opened is not in this guide.</p><a class="btn ghost" href="#/">Back to categories</a></section>`;
+}
+
+function router() {
+  const hash = location.hash || '#/';
+  const [path] = hash.slice(2).split('?');
+  const parts = path.split('/').filter(Boolean).map(decodeURIComponent);
+  if (!parts.length) renderHome();
+  else if (parts[0] === 'category') renderCategory(parts[1]);
+  else if (parts[0] === 'listing') renderListing(parts[1]);
+  else if (parts[0] === 'all') renderAll();
+  else if (parts[0] === 'pages') renderPages();
+  else if (parts[0] === 'page') renderPage(parts[1]);
+  else renderNotFound();
+  app.focus({ preventScroll: true });
+  window.scrollTo({ top: 0, behavior: 'instant' });
+}
+
+window.addEventListener('hashchange', router);
+router();
