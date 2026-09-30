@@ -8,7 +8,9 @@ const savedKey = 'outings-guide-trip-list';
 const defaultLimit = 18;
 
 const filterLabels = {
+  q: 'Search',
   setting: 'Indoor/Outdoor',
+  region: 'Area',
   distanceBand: 'How far',
   ageFit: 'Who is coming',
   priceLevel: 'Budget',
@@ -53,9 +55,17 @@ const moodTiles = [
   { title: 'Burn Energy', icon: 'Move', params: { vibes: 'thrill' } },
   { title: 'Cool Off', icon: 'Water', params: { vibes: 'water' } },
   { title: 'Relaxing', icon: 'Calm', params: { vibes: 'relaxing' } },
-  { title: 'Something Different', icon: 'New', params: { sort: 'top' } },
-  { title: 'Toddler-Friendly', icon: 'Tod', params: { ageFit: 'toddlers' } },
+  { title: 'Toddler-Friendly', icon: 'Little', params: { ageFit: 'toddlers' } },
   { title: 'Free/Cheap', icon: '$', params: { priceLevel: 'free', sort: 'free' } },
+];
+
+const quickChips = [
+  ['setting', 'indoor', 'Indoor'],
+  ['setting', 'outdoor', 'Outdoor'],
+  ['priceLevel', 'free', 'Free'],
+  ['distanceBand', 'under-30', 'Under 30 min'],
+  ['ageFit', 'toddlers', 'Ages 0-5'],
+  ['vibes', 'water', 'Water'],
 ];
 
 function pageUrl(page) {
@@ -177,6 +187,27 @@ function optionHtml(values, selected) {
   return values.map((value) => `<option value="${escapeHtml(value)}" ${selected === value ? 'selected' : ''}>${escapeHtml(label(value))}</option>`).join('');
 }
 
+function regionOptions() {
+  return [...new Set(DATA.listings.map((item) => item.region).filter((value) => value && value !== 'Unknown'))].sort((a, b) => a.localeCompare(b));
+}
+
+function filterOptions(name) {
+  if (name === 'region') return regionOptions();
+  return DATA.filters[name] || [];
+}
+
+function savedCount() {
+  return getSavedIds().length;
+}
+
+function activeFilterCount(params = currentParams()) {
+  let count = 0;
+  params.forEach((value, key) => {
+    if (value && !['limit', 'sort', 'q'].includes(key)) count += 1;
+  });
+  return count;
+}
+
 function resultRoute(prefix, params, changes = {}) {
   const next = paramsToObject(params);
   delete next.limit;
@@ -198,31 +229,84 @@ function statsHtml() {
 }
 
 function renderHome() {
+  const featured = topListings(DATA.listings).slice(0, 8);
   app.innerHTML = `
-    <section class="hero planner-hero simple-home">
+    <section class="hero planner-hero">
       <div class="hero-copy">
         <p class="kicker">Navigation Sukkas 5787 family guide</p>
-        <h1>Outings Guide</h1>
-        <p>Choose a category. Each one shows how many places are inside.</p>
+        <h1>Where should we go today?</h1>
+        <p>Pick the kind of day you want, then narrow the guide fast.</p>
       </div>
+      ${plannerBox()}
     </section>
     <section class="section-head">
       <div>
-        <p class="eyebrow">Home</p>
-        <h2>All categories</h2>
-        <p>Same order as the original booklet.</p>
+        <p class="eyebrow">Ideas</p>
+        <h2>Start by mood</h2>
+        <p>Quick choices for the way the day feels.</p>
       </div>
     </section>
-    <div class="category-strip home-categories">
-      ${DATA.categories.map(categoryCard).join('')}
-    </div>
+    <div class="mood-grid">${moodTiles.map((tile) => moodTile(tile)).join('')}</div>
+    <section class="section-head">
+      <div>
+        <p class="eyebrow">Browse</p>
+        <h2>Choose the kind of trip</h2>
+        <p>The same booklet categories, grouped by how families usually decide.</p>
+      </div>
+    </section>
+    <div class="group-grid">${DATA.groups.map(groupCard).join('')}</div>
+    <section class="section-head">
+      <div>
+        <p class="eyebrow">Featured</p>
+        <h2>Good places to start</h2>
+        <p>Top picks from the guide based on available booklet details and tags.</p>
+      </div>
+    </section>
+    <div class="outing-grid featured-row">${featured.map(outingCard).join('')}</div>
+    ${categoryBrowseSections('Browse all categories', 'All 23 original booklet categories are still here.')}
   `;
+  bindHomePlanner();
   bindInteractiveControls();
+}
+
+function plannerBox() {
+  return `
+    <form class="find-box" id="homePlanner">
+      <h2>Find my outing</h2>
+      <label>Who's coming?
+        <select name="ageFit">
+          <option value="">Any ages</option>
+          ${optionHtml(DATA.filters.ageFit || [], '')}
+        </select>
+      </label>
+      <label>Indoor / Outdoor
+        <select name="setting">
+          <option value="">Either</option>
+          ${optionHtml(DATA.filters.setting || [], '')}
+        </select>
+      </label>
+      <label>How far?
+        <select name="distanceBand">
+          <option value="">Any distance</option>
+          ${optionHtml(DATA.filters.distanceBand || [], '')}
+        </select>
+      </label>
+      <label>Budget
+        <select name="priceLevel">
+          <option value="">Any budget</option>
+          ${optionHtml(DATA.filters.priceLevel || [], '')}
+        </select>
+      </label>
+      <div class="planner-actions">
+        <button class="btn primary" type="submit">Show places</button>
+        <button class="btn ghost" type="button" data-surprise="#/search">Surprise me</button>
+      </div>
+    </form>`;
 }
 
 function moodTile(tile) {
   return `
-    <a class="mood-card" href="${escapeHtml(hashFor('#/all', tile.params))}">
+    <a class="mood-card" href="${escapeHtml(hashFor('#/search', tile.params))}">
       <span class="mood-icon">${escapeHtml(tile.icon)}</span>
       <strong>${escapeHtml(tile.title)}</strong>
     </a>`;
@@ -232,7 +316,7 @@ function groupCard(group) {
   const categories = DATA.categories.filter((cat) => cat.groupId === group.id);
   return `
     <a class="group-card" href="#/group/${encodeURIComponent(group.id)}">
-      <div class="group-art" aria-hidden="true"></div>
+      <div class="group-art" aria-hidden="true"><span>${escapeHtml(group.title.split(' ').map((word) => word[0]).join('').slice(0, 3))}</span></div>
       <div class="pills">
         <span class="pill teal">${group.count} places</span>
         <span class="pill">${categories.length} categories</span>
@@ -246,14 +330,41 @@ function groupCard(group) {
 function categoryCard(cat) {
   return `
     <a class="category-card" href="#/category/${encodeURIComponent(cat.id)}">
+      <span class="tile-icon" aria-hidden="true">${escapeHtml(categoryInitials(cat.title))}</span>
       <div class="category-count">
         <strong>${cat.count}</strong>
         <span>places</span>
       </div>
       <h3>${escapeHtml(cat.title)}</h3>
-      <p>${escapeHtml(cat.description)}</p>
-      <span class="category-open">Open category</span>
     </a>`;
+}
+
+function categoryInitials(title) {
+  return title.split(/[\s/&]+/).filter(Boolean).map((word) => word[0]).join('').slice(0, 2).toUpperCase();
+}
+
+function categoryBrowseSections(title = 'Browse all categories', intro = '') {
+  return `
+    <section class="section-head browse-head">
+      <div>
+        <p class="eyebrow">All categories</p>
+        <h2>${escapeHtml(title)}</h2>
+        ${intro ? `<p>${escapeHtml(intro)}</p>` : ''}
+      </div>
+    </section>
+    <div class="category-groups">
+      ${DATA.groups.map((group) => {
+        const cats = DATA.categories.filter((cat) => cat.groupId === group.id);
+        return `
+          <section class="category-group">
+            <div class="category-group-title">
+              <h3>${escapeHtml(group.title)}</h3>
+              <span>${group.count} places</span>
+            </div>
+            <div class="category-strip compact-categories">${cats.map(categoryCard).join('')}</div>
+          </section>`;
+      }).join('')}
+    </div>`;
 }
 
 function categoryReport() {
@@ -279,20 +390,27 @@ function categoryReport() {
 function outingCard(listing) {
   const saved = isSaved(listing.id);
   const tags = (listing.tags || []).slice(0, 3);
+  const address = extractAddress(listing);
+  const price = extractPrice(listing);
   return `
     <article class="outing-card">
-      <button class="save-btn ${saved ? 'saved' : ''}" type="button" data-save-id="${escapeHtml(listing.id)}" aria-pressed="${saved ? 'true' : 'false'}">${saved ? 'Saved' : 'Save'}</button>
-      <div class="pills card-tags">
-        ${tags.map((tag) => `<span class="pill">${escapeHtml(tag)}</span>`).join('')}
+      <button class="save-btn ${saved ? 'saved' : ''}" type="button" data-save-id="${escapeHtml(listing.id)}" aria-pressed="${saved ? 'true' : 'false'}" aria-label="${saved ? 'Remove from saved' : 'Save'} ${escapeHtml(listing.name)}">${saved ? 'Saved' : 'Save'}</button>
+      <div class="card-topline">
+        <span>${escapeHtml(listing.categoryTitle)}</span>
+        <button class="page-badge" type="button" data-page-modal="${listing.page}">Booklet p. ${listing.page}</button>
       </div>
       <h3>${escapeHtml(listing.name)}</h3>
       <p>${escapeHtml(compactSummary(listing))}</p>
-      <div class="card-meta">
-        <span>${escapeHtml(listing.region || 'Region unknown')}</span>
-        <button class="page-badge" type="button" data-page-modal="${listing.page}">Booklet p. ${listing.page}</button>
+      <div class="pills card-tags">
+        ${tags.map((tag) => `<span class="pill">${escapeHtml(tag)}</span>`).join('')}
+      </div>
+      <div class="card-facts">
+        <span>${escapeHtml(listing.region || 'Area unknown')}</span>
+        <span>${escapeHtml(price)}</span>
       </div>
       <div class="card-actions">
         <a class="details-link" href="#/listing/${encodeURIComponent(listing.id)}">Details</a>
+        ${address ? `<a class="details-link map-link" href="${escapeHtml(mapsUrl(address))}" target="_blank" rel="noopener">Map</a>` : ''}
       </div>
     </article>`;
 }
@@ -323,40 +441,45 @@ function miniResult(listing) {
 }
 
 function filterBar(route, params, resultCount, expanded = false) {
+  const count = activeFilterCount(params);
   return `
-    <section class="filter-shell ${expanded ? 'filter-page' : ''}" aria-label="Outing filters">
-      <div class="filter-top">
-        <div>
-          <p class="eyebrow">Filter the guide</p>
-          <h2>${resultCount} outings</h2>
-        </div>
-        <button class="btn ghost more-filter-btn" type="button" data-open-filters>More filters</button>
-      </div>
-      <form class="filter-panel ${expanded ? 'open' : ''}" id="filterForm" data-route="${escapeHtml(route)}">
+    <section class="filter-shell results-tools ${expanded ? 'filter-page sheet-open' : ''}" aria-label="Outing filters">
+      <form class="result-search" id="filterSearchForm" data-route="${escapeHtml(route)}">
         <label class="search-field">Search
-          <input name="q" value="${escapeHtml(params.get('q') || '')}" placeholder="Search names, towns, tags..." />
+          <input name="q" value="${escapeHtml(params.get('q') || '')}" placeholder="Search name, town, category, tag..." />
         </label>
+        <button class="btn ghost filter-toggle" type="button" data-open-filters>Filters${count ? ` (${count})` : ''}</button>
+        <label>Sort
+          <select name="sort">
+            <option value="top" ${params.get('sort') === 'top' || !params.get('sort') ? 'selected' : ''}>Top picks</option>
+            <option value="free" ${params.get('sort') === 'free' ? 'selected' : ''}>Free first</option>
+            <option value="az" ${params.get('sort') === 'az' ? 'selected' : ''}>A-Z</option>
+          </select>
+        </label>
+      </form>
+      ${quickChipRow(route, params)}
+      ${activeFilterChips(route, params)}
+      <form class="filter-panel filter-sheet ${expanded ? 'open' : ''}" id="filterForm" data-route="${escapeHtml(route)}">
+        <div class="sheet-head">
+          <div>
+            <p class="eyebrow">Filters</p>
+            <h2>${resultCount} places</h2>
+          </div>
+          <button class="sheet-close" type="button" data-close-filters>Close</button>
+        </div>
         ${filterSelect('setting', params)}
+        ${filterSelect('region', params)}
         ${filterSelect('distanceBand', params)}
         ${filterSelect('ageFit', params)}
         ${filterSelect('priceLevel', params)}
         ${filterSelect('vibes', params)}
         ${filterSelect('seasonWeather', params)}
         ${filterSelect('practical', params)}
-        <label>Sort
-          <select name="sort">
-            <option value="top" ${params.get('sort') === 'top' || !params.get('sort') ? 'selected' : ''}>Top picks</option>
-            <option value="closest" ${params.get('sort') === 'closest' ? 'selected' : ''}>Closest</option>
-            <option value="free" ${params.get('sort') === 'free' ? 'selected' : ''}>Free first</option>
-            <option value="az" ${params.get('sort') === 'az' ? 'selected' : ''}>A-Z</option>
-          </select>
-        </label>
-        <div class="filter-actions">
-          <button class="btn primary" type="submit">Apply</button>
-          <a class="btn ghost" href="${escapeHtml(route)}">Clear</a>
+        <div class="sheet-footer">
+          <a class="btn ghost" href="${escapeHtml(route)}">Clear all</a>
+          <button class="btn primary" type="submit">Show ${resultCount} places</button>
         </div>
       </form>
-      ${activeFilterChips(route, params)}
     </section>`;
 }
 
@@ -365,9 +488,23 @@ function filterSelect(name, params) {
     <label>${escapeHtml(filterLabels[name])}
       <select name="${escapeHtml(name)}">
         <option value="">Any</option>
-        ${optionHtml(DATA.filters[name] || [], params.get(name) || '')}
+        ${optionHtml(filterOptions(name), params.get(name) || '')}
       </select>
     </label>`;
+}
+
+function quickChipRow(route, params) {
+  return `
+    <div class="quick-chip-row" aria-label="Quick filters">
+      ${quickChips.map(([key, value, text]) => {
+        const active = params.get(key) === value;
+        const next = new URLSearchParams(params);
+        if (active) next.delete(key);
+        else next.set(key, value);
+        next.delete('limit');
+        return `<a class="quick-chip ${active ? 'active' : ''}" href="${escapeHtml(hashFor(route, paramsToObject(next)))}">${escapeHtml(text)}</a>`;
+      }).join('')}
+    </div>`;
 }
 
 function activeFilterChips(route, params) {
@@ -417,8 +554,8 @@ function renderCategory(id) {
   });
 }
 
-function compactResults(route, params, filtered, emptyMessage = 'No results found.') {
-  const limit = Number(params.get('limit') || 40);
+function compactResults(route, params, filtered, emptyMessage = 'No matches. Try removing a filter.') {
+  const limit = Number(params.get('limit') || defaultLimit);
   const visible = filtered.slice(0, limit);
   return `
     <section class="section-head">
@@ -427,68 +564,73 @@ function compactResults(route, params, filtered, emptyMessage = 'No results foun
         <p>Showing ${visible.length} of ${filtered.length}</p>
       </div>
     </section>
-    <div class="mini-list">${visible.length ? visible.map(miniResult).join('') : emptyHtml(emptyMessage)}</div>
-    ${filtered.length > visible.length ? `<div class="show-more-wrap"><a class="btn primary" href="${escapeHtml(resultRoute(route, params, { limit: String(limit + 40) }))}">Show more</a></div>` : ''}`;
+    <div class="outing-grid results-grid">${visible.length ? visible.map(outingCard).join('') : emptyResults(route, emptyMessage)}</div>
+    ${filtered.length > visible.length ? `<div class="show-more-wrap"><a class="btn primary" href="${escapeHtml(resultRoute(route, params, { limit: String(limit + defaultLimit) }))}">Show more</a></div>` : ''}`;
 }
 
 function hasRealFilters(params) {
   return [...params.entries()].some(([key, value]) => value && !['limit', 'sort'].includes(key));
 }
 
-function renderSearch() {
+function renderSearch(openFilters = false) {
   const params = currentParams();
-  const filtered = sortListings(applyFilters(DATA.listings, params), params.get('sort') || 'az');
+  const filtered = sortListings(applyFilters(DATA.listings, params), params.get('sort') || 'top');
   app.innerHTML = `
     <div class="breadcrumbs"><a href="#/">Home</a><span>/</span><span>Search</span></div>
     <section class="page-hero">
       <div>
         <p class="eyebrow">Search</p>
-        <h1>All results</h1>
-        <p>Search every place in one simple list.</p>
+        <h1>Find a place</h1>
+        <p>Search all ${DATA.listings.length} places, then use quick chips or filters to narrow the list.</p>
       </div>
     </section>
-    <form class="search-page-form" id="searchForm" data-route="#/search">
-      <label>Search
-        <input name="q" value="${escapeHtml(params.get('q') || '')}" placeholder="Search name, town, category, tag..." />
-      </label>
-      <label>Sort
-        <select name="sort">
-          <option value="az" ${params.get('sort') === 'az' || !params.get('sort') ? 'selected' : ''}>A-Z</option>
-          <option value="closest" ${params.get('sort') === 'closest' ? 'selected' : ''}>Closest</option>
-          <option value="free" ${params.get('sort') === 'free' ? 'selected' : ''}>Free first</option>
-          <option value="top" ${params.get('sort') === 'top' ? 'selected' : ''}>Top picks</option>
-        </select>
-      </label>
-      <button class="btn primary" type="submit">Search</button>
-    </form>
+    ${filterBar('#/search', params, filtered.length, openFilters)}
     ${compactResults('#/search', params, filtered)}
   `;
-  bindSearchForm();
   bindInteractiveControls();
+  bindFilters();
 }
 
 function renderFilter() {
-  const params = currentParams();
-  const hasFilters = hasRealFilters(params);
-  const filtered = hasFilters ? sortListings(applyFilters(DATA.listings, params), params.get('sort') || 'top') : [];
-  app.innerHTML = `
-    <div class="breadcrumbs"><a href="#/">Home</a><span>/</span><span>Filter</span></div>
-    <section class="page-hero">
-      <div>
-        <p class="eyebrow">Filter</p>
-        <h1>Filter places</h1>
-        <p>Choose what you need, then results show as short rows.</p>
-      </div>
-    </section>
-    ${filterBar('#/filter', params, filtered.length, true)}
-    ${hasFilters ? compactResults('#/filter', params, filtered, 'No places match this filter.') : '<div class="empty">Choose a filter above to see results.</div>'}
-  `;
-  bindFilters();
-  bindInteractiveControls();
+  renderSearch(true);
 }
 
 function renderAll() {
   renderSearch();
+}
+
+function renderPlan() {
+  app.innerHTML = `
+    <div class="breadcrumbs"><a href="#/">Home</a><span>/</span><span>Plan a Day</span></div>
+    <section class="page-hero plan-page">
+      <div>
+        <p class="eyebrow">Plan a Day</p>
+        <h1>Choose what fits today</h1>
+        <p>Use the quick pickers to make a short list, then save the places you like.</p>
+      </div>
+      ${plannerBox()}
+    </section>
+    <section class="section-head"><div><h2>Popular ways to start</h2></div></section>
+    <div class="mood-grid">${moodTiles.map((tile) => moodTile(tile)).join('')}</div>
+  `;
+  bindHomePlanner();
+  bindInteractiveControls();
+}
+
+function renderBrowse() {
+  app.innerHTML = `
+    <div class="breadcrumbs"><a href="#/">Home</a><span>/</span><span>Browse</span></div>
+    <section class="page-hero">
+      <div>
+        <p class="eyebrow">Browse</p>
+        <h1>Browse by trip type</h1>
+        <p>Choose a larger group first, or scroll down to all original booklet categories.</p>
+      </div>
+    </section>
+    <div class="group-grid">${DATA.groups.map(groupCard).join('')}</div>
+    ${categoryBrowseSections('All categories', 'Compact tiles, still in the original booklet order inside each group.')}
+  `;
+  bindInteractiveControls();
 }
 
 function renderResultsPage({ route, title, intro, meta = '', listings, beforeResults = '', afterResults = '' }) {
@@ -546,7 +688,7 @@ function applyFilters(listings, params) {
       ].join(' '));
       if (!haystack.includes(q)) return false;
     }
-    return ['setting', 'distanceBand', 'priceLevel'].every((field) => {
+    return ['setting', 'region', 'distanceBand', 'priceLevel'].every((field) => {
       const value = params.get(field);
       return !value || item[field] === value;
     }) && ['ageFit', 'vibes', 'seasonWeather', 'practical'].every((field) => {
@@ -614,17 +756,16 @@ function renderListing(id) {
     </section>
     <div class="detail-layout">
       <section class="panel">
-        <h2>Why families like it</h2>
-        <p>${escapeHtml(textPreview(listing.details, 220) || 'The booklet did not provide a separate English description. Use the source page to check the original listing.')}</p>
-        <h2>Practical details</h2>
+        <h2>Booklet details</h2>
         ${listing.details?.length ? `<ul class="detail-list">${listing.details.map((line) => `<li>${escapeHtml(line)}</li>`).join('')}</ul>` : '<p class="empty">No separate English detail lines were extracted for this entry.</p>'}
+        ${address ? `<a class="btn primary direction-btn" href="${escapeHtml(mapsUrl(address))}" target="_blank" rel="noopener">Map / Directions</a>` : ''}
       </section>
-      <aside class="panel source-box">
-        <h2>Booklet source</h2>
-        <p>From the ${escapeHtml(DATA.sourceTitle)} booklet, p. ${listing.page}. Last verified: ${escapeHtml(listing.lastVerified || 'booklet year')}.</p>
+      <details class="panel source-box">
+        <summary>From the ${escapeHtml(DATA.sourceTitle)} booklet, p. ${listing.page}</summary>
+        <p>Last verified: ${escapeHtml(listing.lastVerified || 'booklet year')}.</p>
         <button class="btn ghost" type="button" data-page-modal="${listing.page}">View page</button>
         <a class="btn ghost" href="${escapeHtml(listing.sourceUrl)}" target="_blank" rel="noopener">Open source file</a>
-      </aside>
+      </details>
     </div>
     ${similar.length ? `<section class="section-head"><div><h2>You might also like</h2></div></section><div class="outing-grid compact">${similar.map(outingCard).join('')}</div>` : ''}
   `;
@@ -671,7 +812,7 @@ function renderIdeas() {
 }
 
 function renderPages() {
-  const categoryRanges = DATA.categories.map((cat) => `<a class="category-card" href="#/page/${cat.pages[0]}"><div class="category-count"><strong>${cat.count}</strong><span>places</span></div><h3>${escapeHtml(cat.title)}</h3><p>${escapeHtml(cat.description)}</p><span class="category-open">Open first page</span></a>`).join('');
+  const categoryRanges = DATA.categories.map((cat) => `<a class="category-card" href="#/page/${cat.pages[0]}"><span class="tile-icon" aria-hidden="true">${escapeHtml(categoryInitials(cat.title))}</span><div class="category-count"><strong>${cat.count}</strong><span>places</span></div><h3>${escapeHtml(cat.title)}</h3></a>`).join('');
   const pages = Array.from({ length: DATA.pageCount }, (_, index) => index + 1);
   app.innerHTML = `
     <div class="breadcrumbs"><a href="#/">Home</a><span>/</span><span>Source pages</span></div>
@@ -713,6 +854,10 @@ function emptyHtml(message) {
   return `<div class="empty">${escapeHtml(message)}</div>`;
 }
 
+function emptyResults(route, message) {
+  return `<div class="empty"><p>${escapeHtml(message)}</p><a class="btn ghost" href="${escapeHtml(route)}">Clear filters</a></div>`;
+}
+
 function renderNotFound() {
   app.innerHTML = `<section class="panel"><h1>Page not found</h1><p>The item you opened is not in this guide.</p><a class="btn ghost" href="#/">Back home</a></section>`;
 }
@@ -722,7 +867,7 @@ function bindHomePlanner() {
   form?.addEventListener('submit', (event) => {
     event.preventDefault();
     const values = Object.fromEntries(new FormData(form).entries());
-    setHash('#/all', values);
+    setHash('#/search', values);
   });
 }
 
@@ -742,21 +887,27 @@ function bindSearchForm() {
 }
 
 function bindFilters() {
-  const form = document.getElementById('filterForm');
-  if (!form) return;
-  const route = form.dataset.route;
-  const update = () => {
-    const values = Object.fromEntries(new FormData(form).entries());
-    setHash(route, values);
+  const filterForm = document.getElementById('filterForm');
+  const searchForm = document.getElementById('filterSearchForm');
+  const route = filterForm?.dataset.route || searchForm?.dataset.route;
+  if (!route) return;
+  const submitValues = (changes = {}) => {
+    const current = paramsToObject(currentParams());
+    delete current.limit;
+    const filterValues = filterForm ? Object.fromEntries(new FormData(filterForm).entries()) : {};
+    const searchValues = searchForm ? Object.fromEntries(new FormData(searchForm).entries()) : {};
+    setHash(route, { ...current, ...filterValues, ...searchValues, ...changes });
   };
-  form.addEventListener('submit', (event) => {
+  searchForm?.addEventListener('submit', (event) => {
     event.preventDefault();
-    update();
+    submitValues();
   });
-  form.querySelectorAll('select').forEach((select) => {
-    select.addEventListener('change', update);
+  searchForm?.querySelector('select')?.addEventListener('change', () => submitValues());
+  searchForm?.querySelector('input[name="q"]')?.addEventListener('input', debounce(() => submitValues(), 320));
+  filterForm?.addEventListener('submit', (event) => {
+    event.preventDefault();
+    submitValues();
   });
-  form.querySelector('input[name="q"]')?.addEventListener('input', debounce(update, 320));
 }
 
 function bindInteractiveControls() {
@@ -764,7 +915,16 @@ function bindInteractiveControls() {
     button.addEventListener('click', () => toggleSave(button.dataset.saveId));
   });
   document.querySelectorAll('[data-open-filters]').forEach((button) => {
-    button.addEventListener('click', () => document.getElementById('filterForm')?.classList.toggle('open'));
+    button.addEventListener('click', () => {
+      document.querySelector('.results-tools')?.classList.add('sheet-open');
+      document.getElementById('filterForm')?.classList.add('open');
+    });
+  });
+  document.querySelectorAll('[data-close-filters]').forEach((button) => {
+    button.addEventListener('click', () => {
+      document.querySelector('.results-tools')?.classList.remove('sheet-open');
+      document.getElementById('filterForm')?.classList.remove('open');
+    });
   });
   document.querySelectorAll('[data-page-modal]').forEach((button) => {
     button.addEventListener('click', () => openPageModal(button.dataset.pageModal));
@@ -781,6 +941,25 @@ function bindInteractiveControls() {
   document.querySelectorAll('[data-share-listing]').forEach((button) => {
     button.addEventListener('click', () => shareListing(button.dataset.shareListing));
   });
+}
+
+function bindGlobalHeader() {
+  const form = document.getElementById('siteSearch');
+  form?.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const values = Object.fromEntries(new FormData(form).entries());
+    setHash('#/search', values);
+  });
+}
+
+function updateSavedBadges() {
+  document.querySelectorAll('[data-saved-count]').forEach((badge) => {
+    badge.textContent = String(savedCount());
+    badge.hidden = savedCount() === 0;
+  });
+  const q = currentParams().get('q') || '';
+  const input = document.getElementById('siteSearchInput');
+  if (input && document.activeElement !== input) input.value = q;
 }
 
 function toggleSave(id) {
@@ -858,11 +1037,29 @@ function debounce(fn, wait) {
   };
 }
 
+function guideFooter() {
+  return `
+    <footer class="guide-footer">
+      <div>
+        <h2>Use the guide wisely</h2>
+        <p>Details come from the booklet. Always confirm hours and prices before you go.</p>
+      </div>
+      <div class="footer-links">
+        <a href="#/browse">Browse categories</a>
+        <a href="#/search">Search places</a>
+        <a href="#/saved">My Trip List</a>
+        <a href="mailto:?subject=Outings Guide correction">Report a correction</a>
+      </div>
+    </footer>`;
+}
+
 function router(resetScroll = true) {
   const hash = location.hash || '#/';
   const [path] = hash.slice(2).split('?');
   const parts = path.split('/').filter(Boolean).map(decodeURIComponent);
   if (!parts.length) renderHome();
+  else if (parts[0] === 'plan') renderPlan();
+  else if (parts[0] === 'browse') renderBrowse();
   else if (parts[0] === 'group') renderGroup(parts[1]);
   else if (parts[0] === 'category') renderCategory(parts[1]);
   else if (parts[0] === 'listing') renderListing(parts[1]);
@@ -874,9 +1071,12 @@ function router(resetScroll = true) {
   else if (parts[0] === 'pages') renderPages();
   else if (parts[0] === 'page') renderPage(parts[1]);
   else renderNotFound();
+  app.insertAdjacentHTML('beforeend', guideFooter());
+  updateSavedBadges();
   app.focus({ preventScroll: true });
   if (resetScroll) window.scrollTo({ top: 0, behavior: 'instant' });
 }
 
 window.addEventListener('hashchange', () => router());
+bindGlobalHeader();
 router();

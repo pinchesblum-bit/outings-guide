@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="Outings Guide helps families choose trips from the Navigation Sukkas booklet with filters, moods, categories, and saved trip lists." />
     <title>Outings Guide</title>
-    <link rel="stylesheet" href="style.css?v=planner5" />
+    <link rel="stylesheet" href="style.css?v=planner6" />
   </head>
   <body>
     <div class="site-shell">
@@ -17,18 +17,30 @@
             <small>The Family Guide</small>
           </span>
         </a>
+        <form class="header-search" id="siteSearch" role="search">
+          <label class="sr-only" for="siteSearchInput">Search outings</label>
+          <input id="siteSearchInput" name="q" placeholder="Search outings..." autocomplete="off" />
+          <button type="submit">Search</button>
+        </form>
         <nav class="topnav" aria-label="Main navigation">
-          <a href="#/">Home</a>
-          <a href="#/search">Search</a>
-          <a href="#/filter">Filters</a>
-          <a href="#/saved">Saved</a>
+          <a href="#/plan">Plan a Day</a>
+          <a href="#/browse">Browse</a>
+          <a href="#/ideas">Ideas</a>
+          <a class="saved-nav" href="#/saved">My Trip List <span data-saved-count>0</span></a>
         </nav>
       </header>
 
       <main id="app" tabindex="-1"></main>
     </div>
 
+    <nav class="mobile-tabbar" aria-label="Mobile navigation">
+      <a href="#/">Home</a>
+      <a href="#/browse">Browse</a>
+      <a href="#/search">Search</a>
+      <a href="#/saved">Saved <span data-saved-count>0</span></a>
+    </nav>
+
     <script src="data.js?v=step1-tags"></script>
-    <script src="app.js?v=planner5"></script>
+    <script src="app.js?v=planner6"></script>
   </body>
 </html>
