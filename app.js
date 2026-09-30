@@ -95,20 +95,31 @@ function cleanFactLine(value = '') {
     .replace(/,(\S)/g, ', $1')
     .replace(/([a-z])([A-Z]{2})(,?\s*\d{5})/g, '$1, $2 $3')
     .replace(/([A-Z]{2}),\s*(\d{5})/g, '$1 $2')
+    .replace(/Startsat/gi, 'Starts at ')
+    .replace(/Generaladmission/gi, 'General admission ')
+    .replace(/childrenunder/gi, 'children under ')
     .trim();
+}
+
+function looksLikeAddress(value = '') {
+  const text = cleanFactLine(value);
+  if (!/\d/.test(text)) return false;
+  if (/\d{3}[.\-\s]\d{3}[.\-\s]\d{4}/.test(text)) return false;
+  return /\b(st|street|ave|avenue|rd|road|dr|drive|ln|lane|blvd|boulevard|pike|parkway|place|plaza|way|ct|court|loop|hwy|highway|ny|nj|pa|ct|fl|az|ca|ri|dc)\b/i.test(text);
 }
 
 function extractAddress(listing) {
   const lines = [];
   for (const line of listing.details || []) {
     const text = cleanFactLine(line);
-    if (!text || /^monsey:?$/i.test(text) || /^monroe:?$/i.test(text) || /minute|hour|admission|starting|children|adult|senior|\$/i.test(text)) {
+    if (!text || /^monsey:?$/i.test(text) || /^monroe:?$/i.test(text) || /\d{3}[.\-\s]\d{3}/.test(text) || /minute|hour|admission|starting|children|adult|senior|\$/i.test(text)) {
       break;
     }
     lines.push(text);
     if (/\b[A-Z]{2}\s*\d{5}\b/.test(text) || lines.length >= 2) break;
   }
-  return cleanFactLine(lines.join(' '));
+  const address = cleanFactLine(lines.join(' '));
+  return looksLikeAddress(address) ? address : '';
 }
 
 function mapsUrl(address) {
