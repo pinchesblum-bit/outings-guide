@@ -146,6 +146,15 @@ function extractPrice(listing) {
   return 'Price not listed';
 }
 
+function extractTiming(listing) {
+  const timingLines = (listing.details || [])
+    .map(cleanFactLine)
+    .filter((line) => /\b(mon|tue|wed|thu|fri|sat|sun|monday|tuesday|wednesday|thursday|friday|saturday|sunday|am|pm|hours?|open|closed)\b/i.test(line))
+    .filter((line) => !looksLikeAddress(line))
+    .slice(0, 3);
+  return timingLines.length ? timingLines.join(' ') : 'Timing not listed in booklet';
+}
+
 function getSavedIds() {
   try {
     return JSON.parse(localStorage.getItem(savedKey) || '[]');
@@ -1021,11 +1030,26 @@ async function shareTripList() {
 async function shareListing(id) {
   const listing = byListing.get(id);
   const url = `${location.origin}${location.pathname}#/listing/${id}`;
+  if (!listing) return;
+  const address = extractAddress(listing) || 'Address not listed in booklet';
+  const price = extractPrice(listing);
+  const timing = extractTiming(listing);
+  const text = [
+    listing.name,
+    `Category: ${listing.categoryTitle}`,
+    `Area: ${listing.region || 'Area not listed'}`,
+    `Address: ${address}`,
+    `Timing: ${timing}`,
+    `Price: ${price}`,
+    `Booklet p. ${listing.page}`,
+    `Link: ${url}`,
+    'Details come from the booklet. Always confirm hours and prices before you go.',
+  ].join('\n');
   if (navigator.share) {
-    await navigator.share({ title: listing?.name || 'Outings Guide', url });
+    await navigator.share({ title: listing.name, text, url });
   } else {
-    await navigator.clipboard?.writeText(url);
-    alert('Link copied.');
+    await navigator.clipboard?.writeText(text);
+    alert('Place details copied.');
   }
 }
 
