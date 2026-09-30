@@ -88,6 +88,43 @@ function compactSummary(listing) {
   return listing.summary || textPreview(listing.details, 118) || 'Open details to check the booklet source page.';
 }
 
+function cleanFactLine(value = '') {
+  return String(value)
+    .replaceAll('·', ' ')
+    .replace(/\s+/g, ' ')
+    .replace(/,(\S)/g, ', $1')
+    .replace(/([a-z])([A-Z]{2})(,?\s*\d{5})/g, '$1, $2 $3')
+    .replace(/([A-Z]{2}),\s*(\d{5})/g, '$1 $2')
+    .trim();
+}
+
+function extractAddress(listing) {
+  const lines = [];
+  for (const line of listing.details || []) {
+    const text = cleanFactLine(line);
+    if (!text || /^monsey:?$/i.test(text) || /^monroe:?$/i.test(text) || /minute|hour|admission|starting|children|adult|senior|\$/i.test(text)) {
+      break;
+    }
+    lines.push(text);
+    if (/\b[A-Z]{2}\s*\d{5}\b/.test(text) || lines.length >= 2) break;
+  }
+  return cleanFactLine(lines.join(' '));
+}
+
+function mapsUrl(address) {
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
+}
+
+function extractPrice(listing) {
+  const priceLines = (listing.details || [])
+    .map(cleanFactLine)
+    .filter((line) => /\$|free|admission|donation|starting/i.test(line))
+    .slice(0, 2);
+  if (priceLines.length) return priceLines.join(' ');
+  if (listing.priceLevel && listing.priceLevel !== 'unknown') return label(listing.priceLevel);
+  return 'Price not listed';
+}
+
 function getSavedIds() {
   try {
     return JSON.parse(localStorage.getItem(savedKey) || '[]');
@@ -150,86 +187,26 @@ function statsHtml() {
 }
 
 function renderHome() {
-  const featured = topListings(DATA.listings).slice(0, 8);
   app.innerHTML = `
-    <section class="hero planner-hero">
+    <section class="hero planner-hero simple-home">
       <div class="hero-copy">
         <p class="kicker">Navigation Sukkas 5787 family guide</p>
-        <h1>Where should we go today?</h1>
-        <p>Pick the kind of day you want, then narrow hundreds of booklet entries into outings that actually fit your family.</p>
+        <h1>Outings Guide</h1>
+        <p>Choose a category in the same order as the original booklet.</p>
       </div>
-      <form class="find-box" id="homePlanner">
-        <h2>Find my outing</h2>
-        <label>Who's coming?
-          <select name="ageFit">
-            <option value="">Any ages</option>
-            ${optionHtml(DATA.filters.ageFit, '')}
-          </select>
-        </label>
-        <label>Indoor or outdoor?
-          <select name="setting">
-            <option value="">Any setting</option>
-            ${optionHtml(DATA.filters.setting, '')}
-          </select>
-        </label>
-        <label>How far?
-          <select name="distanceBand">
-            <option value="">Any distance</option>
-            ${optionHtml(DATA.filters.distanceBand, '')}
-          </select>
-        </label>
-        <label>Budget
-          <select name="priceLevel">
-            <option value="">Any budget</option>
-            ${optionHtml(DATA.filters.priceLevel, '')}
-          </select>
-        </label>
-        <button class="btn primary" type="submit">Find outings</button>
-      </form>
     </section>
-    ${statsHtml()}
     <section class="section-head">
       <div>
-        <p class="eyebrow">Quick ideas</p>
-        <h2>Choose a mood</h2>
+        <p class="eyebrow">Home</p>
+        <h2>Categories</h2>
+        <p>These are the booklet categories in the original order.</p>
       </div>
     </section>
-    <div class="mood-grid">
-      ${moodTiles.map((tile) => moodTile(tile)).join('')}
+    <div class="category-strip home-categories">
+      ${DATA.categories.map(categoryCard).join('')}
     </div>
-    <section class="section-head">
-      <div>
-        <p class="eyebrow">Browse by decision</p>
-        <h2>Start with the kind of trip</h2>
-        <p>The original booklet categories are still here, now grouped into family planning sections.</p>
-      </div>
-    </section>
-    <div class="group-grid">
-      ${(DATA.groups || []).map(groupCard).join('')}
-    </div>
-    <section class="section-head">
-      <div>
-        <p class="eyebrow">Featured</p>
-        <h2>Good starting points</h2>
-        <p>These are pulled from the booklet data. Open any card to see the original page.</p>
-      </div>
-      <button class="btn ghost" data-surprise="all">Surprise me</button>
-    </section>
-    <div class="outing-grid featured-row">
-      ${featured.map(outingCard).join('')}
-    </div>
-    <footer class="guide-footer">
-      <div>
-        <h2>How to use this guide</h2>
-        <p>Use filters first, then open a place to check the extracted details and booklet source page. Details come from the booklet, so always confirm hours and prices before you go.</p>
-      </div>
-      <div>
-        <h2>Source</h2>
-        <p>Based on the Navigation Sukkas 5787 booklet. Each outing keeps its original booklet page link.</p>
-      </div>
-    </footer>
+    ${categoryReport()}
   `;
-  bindHomePlanner();
   bindInteractiveControls();
 }
 
@@ -268,6 +245,26 @@ function categoryCard(cat) {
     </a>`;
 }
 
+function categoryReport() {
+  return `
+    <section class="bottom-report">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Report</p>
+          <h2>How many places are in each category</h2>
+        </div>
+      </div>
+      <div class="report-list">
+        ${DATA.categories.map((cat) => `
+          <div class="report-row">
+            <span>${escapeHtml(cat.title)}</span>
+            <strong>${cat.count}</strong>
+          </div>`).join('')}
+      </div>
+      <p class="source-note">Details come from the booklet. Always confirm hours and prices before you go.</p>
+    </section>`;
+}
+
 function outingCard(listing) {
   const saved = isSaved(listing.id);
   const tags = (listing.tags || []).slice(0, 3);
@@ -289,9 +286,34 @@ function outingCard(listing) {
     </article>`;
 }
 
-function filterBar(route, params, resultCount) {
+function miniResult(listing) {
+  const address = extractAddress(listing);
+  const price = extractPrice(listing);
+  const saved = isSaved(listing.id);
   return `
-    <section class="filter-shell" aria-label="Outing filters">
+    <article class="mini-result">
+      <div>
+        <div class="mini-topline">
+          <span>${escapeHtml(listing.categoryTitle)}</span>
+          <button class="page-badge" type="button" data-page-modal="${listing.page}">Booklet p. ${listing.page}</button>
+        </div>
+        <h3>${escapeHtml(listing.name)}</h3>
+        <p>${escapeHtml(compactSummary(listing))}</p>
+        <div class="mini-facts">
+          ${address ? `<a href="${escapeHtml(mapsUrl(address))}" target="_blank" rel="noopener">${escapeHtml(address)}</a>` : '<span>Address not listed</span>'}
+          <span>${escapeHtml(price)}</span>
+        </div>
+      </div>
+      <div class="mini-actions">
+        <button class="save-btn inline ${saved ? 'saved' : ''}" type="button" data-save-id="${escapeHtml(listing.id)}">${saved ? 'Saved' : 'Save'}</button>
+        <a class="details-link" href="#/listing/${encodeURIComponent(listing.id)}">Details</a>
+      </div>
+    </article>`;
+}
+
+function filterBar(route, params, resultCount, expanded = false) {
+  return `
+    <section class="filter-shell ${expanded ? 'filter-page' : ''}" aria-label="Outing filters">
       <div class="filter-top">
         <div>
           <p class="eyebrow">Filter the guide</p>
@@ -299,7 +321,7 @@ function filterBar(route, params, resultCount) {
         </div>
         <button class="btn ghost more-filter-btn" type="button" data-open-filters>More filters</button>
       </div>
-      <form class="filter-panel" id="filterForm" data-route="${escapeHtml(route)}">
+      <form class="filter-panel ${expanded ? 'open' : ''}" id="filterForm" data-route="${escapeHtml(route)}">
         <label class="search-field">Search
           <input name="q" value="${escapeHtml(params.get('q') || '')}" placeholder="Search names, towns, tags..." />
         </label>
@@ -384,13 +406,78 @@ function renderCategory(id) {
   });
 }
 
+function compactResults(route, params, filtered, emptyMessage = 'No results found.') {
+  const limit = Number(params.get('limit') || 40);
+  const visible = filtered.slice(0, limit);
+  return `
+    <section class="section-head">
+      <div>
+        <h2>Results</h2>
+        <p>Showing ${visible.length} of ${filtered.length}</p>
+      </div>
+    </section>
+    <div class="mini-list">${visible.length ? visible.map(miniResult).join('') : emptyHtml(emptyMessage)}</div>
+    ${filtered.length > visible.length ? `<div class="show-more-wrap"><a class="btn primary" href="${escapeHtml(resultRoute(route, params, { limit: String(limit + 40) }))}">Show more</a></div>` : ''}`;
+}
+
+function hasRealFilters(params) {
+  return [...params.entries()].some(([key, value]) => value && !['limit', 'sort'].includes(key));
+}
+
+function renderSearch() {
+  const params = currentParams();
+  const filtered = sortListings(applyFilters(DATA.listings, params), params.get('sort') || 'az');
+  app.innerHTML = `
+    <div class="breadcrumbs"><a href="#/">Home</a><span>/</span><span>Search</span></div>
+    <section class="page-hero">
+      <div>
+        <p class="eyebrow">Search</p>
+        <h1>All results</h1>
+        <p>Search every place in one simple list.</p>
+      </div>
+    </section>
+    <form class="search-page-form" id="searchForm" data-route="#/search">
+      <label>Search
+        <input name="q" value="${escapeHtml(params.get('q') || '')}" placeholder="Search name, town, category, tag..." />
+      </label>
+      <label>Sort
+        <select name="sort">
+          <option value="az" ${params.get('sort') === 'az' || !params.get('sort') ? 'selected' : ''}>A-Z</option>
+          <option value="closest" ${params.get('sort') === 'closest' ? 'selected' : ''}>Closest</option>
+          <option value="free" ${params.get('sort') === 'free' ? 'selected' : ''}>Free first</option>
+          <option value="top" ${params.get('sort') === 'top' ? 'selected' : ''}>Top picks</option>
+        </select>
+      </label>
+      <button class="btn primary" type="submit">Search</button>
+    </form>
+    ${compactResults('#/search', params, filtered)}
+  `;
+  bindSearchForm();
+  bindInteractiveControls();
+}
+
+function renderFilter() {
+  const params = currentParams();
+  const hasFilters = hasRealFilters(params);
+  const filtered = hasFilters ? sortListings(applyFilters(DATA.listings, params), params.get('sort') || 'top') : [];
+  app.innerHTML = `
+    <div class="breadcrumbs"><a href="#/">Home</a><span>/</span><span>Filter</span></div>
+    <section class="page-hero">
+      <div>
+        <p class="eyebrow">Filter</p>
+        <h1>Filter places</h1>
+        <p>Choose what you need, then results show as short rows.</p>
+      </div>
+    </section>
+    ${filterBar('#/filter', params, filtered.length, true)}
+    ${hasFilters ? compactResults('#/filter', params, filtered, 'No places match this filter.') : '<div class="empty">Choose a filter above to see results.</div>'}
+  `;
+  bindFilters();
+  bindInteractiveControls();
+}
+
 function renderAll() {
-  renderResultsPage({
-    route: '#/all',
-    title: 'Find an outing',
-    intro: 'Search and filter all booklet entries by setting, distance, age, price, vibe, and weather.',
-    listings: DATA.listings,
-  });
+  renderSearch();
 }
 
 function renderResultsPage({ route, title, intro, meta = '', listings, beforeResults = '', afterResults = '' }) {
@@ -489,9 +576,11 @@ function renderListing(id) {
   const listing = byListing.get(id);
   if (!listing) return renderNotFound();
   const similar = topListings(DATA.listings.filter((item) => item.id !== listing.id && (item.categoryId === listing.categoryId || item.groupId === listing.groupId || intersects(item.vibes, listing.vibes)))).slice(0, 4);
+  const address = extractAddress(listing);
+  const price = extractPrice(listing);
   const facts = [
-    ['Location', listing.region || 'Unknown'],
-    ['Price', label(listing.priceLevel || 'unknown')],
+    ['Address', address ? `<a href="${escapeHtml(mapsUrl(address))}" target="_blank" rel="noopener">${escapeHtml(address)}</a>` : 'Address not listed', true],
+    ['Booklet price', price],
     ['Ages', (listing.ageFit || []).filter((value) => value !== 'unknown').map(label).join(', ') || 'Unknown'],
     ['Setting', label(listing.setting || 'unknown')],
     ['Distance', label(listing.distanceBand || 'unknown')],
@@ -510,7 +599,7 @@ function renderListing(id) {
       </div>
     </article>
     <section class="quick-facts">
-      ${facts.map(([name, value]) => `<div><strong>${escapeHtml(name)}</strong><span>${escapeHtml(value)}</span></div>`).join('')}
+      ${facts.map(([name, value, isHtml]) => `<div><strong>${escapeHtml(name)}</strong><span>${isHtml ? value : escapeHtml(value)}</span></div>`).join('')}
     </section>
     <div class="detail-layout">
       <section class="panel">
@@ -624,6 +713,21 @@ function bindHomePlanner() {
     const values = Object.fromEntries(new FormData(form).entries());
     setHash('#/all', values);
   });
+}
+
+function bindSearchForm() {
+  const form = document.getElementById('searchForm');
+  if (!form) return;
+  const route = form.dataset.route;
+  const update = () => {
+    const values = Object.fromEntries(new FormData(form).entries());
+    setHash(route, values);
+  };
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    update();
+  });
+  form.querySelector('select')?.addEventListener('change', update);
 }
 
 function bindFilters() {
@@ -752,6 +856,8 @@ function router(resetScroll = true) {
   else if (parts[0] === 'category') renderCategory(parts[1]);
   else if (parts[0] === 'listing') renderListing(parts[1]);
   else if (parts[0] === 'all') renderAll();
+  else if (parts[0] === 'search') renderSearch();
+  else if (parts[0] === 'filter') renderFilter();
   else if (parts[0] === 'ideas') renderIdeas();
   else if (parts[0] === 'saved') renderSaved();
   else if (parts[0] === 'pages') renderPages();
