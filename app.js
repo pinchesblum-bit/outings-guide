@@ -191,7 +191,7 @@ function statsHtml() {
   return `
     <div class="stats" aria-label="Booklet totals">
       <div class="stat"><strong>${DATA.categories.length}</strong><span>categories</span></div>
-      <div class="stat"><strong>${DATA.listings.length}</strong><span>entries</span></div>
+      <div class="stat"><strong>${DATA.listings.length}</strong><span>places</span></div>
       <div class="stat"><strong>${DATA.pageCount}</strong><span>source pages</span></div>
       <div class="stat"><strong>${getSavedIds().length}</strong><span>saved</span></div>
     </div>`;
@@ -203,20 +203,19 @@ function renderHome() {
       <div class="hero-copy">
         <p class="kicker">Navigation Sukkas 5787 family guide</p>
         <h1>Outings Guide</h1>
-        <p>Choose a category in the same order as the original booklet.</p>
+        <p>Choose a category. Each one shows how many places are inside.</p>
       </div>
     </section>
     <section class="section-head">
       <div>
         <p class="eyebrow">Home</p>
-        <h2>Categories</h2>
-        <p>These are the booklet categories in the original order.</p>
+        <h2>All categories</h2>
+        <p>Same order as the original booklet.</p>
       </div>
     </section>
     <div class="category-strip home-categories">
       ${DATA.categories.map(categoryCard).join('')}
     </div>
-    ${categoryReport()}
   `;
   bindInteractiveControls();
 }
@@ -235,7 +234,7 @@ function groupCard(group) {
     <a class="group-card" href="#/group/${encodeURIComponent(group.id)}">
       <div class="group-art" aria-hidden="true"></div>
       <div class="pills">
-        <span class="pill teal">${group.count} entries</span>
+        <span class="pill teal">${group.count} places</span>
         <span class="pill">${categories.length} categories</span>
       </div>
       <h3>${escapeHtml(group.title)}</h3>
@@ -247,12 +246,13 @@ function groupCard(group) {
 function categoryCard(cat) {
   return `
     <a class="category-card" href="#/category/${encodeURIComponent(cat.id)}">
-      <div class="pills">
-        <span class="pill teal">${cat.count} entries</span>
-        <span class="pill">Pages ${escapeHtml(cat.pageRange)}</span>
+      <div class="category-count">
+        <strong>${cat.count}</strong>
+        <span>places</span>
       </div>
       <h3>${escapeHtml(cat.title)}</h3>
       <p>${escapeHtml(cat.description)}</p>
+      <span class="category-open">Open category</span>
     </a>`;
 }
 
@@ -407,7 +407,7 @@ function renderCategory(id) {
     route,
     title: cat.title,
     intro: cat.description,
-    meta: `${cat.count} entries · Pages ${cat.pageRange} · ${cat.groupTitle}`,
+    meta: `${cat.count} places · Pages ${cat.pageRange} · ${cat.groupTitle}`,
     listings,
     beforeResults: `
       <section class="section-head small-head"><div><h2>Top picks in this category</h2></div></section>
@@ -671,7 +671,7 @@ function renderIdeas() {
 }
 
 function renderPages() {
-  const categoryRanges = DATA.categories.map((cat) => `<a class="category-card" href="#/page/${cat.pages[0]}"><div class="pills"><span class="pill">Pages ${escapeHtml(cat.pageRange)}</span><span class="pill teal">${cat.count} entries</span></div><h3>${escapeHtml(cat.title)}</h3><p>${escapeHtml(cat.description)}</p></a>`).join('');
+  const categoryRanges = DATA.categories.map((cat) => `<a class="category-card" href="#/page/${cat.pages[0]}"><div class="category-count"><strong>${cat.count}</strong><span>places</span></div><h3>${escapeHtml(cat.title)}</h3><p>${escapeHtml(cat.description)}</p><span class="category-open">Open first page</span></a>`).join('');
   const pages = Array.from({ length: DATA.pageCount }, (_, index) => index + 1);
   app.innerHTML = `
     <div class="breadcrumbs"><a href="#/">Home</a><span>/</span><span>Source pages</span></div>

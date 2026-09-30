@@ -40,12 +40,12 @@ button { cursor: pointer; }
 .topbar {
   position: sticky;
   top: 0;
-  z-index: 20;
-  display: flex;
+  z-index: 30;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
   align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  padding: 12px 0;
+  gap: 18px;
+  padding: 14px 0 18px;
   background: rgba(255, 248, 234, 0.86);
   backdrop-filter: blur(18px);
 }
@@ -75,26 +75,37 @@ button { cursor: pointer; }
 .brand small { display: block; color: var(--muted); font-size: 0.72rem; margin-top: 1px; }
 
 .topnav {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   align-items: center;
-  justify-content: flex-end;
-  flex-wrap: wrap;
-  gap: 7px;
+  gap: clamp(6px, 1.2vw, 16px);
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid rgba(230, 220, 200, 0.95);
+  border-radius: 24px;
+  background: rgba(255, 253, 247, 0.95);
+  box-shadow: 0 16px 36px rgba(31, 43, 50, 0.12);
 }
 .topnav a {
-  min-height: 42px;
+  min-height: 68px;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   text-decoration: none;
-  padding: 9px 12px;
-  border: 1px solid rgba(23, 126, 131, 0.14);
-  border-radius: 999px;
-  background: rgba(255, 253, 247, 0.78);
+  padding: 10px 8px;
+  border: 0;
+  border-radius: 18px;
+  background: transparent;
   color: var(--teal-dark);
   font-weight: 800;
-  font-size: 0.86rem;
+  font-size: clamp(1.1rem, 2.2vw, 1.75rem);
 }
-.topnav a:hover { border-color: rgba(23, 126, 131, 0.42); background: white; }
+.topnav a:hover,
+.topnav a:focus-visible {
+  background: var(--soft);
+  color: var(--teal);
+  outline: none;
+}
 
 .hero,
 .page-hero,
@@ -254,7 +265,10 @@ select:focus {
 .outing-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .outing-grid.compact { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .category-strip { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-.home-categories { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.home-categories {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
 
 .mood-card,
 .group-card,
@@ -320,6 +334,55 @@ select:focus {
   margin: 0;
   color: var(--muted);
   line-height: 1.5;
+}
+.category-card {
+  min-height: 220px;
+  display: grid;
+  gap: 12px;
+  padding: 22px;
+  overflow: hidden;
+}
+.home-categories .category-card {
+  min-height: 250px;
+}
+.category-count {
+  display: grid;
+  place-items: center;
+  align-content: center;
+  width: 82px;
+  height: 82px;
+  border-radius: 22px;
+  background: linear-gradient(145deg, var(--soft), #fff7df);
+  color: var(--teal-dark);
+  box-shadow: inset 0 0 0 1px rgba(23, 126, 131, 0.14);
+}
+.category-count strong {
+  display: block;
+  font-family: ui-rounded, "Trebuchet MS", Inter, sans-serif;
+  font-size: 2.2rem;
+  line-height: 0.9;
+}
+.category-count span {
+  font-size: 0.72rem;
+  font-weight: 950;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.home-categories .category-card h3 {
+  font-size: clamp(1.35rem, 2.4vw, 1.75rem);
+}
+.category-open {
+  display: inline-flex;
+  align-items: center;
+  width: max-content;
+  margin-top: auto;
+  color: var(--teal-dark);
+  font-weight: 950;
+}
+.category-open::after {
+  content: ">";
+  margin-left: 8px;
+  color: var(--coral);
 }
 .group-cats {
   display: block;
@@ -735,8 +798,10 @@ select:focus {
 }
 
 @media (max-width: 980px) {
-  .topbar { align-items: flex-start; flex-direction: column; }
-  .topnav { justify-content: flex-start; }
+  .topbar {
+    grid-template-columns: 1fr;
+    align-items: stretch;
+  }
   .planner-hero,
   .detail-card,
   .detail-layout { grid-template-columns: 1fr; }
@@ -756,9 +821,24 @@ select:focus {
 @media (max-width: 650px) {
   body { background-attachment: scroll; }
   .site-shell { width: min(100% - 22px, 1180px); padding-top: 8px; }
-  .topbar { position: static; }
-  .topnav { display: none; }
-  .mobile-tabbar { display: grid; }
+  .topbar {
+    position: sticky;
+    gap: 10px;
+    padding-bottom: 12px;
+  }
+  .topnav {
+    display: grid;
+    gap: 4px;
+    padding: 8px;
+    border-radius: 20px;
+  }
+  .topnav a {
+    min-height: 56px;
+    padding: 8px 3px;
+    border-radius: 14px;
+    font-size: clamp(1rem, 5vw, 1.35rem);
+  }
+  .mobile-tabbar { display: none; }
   .brand-mark { width: 38px; height: 38px; }
   .planner-hero { min-height: auto; padding: 18px; align-items: start; }
   h1, .hero h1 { font-size: clamp(2.35rem, 13vw, 4rem); }
