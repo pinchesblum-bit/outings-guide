@@ -238,43 +238,23 @@ function statsHtml() {
 }
 
 function renderHome() {
-  const featured = topListings(DATA.listings).slice(0, 8);
   app.innerHTML = `
-    <section class="hero planner-hero">
-      <div class="hero-copy">
-        <p class="kicker">Navigation Sukkas 5787 family guide</p>
-        <h1>Where should we go today?</h1>
-        <p>Pick the kind of day you want, then narrow the guide fast.</p>
+    <section class="hero home-hero">
+      <div class="hero-copy home-hero-copy">
+        <p class="kicker">Navigation Sukkas 5787 Family Guide</p>
+        <h1>Outings Guide</h1>
+        <p>Browse every original booklet category and open the places inside.</p>
       </div>
-      ${plannerBox()}
     </section>
-    <section class="section-head">
+    <section class="section-head home-category-head">
       <div>
-        <p class="eyebrow">Ideas</p>
-        <h2>Start by mood</h2>
-        <p>Quick choices for the way the day feels.</p>
+        <p class="eyebrow">Booklet categories</p>
+        <h2>Choose a category</h2>
+        <p>All original categories are shown here in booklet order.</p>
       </div>
     </section>
-    <div class="mood-grid">${moodTiles.map((tile) => moodTile(tile)).join('')}</div>
-    <section class="section-head">
-      <div>
-        <p class="eyebrow">Browse</p>
-        <h2>Choose the kind of trip</h2>
-        <p>The same booklet categories, grouped by how families usually decide.</p>
-      </div>
-    </section>
-    <div class="group-grid">${DATA.groups.map(groupCard).join('')}</div>
-    <section class="section-head">
-      <div>
-        <p class="eyebrow">Featured</p>
-        <h2>Good places to start</h2>
-        <p>Top picks from the guide based on available booklet details and tags.</p>
-      </div>
-    </section>
-    <div class="outing-grid featured-row">${featured.map(outingCard).join('')}</div>
-    ${categoryBrowseSections('Browse all categories', 'All 23 original booklet categories are still here.')}
+    <div class="category-strip home-categories">${DATA.categories.map(categoryCard).join('')}</div>
   `;
-  bindHomePlanner();
   bindInteractiveControls();
 }
 
@@ -339,7 +319,7 @@ function groupCard(group) {
 function categoryCard(cat) {
   return `
     <a class="category-card" href="#/category/${encodeURIComponent(cat.id)}">
-      <span class="tile-icon" aria-hidden="true">${escapeHtml(categoryInitials(cat.title))}</span>
+      <span class="category-art scene-${escapeHtml(cat.id)}" aria-hidden="true"></span>
       <div class="category-count">
         <strong>${cat.count}</strong>
         <span>places</span>
@@ -1081,7 +1061,8 @@ function router(resetScroll = true) {
   const hash = location.hash || '#/';
   const [path] = hash.slice(2).split('?');
   const parts = path.split('/').filter(Boolean).map(decodeURIComponent);
-  if (!parts.length) renderHome();
+  const isHome = !parts.length;
+  if (isHome) renderHome();
   else if (parts[0] === 'plan') renderPlan();
   else if (parts[0] === 'browse') renderBrowse();
   else if (parts[0] === 'group') renderGroup(parts[1]);
@@ -1095,7 +1076,7 @@ function router(resetScroll = true) {
   else if (parts[0] === 'pages') renderPages();
   else if (parts[0] === 'page') renderPage(parts[1]);
   else renderNotFound();
-  app.insertAdjacentHTML('beforeend', guideFooter());
+  if (!isHome) app.insertAdjacentHTML('beforeend', guideFooter());
   updateSavedBadges();
   app.focus({ preventScroll: true });
   if (resetScroll) window.scrollTo({ top: 0, behavior: 'instant' });
