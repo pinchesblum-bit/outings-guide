@@ -293,7 +293,7 @@ h1,
   display: grid;
   gap: 10px;
   justify-items: center;
-  margin: -30px auto 28px;
+  margin: 14px auto 28px;
   position: relative;
   z-index: 5;
 }
@@ -1181,7 +1181,7 @@ select:focus {
     overflow-x: auto;
   }
   body.is-home .home-controls {
-    margin-top: -22px;
+    margin-top: 12px;
   }
   .header-search { padding: 5px; }
   .header-search input { min-height: 36px; }
