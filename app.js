@@ -241,19 +241,38 @@ function renderHome() {
   app.innerHTML = `
     <section class="hero home-hero">
       <div class="hero-copy home-hero-copy">
-        <p class="kicker">Navigation Sukkas 5787 Family Guide</p>
         <h1>Outings Guide</h1>
-        <p>Browse every original booklet category and open the places inside.</p>
+        <p>Parks, rides, water fun, zoos, farms, and trips from the booklet.</p>
       </div>
     </section>
-    <section class="section-head home-category-head">
-      <div>
-        <p class="eyebrow">Booklet categories</p>
-        <h2>Choose a category</h2>
-        <p>All original categories are shown here in booklet order.</p>
-      </div>
-    </section>
-    <div class="category-strip home-categories">${DATA.categories.map(categoryCard).join('')}</div>
+    <div class="home-content">
+      <section class="home-controls" aria-label="Search and navigation">
+        <form class="header-search home-search site-search-form" role="search" data-site-search>
+          <label class="sr-only" for="homeSiteSearchInput">Search outings</label>
+          <input id="homeSiteSearchInput" name="q" placeholder="Search outings..." autocomplete="off" />
+          <button class="icon-search-btn" type="submit" aria-label="Search">
+            <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="11" cy="11" r="7"></circle>
+              <path d="m16.5 16.5 4 4"></path>
+            </svg>
+          </button>
+        </form>
+        <nav class="topnav home-nav" aria-label="Home navigation">
+          <a href="#/">Home</a>
+          <a href="#/search">Search</a>
+          <a href="#/filter">Filters</a>
+          <a class="saved-nav" href="#/saved">My Trips <span data-saved-count>0</span></a>
+        </nav>
+      </section>
+      <section class="section-head home-category-head">
+        <div>
+          <p class="eyebrow">Booklet categories</p>
+          <h2>Choose a category</h2>
+          <p>All original categories are shown here in booklet order.</p>
+        </div>
+      </section>
+      <div class="category-strip home-categories">${DATA.categories.map(categoryCard).join('')}</div>
+    </div>
   `;
   bindInteractiveControls();
 }
@@ -933,11 +952,14 @@ function bindInteractiveControls() {
 }
 
 function bindGlobalHeader() {
-  const form = document.getElementById('siteSearch');
-  form?.addEventListener('submit', (event) => {
-    event.preventDefault();
-    const values = Object.fromEntries(new FormData(form).entries());
-    setHash('#/search', values);
+  document.querySelectorAll('[data-site-search]').forEach((form) => {
+    if (form.dataset.bound) return;
+    form.dataset.bound = 'true';
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const values = Object.fromEntries(new FormData(form).entries());
+      setHash('#/search', values);
+    });
   });
 }
 
@@ -947,8 +969,9 @@ function updateSavedBadges() {
     badge.hidden = savedCount() === 0;
   });
   const q = currentParams().get('q') || '';
-  const input = document.getElementById('siteSearchInput');
-  if (input && document.activeElement !== input) input.value = q;
+  document.querySelectorAll('[data-site-search] input[name="q"]').forEach((input) => {
+    if (document.activeElement !== input) input.value = q;
+  });
 }
 
 function toggleSave(id) {
@@ -1062,6 +1085,7 @@ function router(resetScroll = true) {
   const [path] = hash.slice(2).split('?');
   const parts = path.split('/').filter(Boolean).map(decodeURIComponent);
   const isHome = !parts.length;
+  document.body.classList.toggle('is-home', isHome);
   if (isHome) renderHome();
   else if (parts[0] === 'plan') renderPlan();
   else if (parts[0] === 'browse') renderBrowse();
@@ -1077,6 +1101,7 @@ function router(resetScroll = true) {
   else if (parts[0] === 'page') renderPage(parts[1]);
   else renderNotFound();
   if (!isHome) app.insertAdjacentHTML('beforeend', guideFooter());
+  bindGlobalHeader();
   updateSavedBadges();
   app.focus({ preventScroll: true });
   if (resetScroll) window.scrollTo({ top: 0, behavior: 'instant' });
