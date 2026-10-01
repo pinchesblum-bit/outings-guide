@@ -209,13 +209,13 @@ body.is-home .topbar {
 
 .home-hero {
   width: 100vw;
-  min-height: min(78vh, 680px);
+  min-height: 460px;
   margin-left: calc(50% - 50vw);
   margin-right: calc(50% - 50vw);
   margin-bottom: 0;
   display: flex;
-  align-items: end;
-  padding: clamp(110px, 19vh, 190px) max(24px, calc((100vw - 1180px) / 2 + 14px)) clamp(86px, 12vh, 132px);
+  align-items: flex-start;
+  padding: 38px max(24px, calc((100vw - 1180px) / 2 + 14px)) 80px;
   border: 0;
   border-radius: 0;
   box-shadow: none;
@@ -283,7 +283,8 @@ h1,
   font-weight: 800;
 }
 .hero.home-hero h1 {
-  font-size: clamp(3.6rem, 12vw, 7rem);
+  font-size: 80px;
+  letter-spacing: 0;
 }
 .home-content {
   width: min(1180px, calc(100% - 28px));
@@ -1191,11 +1192,11 @@ select:focus {
   .brand strong,
   .brand small { display: none; }
   .home-hero {
-    min-height: 460px;
-    padding: 100px 18px 78px;
+    min-height: 340px;
+    padding: 28px 18px 60px;
     background-position: center top;
   }
-  .home-hero h1 { font-size: clamp(3.25rem, 18vw, 5.4rem); }
+  .hero.home-hero h1 { font-size: 48px; }
   .planner-hero { min-height: auto; padding: 18px; align-items: start; }
   .planner-actions { grid-template-columns: 1fr; }
   h1, .hero h1 { font-size: clamp(2.35rem, 13vw, 4rem); }
