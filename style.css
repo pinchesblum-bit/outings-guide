@@ -1,3 +1,11 @@
+@font-face {
+  font-family: "Outings Manrope";
+  src: url("fonts/manrope-latin.woff") format("woff");
+  font-style: normal;
+  font-weight: 200 800;
+  font-display: swap;
+}
+
 :root {
   --ink: #1f2b32;
   --muted: #65757a;
@@ -223,6 +231,8 @@ body.is-home .topbar {
   background: #21494b;
   color: white;
   overflow: hidden;
+  -webkit-mask-image: linear-gradient(to bottom, #000 66%, rgba(0, 0, 0, 0.98) 74%, rgba(0, 0, 0, 0.78) 84%, rgba(0, 0, 0, 0.35) 94%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 66%, rgba(0, 0, 0, 0.98) 74%, rgba(0, 0, 0, 0.78) 84%, rgba(0, 0, 0, 0.35) 94%, transparent 100%);
 }
 
 .home-hero::before {
@@ -251,10 +261,10 @@ body.is-home .topbar {
 
 .home-hero h1 {
   display: inline-block;
-  color: rgba(35, 67, 73, 0.94);
-  font-weight: 400;
+  color: #234349;
+  font-weight: 600;
   letter-spacing: 0;
-  text-shadow: 0 1px 1px rgba(255, 246, 231, 0.18);
+  text-shadow: none;
 }
 
 .home-hero p {
@@ -299,11 +309,29 @@ h1,
   font-weight: 800;
 }
 .hero.home-hero h1 {
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(3rem, 6vw, 5.25rem);
-  line-height: 1.1;
-  letter-spacing: -0.025em;
+  font-family: "Outings Manrope", "Avenir Next", ui-sans-serif, system-ui, sans-serif;
+  font-size: clamp(2.75rem, 5.6vw, 4.875rem);
+  line-height: 1.12;
+  letter-spacing: -0.055em;
 }
+.hero.home-hero h1 span { font-weight: 400; }
+
+.search-start {
+  max-width: 780px;
+  margin: 44px auto;
+}
+.search-start h1 {
+  margin-bottom: 24px;
+  font-family: "Outings Manrope", ui-sans-serif, system-ui, sans-serif;
+  font-size: clamp(1.75rem, 5vw, 2.5rem);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.04em;
+}
+.search-start .result-search { grid-template-columns: minmax(0, 1fr) auto; }
+.search-start .search-field { grid-column: auto; }
+.search-start input { width: 100%; min-height: 52px; }
+.search-start .btn { min-height: 52px; }
 .home-content {
   width: min(1180px, calc(100% - 28px));
   margin: 0 auto;

@@ -241,13 +241,13 @@ function renderHome() {
   app.innerHTML = `
     <section class="hero home-hero">
       <div class="hero-copy home-hero-copy">
-        <h1>Outings Guide</h1>
+        <h1>Outings <span>Guide</span></h1>
       </div>
     </section>
     <div class="home-content">
       <section class="section-head home-category-head">
         <h2>Browse outing ideas</h2>
-        <a class="all-places-link" href="#/search">View all <span aria-hidden="true">&rarr;</span></a>
+        <a class="all-places-link" href="#/explore">View all <span aria-hidden="true">&rarr;</span></a>
       </section>
       <div class="category-strip home-categories">${DATA.categories.map(categoryCard).join('')}</div>
     </div>
@@ -437,7 +437,7 @@ function filterBar(route, params, resultCount, expanded = false) {
         <button class="btn ghost filter-toggle" type="button" data-open-filters>Filters${count ? ` (${count})` : ''}</button>
         <label>Sort
           <select name="sort">
-            <option value="top" ${params.get('sort') === 'top' || !params.get('sort') ? 'selected' : ''}>Top picks</option>
+            <option value="top" ${params.get('sort') === 'top' || !params.get('sort') ? 'selected' : ''}>${normalize(params.get('q') || '') ? 'Best matches' : 'Top picks'}</option>
             <option value="free" ${params.get('sort') === 'free' ? 'selected' : ''}>Free first</option>
             <option value="az" ${params.get('sort') === 'az' ? 'selected' : ''}>A-Z</option>
           </select>
@@ -563,7 +563,22 @@ function renderSearch(openFilters = false, mode = 'search') {
   const exploring = mode === 'explore';
   const route = exploring ? '#/explore' : '#/search';
   const pageName = exploring ? 'Explore' : 'Search';
-  const filtered = sortListings(applyFilters(DATA.listings, params), params.get('sort') || 'top');
+  const query = normalize(params.get('q') || '');
+  if (!exploring && !query && activeFilterCount(params) === 0) {
+    app.innerHTML = `
+      <section class="search-start">
+        <h1>Search places</h1>
+        <form class="result-search" id="filterSearchForm" data-route="#/search" role="search">
+          <label class="search-field">Search
+            <input type="search" name="q" value="" placeholder="Place, activity or town" autocomplete="off" />
+          </label>
+          <button class="btn primary" type="submit">Search</button>
+        </form>
+      </section>`;
+    bindFilters();
+    return;
+  }
+  const filtered = sortListings(applyFilters(DATA.listings, params), params.get('sort') || 'top', query);
   app.innerHTML = `
     <div class="breadcrumbs"><a href="#/">Home</a><span>/</span><span>${pageName}</span></div>
     <section class="page-hero">
@@ -585,7 +600,7 @@ function renderFilter() {
 }
 
 function renderAll() {
-  renderSearch();
+  renderSearch(false, 'explore');
 }
 
 function renderPlan() {
@@ -624,7 +639,7 @@ function renderBrowse() {
 
 function renderResultsPage({ route, title, intro, meta = '', listings, beforeResults = '', afterResults = '' }) {
   const params = currentParams();
-  const filtered = sortListings(applyFilters(listings, params), params.get('sort') || 'top');
+  const filtered = sortListings(applyFilters(listings, params), params.get('sort') || 'top', params.get('q') || '');
   const limit = Number(params.get('limit') || defaultLimit);
   const visible = filtered.slice(0, limit);
   app.innerHTML = `
@@ -661,22 +676,39 @@ function nearbyCategories(cat) {
     <div class="category-strip">${nearby.map(categoryCard).join('')}</div>`;
 }
 
+function searchWords(value) {
+  return normalize(value).split(' ').filter(Boolean).map((word) =>
+    word.length > 3 && word.endsWith('s') && !word.endsWith('ss') ? word.slice(0, -1) : word);
+}
+
+function searchRelevance(item, query) {
+  const terms = searchWords(query);
+  if (!terms.length) return 0;
+  const matches = (value) => {
+    const words = searchWords(value);
+    return terms.every((term) => words.some((word) => word.startsWith(term)));
+  };
+  const name = normalize(item.name);
+  const phrase = normalize(query);
+  if (matches(name)) {
+    if (name === phrase) return 1000;
+    if (name.startsWith(phrase)) return 900;
+    return 800;
+  }
+  const location = [extractAddress(item), item.region].filter(Boolean).join(' ');
+  if (matches(`${name} ${location}`)) return 600;
+  const activities = [item.setting, ...(item.tags || []), ...(item.vibes || [])].map(label).join(' ');
+  if (matches(`${name} ${activities} ${location}`)) return 400;
+  // A full category name is useful; one word from a mixed category is too broad.
+  const categoryWords = searchWords(item.categoryTitle);
+  if (terms.length === categoryWords.length && categoryWords.every((word) => terms.includes(word))) return 300;
+  return 0;
+}
+
 function applyFilters(listings, params) {
   const q = normalize(params.get('q') || '');
   return listings.filter((item) => {
-    if (q) {
-      const haystack = normalize([
-        item.name,
-        item.categoryTitle,
-        item.groupTitle,
-        item.region,
-        `page ${item.page}`,
-        ...(item.tags || []),
-        ...(item.vibes || []),
-        ...(item.details || []),
-      ].join(' '));
-      if (!haystack.includes(q)) return false;
-    }
+    if (q && searchRelevance(item, q) === 0) return false;
     return ['setting', 'region', 'distanceBand', 'priceLevel'].every((field) => {
       const value = params.get(field);
       return !value || item[field] === value;
@@ -691,13 +723,14 @@ function topListings(listings) {
   return sortListings(listings.filter((item) => !item.info), 'top');
 }
 
-function sortListings(listings, sort) {
+function sortListings(listings, sort, query = '') {
   const distanceRank = { 'under-30': 0, '30-60': 1, '1-2-hours': 2, overnight: 3, unknown: 4 };
   const priceRank = { free: 0, '$': 1, '$$': 2, '$$$': 3, unknown: 4 };
   const scored = [...listings];
   if (sort === 'az') return scored.sort((a, b) => a.name.localeCompare(b.name));
   if (sort === 'closest') return scored.sort((a, b) => (distanceRank[a.distanceBand] ?? 9) - (distanceRank[b.distanceBand] ?? 9) || a.name.localeCompare(b.name));
   if (sort === 'free') return scored.sort((a, b) => (priceRank[a.priceLevel] ?? 9) - (priceRank[b.priceLevel] ?? 9) || a.name.localeCompare(b.name));
+  if (normalize(query)) return scored.sort((a, b) => searchRelevance(b, query) - searchRelevance(a, query) || a.name.localeCompare(b.name));
   return scored.sort((a, b) => listingScore(b) - listingScore(a) || a.name.localeCompare(b.name));
 }
 
@@ -1078,7 +1111,8 @@ function router(resetScroll = true) {
   else if (parts[0] === 'pages') renderPages();
   else if (parts[0] === 'page') renderPage(parts[1]);
   else renderNotFound();
-  if (!isHome) app.insertAdjacentHTML('beforeend', guideFooter());
+  const emptySearch = parts[0] === 'search' && !normalize(currentParams().get('q') || '') && activeFilterCount(currentParams()) === 0;
+  if (!isHome && !emptySearch) app.insertAdjacentHTML('beforeend', guideFooter());
   updateBottomNavigation(parts[0]);
   updateSavedBadges();
   app.focus({ preventScroll: true });
