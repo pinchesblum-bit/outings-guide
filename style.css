@@ -229,7 +229,7 @@ body.is-home .topbar {
   position: absolute;
   inset: 0 0 -17%;
   z-index: -2;
-  background: url("outing-hero-v2.jpg?v=hero3") center top / cover no-repeat;
+  background: url("outing-hero-v2.jpg?v=hero3") 60% top / cover no-repeat;
   pointer-events: none;
 }
 .home-hero::after {
