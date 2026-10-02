@@ -257,7 +257,7 @@ function renderHome() {
           </button>
         </form>
         <nav class="topnav home-nav" aria-label="Home navigation">
-          <a href="#/">Home</a>
+          <a href="#/" aria-current="page">Home</a>
           <a href="#/search">Search</a>
           <a href="#/filter">Filters</a>
           <a class="saved-nav" href="#/saved">My Trips <span data-saved-count>0</span></a>
