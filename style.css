@@ -22,7 +22,7 @@ body {
   color: var(--ink);
   background:
     linear-gradient(rgba(255, 248, 234, 0.86), rgba(255, 248, 234, 0.96)),
-    url("park.jpg?v=hero2") center top / cover fixed,
+    url("outing-hero-v2.jpg?v=hero3") center top / cover fixed,
     var(--cream);
   min-height: 100vh;
 }
@@ -197,7 +197,7 @@ body.is-home .topbar {
   padding: clamp(22px, 4vw, 42px);
   background:
     linear-gradient(90deg, rgba(15, 93, 98, 0.92) 0%, rgba(15, 93, 98, 0.58) 52%, rgba(255, 248, 234, 0.22) 100%),
-    url("park.jpg?v=hero2") center / cover;
+    url("outing-hero-v2.jpg?v=hero3") center / cover;
   color: white;
   overflow: hidden;
 }
@@ -222,7 +222,7 @@ body.is-home .topbar {
   background:
     linear-gradient(180deg, rgba(15, 93, 98, 0.06) 0%, rgba(15, 93, 98, 0.28) 42%, rgba(255, 248, 234, 0.97) 100%),
     linear-gradient(90deg, rgba(10, 70, 76, 0.78) 0%, rgba(10, 70, 76, 0.26) 48%, rgba(255, 248, 234, 0.12) 100%),
-    url("park.jpg?v=hero2") center top / cover no-repeat;
+    url("outing-hero-v2.jpg?v=hero3") center top / cover no-repeat;
   color: white;
   overflow: hidden;
 }
@@ -465,7 +465,7 @@ select:focus {
   place-items: center;
   background:
     linear-gradient(135deg, rgba(23, 126, 131, 0.76), rgba(242, 200, 75, 0.66)),
-    url("park.jpg?v=hero2") center / cover;
+    url("outing-hero-v2.jpg?v=hero3") center / cover;
 }
 .group-art span {
   display: grid;
@@ -518,7 +518,7 @@ select:focus {
   background:
     linear-gradient(180deg, rgba(255, 253, 247, 0.1), rgba(255, 253, 247, 0.44)),
     linear-gradient(135deg, var(--art-tint, rgba(23, 126, 131, 0.42)), rgba(242, 200, 75, 0.22)),
-    url("park.jpg?v=hero2") var(--art-pos, center) / cover no-repeat;
+    url("outing-hero-v2.jpg?v=hero3") var(--art-pos, center) / cover no-repeat;
 }
 .scene-indoor-fun { --art-pos: left 58%; --art-tint: rgba(232, 125, 100, 0.42); }
 .scene-outdoor-fun { --art-pos: 42% 58%; --art-tint: rgba(23, 126, 131, 0.34); }
@@ -721,7 +721,7 @@ select:focus {
   padding: clamp(20px, 4vw, 34px);
   background:
     linear-gradient(90deg, rgba(255, 253, 247, 0.95), rgba(255, 253, 247, 0.78)),
-    url("park.jpg?v=hero2") center / cover;
+    url("outing-hero-v2.jpg?v=hero3") center / cover;
 }
 .page-hero h1 { font-size: clamp(2.2rem, 7vw, 4.6rem); }
 .page-hero p { max-width: 760px; margin: 10px 0 0; }
@@ -962,7 +962,7 @@ select:focus {
   min-height: 260px;
   background:
     linear-gradient(135deg, rgba(23, 126, 131, 0.56), rgba(232, 125, 100, 0.32)),
-    url("park.jpg?v=hero2") center / cover;
+    url("outing-hero-v2.jpg?v=hero3") center / cover;
 }
 .detail-main { padding: clamp(20px, 4vw, 34px); align-self: end; }
 .detail-main h1 { margin-top: 14px; font-size: clamp(2.1rem, 7vw, 4.5rem); }
