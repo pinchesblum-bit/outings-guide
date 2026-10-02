@@ -798,6 +798,18 @@ function intersects(a = [], b = []) {
   return a.some((value) => b.includes(value) && value !== 'unknown');
 }
 
+function renderAccount() {
+  app.innerHTML = `
+    <section class="account-panel" aria-labelledby="account-title">
+      <div class="account-emblem" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="2"/><path d="m3 6 9 7 9-7"/></svg></div>
+      <h1 id="account-title">Your outings, saved</h1>
+      <p>Email sign-in is not available yet.</p>
+      <p class="account-status">For now, your saved trips stay in this browser on this device. You can keep browsing, saving, and sharing your list.</p>
+      <a class="btn primary" href="#/saved">View My Trips</a>
+    </section>
+  `;
+}
+
 function renderSaved() {
   const ids = getSavedIds();
   const listings = ids.map((id) => byListing.get(id)).filter(Boolean);
@@ -966,7 +978,7 @@ function bindInteractiveControls() {
 }
 
 function updateBottomNavigation(path) {
-  const current = !path ? 'home' : path === 'saved' ? 'saved' : ['search', 'all'].includes(path) ? 'search' : 'explore';
+  const current = !path ? 'home' : ['saved', 'account'].includes(path) ? path : ['search', 'all'].includes(path) ? 'search' : 'explore';
   document.querySelectorAll('[data-nav-page]').forEach((link) => {
     if (link.dataset.navPage === current) link.setAttribute('aria-current', 'page');
     else link.removeAttribute('aria-current');
@@ -1108,11 +1120,12 @@ function router(resetScroll = true) {
   else if (parts[0] === 'filter') renderFilter();
   else if (parts[0] === 'ideas') renderIdeas();
   else if (parts[0] === 'saved') renderSaved();
+  else if (parts[0] === 'account') renderAccount();
   else if (parts[0] === 'pages') renderPages();
   else if (parts[0] === 'page') renderPage(parts[1]);
   else renderNotFound();
   const emptySearch = parts[0] === 'search' && !normalize(currentParams().get('q') || '') && activeFilterCount(currentParams()) === 0;
-  if (!isHome && !emptySearch) app.insertAdjacentHTML('beforeend', guideFooter());
+  if (!isHome && !emptySearch && parts[0] !== 'account') app.insertAdjacentHTML('beforeend', guideFooter());
   updateBottomNavigation(parts[0]);
   updateSavedBadges();
   app.focus({ preventScroll: true });
