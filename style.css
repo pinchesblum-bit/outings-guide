@@ -228,9 +228,9 @@ body.is-home .topbar {
 .home-hero::before {
   content: "";
   position: absolute;
-  inset: 0;
+  inset: 0 0 -17%;
   z-index: -2;
-  background: url("outing-hero-v2.jpg?v=hero3") 60% 40% / cover no-repeat;
+  background: url("outing-hero-v2.jpg?v=hero3") 60% top / cover no-repeat;
   pointer-events: none;
 }
 .home-hero::after {
@@ -1197,6 +1197,7 @@ select:focus {
   margin: 0 auto;
 }
 .bottom-nav-link {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1224,7 +1225,14 @@ select:focus {
 }
 .bottom-nav-link[aria-current="page"] {
   color: var(--teal-dark);
-  box-shadow: inset 0 -2px var(--teal-dark);
+}
+.bottom-nav-link[aria-current="page"]::after {
+  content: "";
+  position: absolute;
+  bottom: 1px;
+  width: 28px;
+  height: 2px;
+  background: var(--teal-dark);
 }
 .bottom-nav-link[aria-current="page"] > svg,
 .bottom-nav-link[aria-current="page"] .bottom-nav-icon svg { stroke-width: 2.4; }
