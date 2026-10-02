@@ -1,4 +1,4 @@
--- Deployment proposal; not applied. Use apply_migration against the approved new project.
+-- Applied to the dedicated Outings Guide project with create_outings_saved_places.
 begin;
 create table public.outings_saved_places (
   user_id uuid not null references auth.users(id) on delete cascade,
@@ -16,3 +16,5 @@ create policy "Save own outings" on public.outings_saved_places
 create policy "Remove own outings" on public.outings_saved_places
   for delete to authenticated using ((select auth.uid()) = user_id);
 commit;
+-- Applied separately with restrict_automatic_rls_trigger_function.
+revoke execute on function public.rls_auto_enable() from public, anon, authenticated;

@@ -2,6 +2,6 @@
 // Enable only after email delivery and account-isolation checks pass.
 window.OUTINGS_AUTH_CONFIG = Object.freeze({
   enabled: false,
-  url: '',
-  publishableKey: '',
+  url: 'https://boplgtgdaklsfmjcckgy.supabase.co',
+  publishableKey: 'sb_publishable_DRumoxZ9eYvDjAA9koWCMA_K5b9w39Q',
 });

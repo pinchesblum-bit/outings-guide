@@ -33,7 +33,7 @@ function render() {
       <p>${codeSent ? `Enter the code sent to <strong>${escape(email)}</strong>. Check your spam folder too.` : 'Sign in or create an account with your email. We’ll send you a code—no password to remember.'}</p>
       <form id="account-form">
         ${codeSent
-          ? '<label class="account-field">Email code<input name="code" type="text" inputmode="numeric" pattern="[0-9]{6}" minlength="6" maxlength="6" autocomplete="one-time-code" required></label>'
+          ? '<label class="account-field">Email code<input name="code" type="text" inputmode="numeric" pattern="[0-9]{8}" minlength="8" maxlength="8" autocomplete="one-time-code" required></label>'
           : `<label class="account-field">Email address<input name="email" type="email" autocomplete="email" autocapitalize="none" spellcheck="false" value="${escape(email)}" required></label>`}
         <p id="account-message" role="status" aria-live="polite">${escape(message)}</p>
         <button class="btn primary" type="submit" ${submitting ? 'disabled' : ''}>${submitting ? 'Please wait…' : codeSent ? 'Verify and sign in' : 'Send sign-in code'}</button>
@@ -85,7 +85,7 @@ async function submit(event) {
     return;
   }
   const token = String(fields.get('code') || '').trim();
-  if (!/^\d{6}$/.test(token)) return;
+  if (!/^\d{8}$/.test(token)) return;
   submitting = true; message = ''; render();
   try {
     const { error } = await client.auth.verifyOtp({ email, token, type: 'email' });
