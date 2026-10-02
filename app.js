@@ -156,6 +156,8 @@ function extractTiming(listing) {
 }
 
 function getSavedIds() {
+  const account = window.OutingsAccount?.status();
+  if (account?.user) return account.ids;
   try {
     return JSON.parse(localStorage.getItem(savedKey) || '[]');
   } catch {
@@ -799,6 +801,7 @@ function intersects(a = [], b = []) {
 }
 
 function renderAccount() {
+  if (window.OutingsAccount) return window.OutingsAccount.render();
   app.innerHTML = `
     <section class="account-panel" aria-labelledby="account-title">
       <div class="account-emblem" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="2"/><path d="m3 6 9 7 9-7"/></svg></div>
@@ -820,6 +823,7 @@ function renderSaved() {
         <p class="eyebrow">Saved outings</p>
         <h1>My Trip List</h1>
         <p>Save outings while browsing, then print or share this list when you are ready to plan the day.</p>
+        <p class="saved-account-note">${window.OutingsAccount?.status().user ? 'Your trips are saved to your email account.' : 'Your trips are saved on this device.'} <a href="#/account">${window.OutingsAccount?.status().user ? 'Manage account' : 'Sign in'}</a></p>
       </div>
       <div class="hero-actions">
         <button class="btn primary" type="button" data-print>Print</button>
@@ -993,6 +997,12 @@ function updateSavedBadges() {
 }
 
 function toggleSave(id) {
+  const account = window.OutingsAccount?.status();
+  if (account && (!account.ready || account.busy)) return;
+  if (account?.user) {
+    window.OutingsAccount.toggle(id);
+    return;
+  }
   const ids = getSavedIds();
   const next = ids.includes(id) ? ids.filter((item) => item !== id) : [...ids, id];
   setSavedIds(next);
@@ -1128,6 +1138,15 @@ function router(resetScroll = true) {
   if (!isHome && !emptySearch && parts[0] !== 'account') app.insertAdjacentHTML('beforeend', guideFooter());
   updateBottomNavigation(parts[0]);
   updateSavedBadges();
+  const account = window.OutingsAccount?.status();
+  const accountLink = document.querySelector('[data-nav-page="account"] span');
+  if (accountLink) accountLink.textContent = account?.user ? 'Account' : 'Sign in';
+  if (account && (!account.ready || account.busy || (account.user && account.error))) {
+    document.querySelectorAll('[data-save-id]').forEach(button => { button.disabled = true; });
+  }
+  if (account?.user && account.error && parts[0] !== 'account') {
+    app.insertAdjacentHTML('afterbegin', `<aside class="sync-notice" role="status">${escapeHtml(account.error)} <a href="#/account">Open account to retry</a></aside>`);
+  }
   app.focus({ preventScroll: true });
   if (editingSearch) {
     const nextSearch = document.querySelector('#filterSearchForm input[name="q"]');
@@ -1138,4 +1157,5 @@ function router(resetScroll = true) {
 }
 
 window.addEventListener('hashchange', () => router());
+window.addEventListener('outings-account-change', () => router(false));
 router();
