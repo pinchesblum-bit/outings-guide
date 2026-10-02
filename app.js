@@ -242,7 +242,6 @@ function renderHome() {
     <section class="hero home-hero">
       <div class="hero-copy home-hero-copy">
         <h1>Outings Guide</h1>
-        <p>Parks, rides, water fun, zoos, farms, and trips from the booklet.</p>
       </div>
     </section>
     <div class="home-content">

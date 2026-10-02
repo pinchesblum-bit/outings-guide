@@ -229,7 +229,7 @@ body.is-home .topbar {
 
 .home-hero-copy {
   max-width: 780px;
-  text-shadow: 0 3px 18px rgba(8, 46, 51, 0.58);
+  text-shadow: 0 4px 22px rgba(8, 46, 51, 0.62);
 }
 
 .home-hero .kicker {
@@ -237,8 +237,14 @@ body.is-home .topbar {
 }
 
 .home-hero h1 {
-  font-size: clamp(3.6rem, 12vw, 7rem);
-  letter-spacing: -0.04em;
+  display: inline-block;
+  color: #fffdf4;
+  font-size: clamp(3.45rem, 11vw, 6.8rem);
+  font-weight: 950;
+  letter-spacing: -0.035em;
+  text-shadow:
+    0 3px 0 rgba(5, 61, 66, 0.22),
+    0 12px 32px rgba(5, 43, 48, 0.58);
 }
 
 .home-hero p {
@@ -283,7 +289,7 @@ h1,
   font-weight: 800;
 }
 .hero.home-hero h1 {
-  font-size: clamp(3.6rem, 12vw, 7rem);
+  font-size: clamp(3.45rem, 11vw, 6.8rem);
 }
 .home-content {
   width: min(1180px, calc(100% - 28px));
@@ -1195,7 +1201,7 @@ select:focus {
     padding: 100px 18px 78px;
     background-position: center top;
   }
-  .home-hero h1 { font-size: clamp(3.25rem, 18vw, 5.4rem); }
+  .hero.home-hero h1 { font-size: clamp(3.05rem, 16vw, 5.1rem); }
   .planner-hero { min-height: auto; padding: 18px; align-items: start; }
   .planner-actions { grid-template-columns: 1fr; }
   h1, .hero h1 { font-size: clamp(2.35rem, 13vw, 4rem); }
