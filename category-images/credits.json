@@ -2,13 +2,13 @@
   {
     "id": "indoor-fun",
     "category": "Indoor Fun",
-    "file": "indoor-fun.webp",
+    "file": "indoor-fun-v2.webp",
     "source": "https://commons.wikimedia.org/wiki/File:Bowling_Alley_Pelixir_Oulu_20150110.JPG",
     "original": "https://upload.wikimedia.org/wikipedia/commons/c/c6/Bowling_Alley_Pelixir_Oulu_20150110.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
     "artist": "Estormiz",
     "license": "CC0",
     "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
-    "changes": "Resized and cropped for category tiles; converted to WebP."
+    "changes": "AI-edited with the built-in image generation tool to remove all human imagery from the wall mural; resized and converted to WebP. Original photograph by Estormiz, CC0."
   },
   {
     "id": "outdoor-fun",
@@ -35,13 +35,13 @@
   {
     "id": "zoos-aquariums",
     "category": "Zoos & Aquariums",
-    "file": "zoos-aquariums.webp",
-    "source": "https://commons.wikimedia.org/wiki/File:Male_whale_shark_at_Georgia_Aquarium.jpg",
-    "original": "https://upload.wikimedia.org/wikipedia/commons/a/a1/Male_whale_shark_at_Georgia_Aquarium.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
-    "artist": "Zac Wolf",
-    "license": "CC BY-SA 2.5",
-    "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.5",
-    "changes": "Resized and cropped for category tiles; converted to WebP."
+    "file": "zoos-aquariums-v2.webp",
+    "source": null,
+    "original": null,
+    "artist": "Created for Outings Guide with the built-in image generation tool",
+    "license": "Generated illustration",
+    "licenseUrl": null,
+    "changes": "Generated category illustration combining land animals and aquarium life; reframed for phone crops, resized and converted to WebP. Not a photograph of a specific attraction."
   },
   {
     "id": "museums-history",
