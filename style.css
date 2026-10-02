@@ -30,9 +30,12 @@ body {
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   color: var(--ink);
   background:
-    linear-gradient(rgba(255, 248, 234, 0.86), rgba(255, 248, 234, 0.96)),
-    url("outing-hero-v2.jpg?v=hero3") center top / cover fixed,
-    var(--cream);
+    radial-gradient(ellipse 76% 600px at 0% 470px, rgba(255, 211, 105, 0.94) 0%, rgba(255, 222, 144, 0.62) 32%, transparent 76%),
+    radial-gradient(ellipse 78% 760px at 100% 1100px, rgba(54, 180, 237, 0.68) 0%, transparent 74%),
+    radial-gradient(ellipse 76% 740px at 0% 2000px, rgba(132, 233, 186, 0.62) 0%, transparent 76%),
+    linear-gradient(165deg, #79cddd 0%, #62d6cf 34%, #65cfdb 68%, #47c1d1 100%);
+  background-color: #62d6cf;
+  background-repeat: no-repeat;
   min-height: 100vh;
 }
 
@@ -453,6 +456,7 @@ select:focus {
 .home-category-head h2 {
   font-size: 1.75rem;
   letter-spacing: 0;
+  color: #123f46;
 }
 .all-places-link {
   display: inline-flex;
@@ -461,7 +465,7 @@ select:focus {
   gap: 8px;
   min-height: 44px;
   flex-shrink: 0;
-  color: var(--teal-dark);
+  color: #123f46;
   font-size: 0.88rem;
   font-weight: 750;
   text-decoration: none;
