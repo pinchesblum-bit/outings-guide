@@ -1,38 +1,42 @@
-# Email login
+# Outings Guide accounts
 
-Email-code login and private saved trips are enabled for GitHub Pages.
+The account UI supports name/email/password registration, email/password sign-in, password recovery, and a top-right photo or initials linking to the account page. Existing account IDs and private saved lists remain unchanged.
 
-## Behavior
+## Current activation status
 
-- An eight-digit code signs up or signs in an email address. No password is collected.
-- Codes expire after 10 minutes; resends have a 60-second minimum interval.
-- The SDK persists sessions, refreshes tokens, and handles cross-tab sign-out.
-- Saved places belong to the authenticated account. Anonymous visitors cannot access account lists.
-- Existing `outings-guide-trip-list` data remains on the device. Importing it into an account is an explicit action.
-- Cloud saves are acknowledged only after the database accepts them. Failed writes show a retry path.
-- Account lists are kept in memory and cleared immediately when switching accounts or signing out.
+- Email/password forms and profile display: implemented.
+- Password reset template: configured in Supabase using `password-reset.html`, eight-digit recovery codes, 600-second expiry, and a 60-second minimum resend interval.
+- **Signup confirmation remains ON.** The requested change to skip signup email verification requires final browser security confirmation before disabling Supabase's `Confirm email` setting. The client supports the existing confirmation flow during this transition so new accounts cannot get stuck.
+- **Google remains OFF.** The Google OAuth flow and photo display are implemented but the public button is gated by `googleEnabled` until the backend provider is configured. Google Cloud Console returned Site Unavailable in the available browser after one reload. Do not expose an unusable Google button or claim Google login works.
 
-## Backend configuration
+## Google connection remaining
 
-Dedicated Supabase project: `boplgtgdaklsfmjcckgy`, in the user-approved Free organization, us-east-1.
+Create a dedicated Web application OAuth client in the user's Google Cloud project. Use only `openid`, `userinfo.email`, and `userinfo.profile` scopes. Set the JavaScript origin to `https://pinchesblum-bit.github.io` and authorized redirect URI to `https://boplgtgdaklsfmjcckgy.supabase.co/auth/v1/callback`. Set up the app's audience/branding so intended public visitors can sign in.
 
-Email authentication and email confirmation are enabled; anonymous sign-in is disabled. Site URL: `https://pinchesblum-bit.github.io/outings-guide/`.
+Enter the client ID and secret only in Supabase's Google provider configuration; the browser requires a user handoff for new credential entry. Do not store the client secret here. Keep nonce validation on. After configuration, verify Google is enabled in `/auth/v1/settings`, set `googleEnabled: true`, and test the actual OAuth round trip before calling it complete.
 
-Custom SMTP uses the user-approved verified sender `Outings Guide <outings@siksakapparos.org>` through Resend. The sending-only credential is restricted to this domain and stored only in Supabase. Never put SMTP credentials, management tokens, or service-role keys in this repository. `auth-config.js` contains only the public URL and publishable key.
+The browser client uses PKCE, Supabase's session handling, and the fixed existing Site URL as its return destination. It cleans the authorization code/error query parameters after return. Google is used only for authentication and basic profile information.
 
-Both Confirm Signup and Magic Link/OTP use `email-code.html`, with subject `Your Outings Guide sign-in code`. Auth email expiry is 600 seconds and code length is eight digits.
+## Password flow
 
-Applied migrations: `create_outings_saved_places` and `restrict_automatic_rls_trigger_function`. The saved-places table has RLS, three owner policies, SELECT/INSERT/DELETE access for authenticated users, and no anonymous or authenticated UPDATE access.
+New accounts provide name, email, and an at-least-eight-character password. Name is display metadata only; authorization always uses `auth.uid()`. Passwords and recovery codes are never placed in retained application state, local storage, source files, or logs.
 
-## Verification on 2026-10-02
+`Forgot password` sends a recovery code. The server verifies the recovery token before accepting a new password. The client checks that the recovery session still belongs to the same user. A session-storage marker retains only the user ID to restore the reset form after refresh; it is not authentication or authorization. Existing email-code-only users can use Forgot password to set their first password without losing saved trips.
 
-- Four account-store tests pass: failed saves/retry, account changes during writes, stale reads racing with saves, guest import filtering and sign-out clearing.
-- JavaScript syntax checks pass.
-- Security advisors report no issues.
-- `tests/account-rls.sql` passed against the live database with two temporary identities. Each could read, insert, and delete its own rows. Cross-account reads/deletes, forged owner inserts, owner reassignment, and anonymous access were rejected. The transaction rolled back all fixtures.
-- The public Auth settings endpoint confirms email enabled, signup enabled, and email confirmation required.
-- A new-account OTP request to Resend's official simulated delivery recipient returned HTTP 200. Resend reported the branded sign-in email delivered. This checks the SMTP connection; it does not prove delivery to every mailbox provider.
+## Backend
 
-A real visitor's code entry, session persistence across devices, and complete signed-in browser flow still require an interactive test. Do not describe the simulated email delivery or store unit tests as full browser end-to-end verification.
+Dedicated Supabase project: `boplgtgdaklsfmjcckgy`, Free organization, us-east-1. Site URL: `https://pinchesblum-bit.github.io/outings-guide/`. Email auth is enabled and anonymous sign-in is disabled.
 
-Run local store checks with `node tests/account-store.test.mjs`. All 596 listings, 23 categories, assets, source URLs, existing routes, and guest storage key remain unchanged.
+Custom SMTP: `Outings Guide <outings@siksakapparos.org>` through the user-approved verified Resend domain. The sending-only credential is restricted to that domain and stored only in Supabase. `auth-config.js` contains only public configuration.
+
+Applied migrations: `create_outings_saved_places` and `restrict_automatic_rls_trigger_function`. RLS restricts each saved list to its owner. Authenticated users have SELECT/INSERT/DELETE only; there is no anonymous or UPDATE access. Guest lists retain the `outings-guide-trip-list` storage key and are imported only by an explicit action.
+
+## Verification
+
+`node tests/account-auth.test.mjs` and `node tests/account-store.test.mjs` cover password-login routing, name metadata, no retained secrets, invalid recovery codes, account changes during recovery, recovery persistence, safe profile URLs, fixed OAuth destination, server-confirmation compatibility, failed saves, stale reads/writes, import filtering, and sign-out clearing.
+
+The previous live transaction in `tests/account-rls.sql` verified isolation between two temporary identities and rolled back all fixtures. The only current security advisor warning is that leaked-password screening is disabled; Supabase limits that feature to Pro plans and above, so no paid upgrade was made. The server minimum password length is 8 characters. Google OAuth and a real visitor's password-recovery code entry still require interactive verification.
+
+All 596 listings, 23 categories, approved visuals, search behavior, routes, and guest saved data are preserved.
+
+Live API checks also passed for a disposable test account: name metadata on signup, password login, wrong-password rejection, authenticated saved-place insert/read/delete, token refresh, sign-out, and a password-reset email request. The test identity was confirmed separately because signup verification remains enabled. All sessions were signed out and the test user removed afterward. This does not verify the requested no-confirmation signup setting, which remains pending approval.
