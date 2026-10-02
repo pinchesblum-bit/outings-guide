@@ -1,6 +1,6 @@
 :root {
-  --ink: #193f42;
-  --muted: #526c6d;
+  --ink: #1f2b32;
+  --muted: #65757a;
   --cream: #fff8ea;
   --paper: #f7f0df;
   --card: #fffdf7;
@@ -10,7 +10,7 @@
   --yellow: #f2c84b;
   --line: #e6dcc8;
   --soft: #eef7f4;
-  --shadow: 0 10px 28px rgba(15, 93, 98, 0.08);
+  --shadow: 0 14px 34px rgba(31, 43, 50, 0.12);
   --radius: 8px;
 }
 
@@ -21,16 +21,10 @@ body {
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   color: var(--ink);
   background:
-    linear-gradient(rgba(255, 248, 234, 0.98), rgba(255, 248, 234, 0.99)),
+    linear-gradient(rgba(255, 248, 234, 0.86), rgba(255, 248, 234, 0.96)),
     url("outing-hero-v2.jpg?v=hero3") center top / cover fixed,
     var(--cream);
   min-height: 100vh;
-}
-body.is-home {
-  background:
-    linear-gradient(var(--cream), rgba(255, 248, 234, 0.97) 1100px, rgba(255, 248, 234, 0.99)),
-    url("outing-hero-v2.jpg?v=hero3") center top / cover fixed,
-    var(--cream);
 }
 
 a { color: inherit; }
@@ -101,19 +95,19 @@ body.is-home .topbar {
   grid-template-columns: minmax(0, 1fr) auto;
   gap: 6px;
   padding: 7px;
-  border: 1px solid var(--line);
+  border: 1px solid rgba(230, 220, 200, 0.95);
   border-radius: 999px;
   background: rgba(255, 253, 247, 0.95);
-  box-shadow: 0 5px 18px rgba(15, 93, 98, 0.06);
+  box-shadow: 0 10px 24px rgba(31, 43, 50, 0.08);
 }
 .header-search input {
-  min-height: 44px;
+  min-height: 38px;
   border: 0;
   background: transparent;
 }
 .header-search input:focus { box-shadow: none; }
 .header-search button {
-  min-height: 44px;
+  min-height: 38px;
   min-width: 44px;
   border: 0;
   border-radius: 999px;
@@ -141,10 +135,10 @@ body.is-home .topbar {
   justify-content: flex-end;
   gap: 6px;
   padding: 6px;
-  border: 1px solid var(--line);
+  border: 1px solid rgba(230, 220, 200, 0.95);
   border-radius: 999px;
   background: rgba(255, 253, 247, 0.95);
-  box-shadow: 0 5px 18px rgba(15, 93, 98, 0.06);
+  box-shadow: 0 10px 24px rgba(31, 43, 50, 0.08);
 }
 .topnav a {
   min-height: 38px;
@@ -214,26 +208,40 @@ body.is-home .topbar {
 }
 
 .home-hero {
+  position: relative;
+  isolation: isolate;
   width: 100%;
   min-height: min(78vh, 680px);
   margin: 0;
   display: flex;
   align-items: end;
-  padding: clamp(110px, 19vh, 190px) max(18px, calc((100% - 1180px) / 2)) clamp(86px, 12vh, 132px);
+  padding: clamp(110px, 19vh, 190px) max(18px, calc((100% - 1180px) / 2)) 48px;
   border: 0;
   border-radius: 0;
   box-shadow: none;
-  background:
-    linear-gradient(180deg, rgba(15, 93, 98, 0.04) 0%, rgba(15, 93, 98, 0.20) 42%, var(--cream) 100%),
-    linear-gradient(90deg, rgba(10, 70, 76, 0.78) 0%, rgba(10, 70, 76, 0.26) 48%, rgba(255, 248, 234, 0.12) 100%),
-    url("outing-hero-v2.jpg?v=hero3") center top / cover no-repeat;
+  background: #21494b;
   color: white;
   overflow: hidden;
 }
 
+.home-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 -17%;
+  z-index: -2;
+  background: url("outing-hero-v2.jpg?v=hero3") center top / cover no-repeat;
+  pointer-events: none;
+}
+.home-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.02) 20%, rgba(0, 0, 0, 0.42) 58%, rgba(0, 0, 0, 0.82) 100%);
+  pointer-events: none;
+}
 .home-hero .home-hero-copy {
-  max-width: 780px;
-  text-shadow: 0 4px 22px rgba(8, 46, 51, 0.62);
+  max-width: 850px;
 }
 
 .home-hero .kicker {
@@ -242,13 +250,11 @@ body.is-home .topbar {
 
 .home-hero h1 {
   display: inline-block;
-  color: #fffdf4;
-  font-size: 6.5rem;
-  font-weight: 950;
+  color: #fff;
+  font-size: 6rem;
+  font-weight: 750;
   letter-spacing: 0;
-  text-shadow:
-    0 3px 0 rgba(5, 61, 66, 0.22),
-    0 12px 32px rgba(5, 43, 48, 0.58);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
 }
 
 .home-hero p {
@@ -293,7 +299,9 @@ h1,
   font-weight: 800;
 }
 .hero.home-hero h1 {
-  font-size: 6.5rem;
+  font-family: inherit;
+  font-size: 6rem;
+  line-height: 1.04;
   letter-spacing: 0;
 }
 .home-content {
@@ -302,38 +310,20 @@ h1,
 }
 .home-controls {
   display: grid;
-  gap: 12px;
-  align-items: stretch;
-  margin: 4px auto 36px;
+  gap: 10px;
+  justify-items: center;
+  margin: 14px auto 28px;
   position: relative;
   z-index: 5;
 }
 .home-search {
-  width: 100%;
-  border-radius: 16px;
-  padding: 8px;
+  width: min(760px, 100%);
 }
 .home-nav {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  width: 100%;
   justify-content: center;
-  border-radius: 16px;
-  padding: 6px;
 }
 .home-nav a {
-  min-height: 48px;
-  border-radius: 10px;
-  font-size: 1rem;
-  font-weight: 750;
-}
-.home-nav a[aria-current="page"] {
-  background: var(--teal-dark);
-  color: var(--card);
-}
-.header-search:focus-within {
-  outline: 2px solid var(--teal);
-  outline-offset: 3px;
+  min-height: 44px;
 }
 
 .find-box {
@@ -569,11 +559,10 @@ select:focus {
   min-height: 168px;
   padding: 20px;
   isolation: isolate;
-  border: 1px solid rgba(15, 93, 98, 0.12);
-  border-radius: 16px;
-  background: var(--cream);
-  color: var(--teal-dark);
-  box-shadow: 0 5px 18px rgba(15, 93, 98, 0.07);
+  border: 0;
+  background: #21494b;
+  color: #fff;
+  box-shadow: 0 3px 10px rgba(31, 43, 50, 0.1);
   transition: box-shadow 180ms ease;
 }
 .photo-category-card::after {
@@ -581,7 +570,7 @@ select:focus {
   position: absolute;
   inset: 0;
   z-index: -1;
-  background: linear-gradient(180deg, rgba(255, 248, 234, 0) 24%, rgba(255, 248, 234, 0.16) 42%, rgba(255, 248, 234, 0.94) 72%, var(--cream) 100%);
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.02) 20%, rgba(0, 0, 0, 0.42) 58%, rgba(0, 0, 0, 0.82) 100%);
   pointer-events: none;
 }
 .category-photo {
@@ -591,18 +580,17 @@ select:focus {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: saturate(0.9);
   transition: transform 250ms ease;
 }
 .category-caption {
   display: grid;
   gap: 6px;
   width: 100%;
-  text-shadow: none;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
 }
 .category-photo-zoos-aquariums { object-position: 60% center; }
 .photo-category-card .category-caption h3 {
-  font-family: ui-rounded, "Trebuchet MS", Inter, sans-serif;
+  font-family: inherit;
   font-size: 1.2rem;
   font-weight: 750;
   line-height: 1.25;
@@ -610,14 +598,14 @@ select:focus {
   overflow-wrap: anywhere;
 }
 .category-place-count {
-  color: var(--muted);
+  color: #fff;
   font-size: 0.82rem;
-  font-weight: 600;
+  font-weight: 500;
   line-height: 1.4;
 }
 .category-card.photo-category-card:hover {
   transform: none;
-  box-shadow: 0 8px 24px rgba(15, 93, 98, 0.15);
+  box-shadow: 0 6px 18px rgba(31, 43, 50, 0.18);
 }
 .photo-category-card:focus-visible,
 .all-places-link:focus-visible {
@@ -1259,26 +1247,24 @@ select:focus {
   }
   .topnav { display: none; }
   body.is-home .home-nav {
-    display: grid;
+    display: flex;
     width: 100%;
     justify-content: center;
-    gap: 2px;
+    overflow-x: auto;
   }
   body.is-home .home-controls {
-    margin-top: 4px;
-    margin-bottom: 28px;
+    margin-top: 12px;
   }
   .header-search { padding: 5px; }
-  .header-search input { min-height: 44px; }
-  .header-search button { min-height: 44px; padding: 0 12px; font-size: 0.8rem; }
-  .home-nav a { padding: 8px 3px; font-size: 0.88rem; gap: 4px; }
+  .header-search input { min-height: 36px; }
+  .header-search button { min-height: 36px; padding: 0 10px; font-size: 0.8rem; }
   .mobile-tabbar { display: none !important; }
   .brand-mark { width: 38px; height: 38px; }
   .brand strong,
   .brand small { display: none; }
   .home-hero {
     min-height: 460px;
-    padding: 100px 18px 78px;
+    padding: 100px 18px 32px;
     background-position: center top;
   }
   .hero.home-hero h1 { font-size: 4rem; }
@@ -1337,5 +1323,5 @@ select:focus {
 @media (max-width: 360px) {
   .hero.home-hero h1 { font-size: 3.5rem; }
   body.is-home .home-nav { gap: 0; }
-  .home-nav a { padding: 8px 1px; font-size: 0.82rem; gap: 3px; }
+  .home-nav a { padding: 8px 7px; font-size: 0.82rem; gap: 4px; }
 }
