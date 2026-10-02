@@ -1139,8 +1139,7 @@ function router(resetScroll = true) {
   updateBottomNavigation(parts[0]);
   updateSavedBadges();
   const account = window.OutingsAccount?.status();
-  const accountLink = document.querySelector('[data-nav-page="account"] span');
-  if (accountLink) accountLink.textContent = account?.user ? 'Account' : 'Sign in';
+  window.OutingsAccount?.renderNav?.();
   if (account && (!account.ready || account.busy || (account.user && account.error))) {
     document.querySelectorAll('[data-save-id]').forEach(button => { button.disabled = true; });
   }
