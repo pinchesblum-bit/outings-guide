@@ -245,24 +245,6 @@ function renderHome() {
       </div>
     </section>
     <div class="home-content">
-      <section class="home-controls" aria-label="Search and navigation">
-        <form class="header-search home-search site-search-form" role="search" data-site-search>
-          <label class="sr-only" for="homeSiteSearchInput">Search outings</label>
-          <input id="homeSiteSearchInput" name="q" placeholder="Search outings..." autocomplete="off" />
-          <button class="icon-search-btn" type="submit" aria-label="Search">
-            <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true">
-              <circle cx="11" cy="11" r="7"></circle>
-              <path d="m16.5 16.5 4 4"></path>
-            </svg>
-          </button>
-        </form>
-        <nav class="topnav home-nav" aria-label="Home navigation">
-          <a href="#/" aria-current="page">Home</a>
-          <a href="#/search">Search</a>
-          <a href="#/filter">Filters</a>
-          <a class="saved-nav" href="#/saved">My Trips <span data-saved-count>0</span></a>
-        </nav>
-      </section>
       <section class="section-head home-category-head">
         <h2>Browse outing ideas</h2>
         <a class="all-places-link" href="#/search">View all <span aria-hidden="true">&rarr;</span></a>
@@ -576,27 +558,30 @@ function hasRealFilters(params) {
   return [...params.entries()].some(([key, value]) => value && !['limit', 'sort'].includes(key));
 }
 
-function renderSearch(openFilters = false) {
+function renderSearch(openFilters = false, mode = 'search') {
   const params = currentParams();
+  const exploring = mode === 'explore';
+  const route = exploring ? '#/explore' : '#/search';
+  const pageName = exploring ? 'Explore' : 'Search';
   const filtered = sortListings(applyFilters(DATA.listings, params), params.get('sort') || 'top');
   app.innerHTML = `
-    <div class="breadcrumbs"><a href="#/">Home</a><span>/</span><span>Search</span></div>
+    <div class="breadcrumbs"><a href="#/">Home</a><span>/</span><span>${pageName}</span></div>
     <section class="page-hero">
       <div>
-        <p class="eyebrow">Search</p>
-        <h1>Find a place</h1>
-        <p>Search all ${DATA.listings.length} places, then use quick chips or filters to narrow the list.</p>
+        <p class="eyebrow">${pageName}</p>
+        <h1>${exploring ? 'Explore places' : 'Find a place'}</h1>
+        <p>${exploring ? `Browse all ${DATA.listings.length} places. Choose filters to find the outings that fit your day.` : `Search all ${DATA.listings.length} places by name, town, category, or activity.`}</p>
       </div>
     </section>
-    ${filterBar('#/search', params, filtered.length, openFilters)}
-    ${compactResults('#/search', params, filtered)}
+    ${filterBar(route, params, filtered.length, openFilters)}
+    ${compactResults(route, params, filtered)}
   `;
   bindInteractiveControls();
   bindFilters();
 }
 
 function renderFilter() {
-  renderSearch(true);
+  renderSearch(true, 'explore');
 }
 
 function renderAll() {
@@ -947,15 +932,11 @@ function bindInteractiveControls() {
   });
 }
 
-function bindGlobalHeader() {
-  document.querySelectorAll('[data-site-search]').forEach((form) => {
-    if (form.dataset.bound) return;
-    form.dataset.bound = 'true';
-    form.addEventListener('submit', (event) => {
-      event.preventDefault();
-      const values = Object.fromEntries(new FormData(form).entries());
-      setHash('#/search', values);
-    });
+function updateBottomNavigation(path) {
+  const current = !path ? 'home' : path === 'saved' ? 'saved' : ['search', 'all'].includes(path) ? 'search' : 'explore';
+  document.querySelectorAll('[data-nav-page]').forEach((link) => {
+    if (link.dataset.navPage === current) link.setAttribute('aria-current', 'page');
+    else link.removeAttribute('aria-current');
   });
 }
 
@@ -963,10 +944,6 @@ function updateSavedBadges() {
   document.querySelectorAll('[data-saved-count]').forEach((badge) => {
     badge.textContent = String(savedCount());
     badge.hidden = savedCount() === 0;
-  });
-  const q = currentParams().get('q') || '';
-  document.querySelectorAll('[data-site-search] input[name="q"]').forEach((input) => {
-    if (document.activeElement !== input) input.value = q;
   });
 }
 
@@ -1078,6 +1055,9 @@ function guideFooter() {
 }
 
 function router(resetScroll = true) {
+  const previousSearch = document.querySelector('#filterSearchForm input[name="q"]');
+  const editingSearch = previousSearch && document.activeElement === previousSearch;
+  const selection = editingSearch ? [previousSearch.selectionStart, previousSearch.selectionEnd] : null;
   const hash = location.hash || '#/';
   const [path] = hash.slice(2).split('?');
   const parts = path.split('/').filter(Boolean).map(decodeURIComponent);
@@ -1091,6 +1071,7 @@ function router(resetScroll = true) {
   else if (parts[0] === 'listing') renderListing(parts[1]);
   else if (parts[0] === 'all') renderAll();
   else if (parts[0] === 'search') renderSearch();
+  else if (parts[0] === 'explore') renderSearch(false, 'explore');
   else if (parts[0] === 'filter') renderFilter();
   else if (parts[0] === 'ideas') renderIdeas();
   else if (parts[0] === 'saved') renderSaved();
@@ -1098,12 +1079,16 @@ function router(resetScroll = true) {
   else if (parts[0] === 'page') renderPage(parts[1]);
   else renderNotFound();
   if (!isHome) app.insertAdjacentHTML('beforeend', guideFooter());
-  bindGlobalHeader();
+  updateBottomNavigation(parts[0]);
   updateSavedBadges();
   app.focus({ preventScroll: true });
-  if (resetScroll) window.scrollTo({ top: 0, behavior: 'instant' });
+  if (editingSearch) {
+    const nextSearch = document.querySelector('#filterSearchForm input[name="q"]');
+    nextSearch?.focus({ preventScroll: true });
+    if (nextSearch && selection) nextSearch.setSelectionRange(...selection);
+  }
+  if (resetScroll && !editingSearch) window.scrollTo({ top: 0, behavior: 'instant' });
 }
 
 window.addEventListener('hashchange', () => router());
-bindGlobalHeader();
 router();

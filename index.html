@@ -2,50 +2,38 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="description" content="Outings Guide helps families choose trips from the Navigation Sukkas booklet with filters, moods, categories, and saved trip lists." />
     <title>Outings Guide</title>
-    <link rel="stylesheet" href="style.css?v=planner21" />
+    <link rel="stylesheet" href="style.css?v=planner22" />
   </head>
   <body>
     <div class="site-shell">
-      <header class="topbar">
-        <a class="brand" href="#/" aria-label="Outings Guide home">
-          <span class="brand-mark">◆</span>
-          <span>
-            <strong>Outings</strong>
-            <small>The Family Guide</small>
-          </span>
-        </a>
-        <form class="header-search site-search-form" id="siteSearch" role="search" data-site-search>
-          <label class="sr-only" for="siteSearchInput">Search outings</label>
-          <input id="siteSearchInput" name="q" placeholder="Search outings..." autocomplete="off" />
-          <button class="icon-search-btn" type="submit" aria-label="Search">
-            <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true">
-              <circle cx="11" cy="11" r="7"></circle>
-              <path d="m16.5 16.5 4 4"></path>
-            </svg>
-          </button>
-        </form>
-        <nav class="topnav" aria-label="Main navigation">
-          <a href="#/">Home</a>
-          <a href="#/search">Search</a>
-          <a href="#/filter">Filters</a>
-          <a class="saved-nav" href="#/saved">My Trips <span data-saved-count>0</span></a>
-        </nav>
-      </header>
-
       <main id="app" tabindex="-1"></main>
     </div>
 
-    <nav class="mobile-tabbar" aria-label="Mobile navigation">
-      <a href="#/">Home</a>
-      <a href="#/search">Search</a>
-      <a href="#/filter">Filters</a>
-      <a href="#/saved">My Trips <span data-saved-count>0</span></a>
+    <nav class="bottom-nav" aria-label="Main navigation">
+      <div class="bottom-nav-inner">
+        <a class="bottom-nav-link" href="#/" data-nav-page="home">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-8H9v8H4a1 1 0 0 1-1-1Z"/></svg>
+          <span>Home</span>
+        </a>
+        <a class="bottom-nav-link bottom-nav-search" href="#/search" data-nav-page="search">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="7.5"/><path d="m16 16 5 5"/></svg>
+          <span>Search</span>
+        </a>
+        <a class="bottom-nav-link" href="#/explore" data-nav-page="explore">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m16 8-2.5 5.5L8 16l2.5-5.5Z"/></svg>
+          <span>Explore</span>
+        </a>
+        <a class="bottom-nav-link" href="#/saved" data-nav-page="saved">
+          <span class="bottom-nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z"/></svg><span class="bottom-nav-count" data-saved-count hidden>0</span></span>
+          <span>My Trips</span>
+        </a>
+      </div>
     </nav>
 
     <script src="data.js?v=step1-tags"></script>
-    <script src="app.js?v=planner14"></script>
+    <script src="app.js?v=planner15"></script>
   </body>
 </html>
