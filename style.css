@@ -309,6 +309,9 @@ h1,
 .home-nav {
   justify-content: center;
 }
+.home-nav a {
+  min-height: 44px;
+}
 
 .find-box {
   display: grid;
@@ -400,7 +403,30 @@ select:focus {
 .section-head p { margin: 7px 0 0; color: var(--muted); line-height: 1.5; }
 .small-head { margin-top: 20px; }
 .home-category-head {
-  margin-top: -10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 32px 0 20px;
+}
+.home-category-head h2 {
+  font-size: 1.75rem;
+  letter-spacing: 0;
+}
+.all-places-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  flex-shrink: 0;
+  color: var(--teal-dark);
+  font-size: 0.88rem;
+  font-weight: 750;
+  text-decoration: none;
+}
+.all-places-link:hover {
+  text-decoration: underline;
 }
 
 .mood-grid,
@@ -417,7 +443,7 @@ select:focus {
 .outing-grid.compact { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .category-strip { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .home-categories {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 16px;
 }
 
@@ -512,43 +538,72 @@ select:focus {
   padding: 12px;
   overflow: hidden;
 }
-.home-categories .category-card {
-  min-height: 154px;
+.category-card.photo-category-card {
+  display: flex;
+  align-items: flex-end;
+  width: 100%;
+  aspect-ratio: 1.65;
+  min-height: 168px;
+  padding: 20px;
+  isolation: isolate;
+  border: 0;
+  background: #21494b;
+  color: #fff;
+  box-shadow: 0 3px 10px rgba(31, 43, 50, 0.1);
+  transition: box-shadow 180ms ease;
 }
-.category-art {
-  grid-column: 1 / -1;
-  display: block;
-  height: 72px;
-  margin: -12px -12px 2px;
-  border-radius: var(--radius) var(--radius) 0 0;
-  background:
-    linear-gradient(180deg, rgba(255, 253, 247, 0.1), rgba(255, 253, 247, 0.44)),
-    linear-gradient(135deg, var(--art-tint, rgba(23, 126, 131, 0.42)), rgba(242, 200, 75, 0.22)),
-    url("outing-hero-v2.jpg?v=hero3") var(--art-pos, center) / cover no-repeat;
+.photo-category-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.02) 20%, rgba(0, 0, 0, 0.42) 58%, rgba(0, 0, 0, 0.82) 100%);
+  pointer-events: none;
 }
-.scene-indoor-fun { --art-pos: left 58%; --art-tint: rgba(232, 125, 100, 0.42); }
-.scene-outdoor-fun { --art-pos: 42% 58%; --art-tint: rgba(23, 126, 131, 0.34); }
-.scene-water-fun { --art-pos: 58% 82%; --art-tint: rgba(67, 157, 186, 0.46); }
-.scene-zoos-aquariums { --art-pos: 35% 64%; --art-tint: rgba(78, 143, 84, 0.44); }
-.scene-museums-history { --art-pos: 49% 47%; --art-tint: rgba(172, 126, 77, 0.38); }
-.scene-parks-farms { --art-pos: 20% 80%; --art-tint: rgba(103, 154, 80, 0.48); }
-.scene-malls { --art-pos: 64% 58%; --art-tint: rgba(232, 125, 100, 0.32); }
-.scene-catskills { --art-pos: 38% 42%; --art-tint: rgba(51, 120, 102, 0.44); }
-.scene-airports { --art-pos: 78% 18%; --art-tint: rgba(83, 146, 186, 0.38); }
-.scene-niagara-falls { --art-pos: 84% 52%; --art-tint: rgba(54, 150, 181, 0.45); }
-.scene-newport-rhode-island { --art-pos: 68% 76%; --art-tint: rgba(36, 124, 148, 0.42); }
-.scene-poconos { --art-pos: 50% 34%; --art-tint: rgba(74, 137, 78, 0.44); }
-.scene-hudson-valley-catskills { --art-pos: 40% 40%; --art-tint: rgba(54, 133, 94, 0.44); }
-.scene-amish-town { --art-pos: 16% 70%; --art-tint: rgba(186, 137, 79, 0.44); }
-.scene-washington-dc { --art-pos: 56% 48%; --art-tint: rgba(95, 117, 144, 0.38); }
-.scene-palm-springs,
-.scene-tucson-arizona,
-.scene-casa-grande { --art-pos: 12% 44%; --art-tint: rgba(226, 151, 82, 0.42); }
-.scene-myrtle-beach,
-.scene-west-palm,
-.scene-north-miami,
-.scene-tampa-florida { --art-pos: 66% 82%; --art-tint: rgba(31, 143, 163, 0.44); }
-.scene-local-rentals { --art-pos: 48% 62%; --art-tint: rgba(242, 200, 75, 0.42); }
+.category-photo {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 250ms ease;
+}
+.category-caption {
+  display: grid;
+  gap: 6px;
+  width: 100%;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
+}
+.photo-category-card .category-caption h3 {
+  font-family: inherit;
+  font-size: 1.2rem;
+  font-weight: 750;
+  line-height: 1.25;
+  letter-spacing: 0;
+  overflow-wrap: anywhere;
+}
+.category-place-count {
+  color: #fff;
+  font-size: 0.82rem;
+  font-weight: 500;
+  line-height: 1.4;
+}
+.category-card.photo-category-card:hover {
+  transform: none;
+  box-shadow: 0 6px 18px rgba(31, 43, 50, 0.18);
+}
+.photo-category-card:focus-visible,
+.all-places-link:focus-visible {
+  outline: 3px solid var(--teal);
+  outline-offset: 4px;
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .photo-category-card:hover .category-photo { transform: scale(1.04); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .photo-category-card, .category-photo { transition: none; }
+}
 .tile-icon {
   grid-row: 1 / 3;
   display: grid;
@@ -583,10 +638,6 @@ select:focus {
   font-weight: 950;
   text-transform: lowercase;
   letter-spacing: 0.08em;
-}
-.home-categories .category-card h3 {
-  grid-column: 1 / -1;
-  font-size: 1rem;
 }
 .group-cats {
   display: block;
@@ -1222,6 +1273,19 @@ select:focus {
   .section-head,
   .page-hero,
   .filter-top { display: block; }
+  .home-category-head {
+    display: flex;
+    margin: 26px 0 14px;
+  }
+  .home-category-head h2 { font-size: 1.25rem; }
+  .home-categories { gap: 12px; }
+  .category-card.photo-category-card {
+    aspect-ratio: 1.12;
+    min-height: 152px;
+    padding: 14px 12px;
+  }
+  .photo-category-card .category-caption h3 { font-size: 1rem; }
+  .category-place-count { font-size: 0.75rem; }
   .page-hero { padding: 18px; }
   .filter-shell { top: 67px; }
   .result-search { grid-template-columns: 1fr auto; }
@@ -1239,4 +1303,9 @@ select:focus {
   .detail-visual { min-height: 190px; }
   .page-picker { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .footer-links { justify-content: flex-start; }
+}
+
+@media (max-width: 360px) {
+  body.is-home .home-nav { gap: 0; }
+  .home-nav a { padding: 8px 7px; font-size: 0.82rem; gap: 4px; }
 }

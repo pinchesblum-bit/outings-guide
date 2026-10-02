@@ -264,11 +264,8 @@ function renderHome() {
         </nav>
       </section>
       <section class="section-head home-category-head">
-        <div>
-          <p class="eyebrow">Booklet categories</p>
-          <h2>Choose a category</h2>
-          <p>All original categories are shown here in booklet order.</p>
-        </div>
+        <h2>Browse outing ideas</h2>
+        <a class="all-places-link" href="#/search">View all <span aria-hidden="true">&rarr;</span></a>
       </section>
       <div class="category-strip home-categories">${DATA.categories.map(categoryCard).join('')}</div>
     </div>
@@ -336,13 +333,12 @@ function groupCard(group) {
 
 function categoryCard(cat) {
   return `
-    <a class="category-card" href="#/category/${encodeURIComponent(cat.id)}">
-      <span class="category-art scene-${escapeHtml(cat.id)}" aria-hidden="true"></span>
-      <div class="category-count">
-        <strong>${cat.count}</strong>
-        <span>places</span>
+    <a class="category-card photo-category-card" href="#/category/${encodeURIComponent(cat.id)}">
+      <img class="category-photo" src="category-images/${encodeURIComponent(cat.id)}.webp" alt="" width="720" height="440" loading="lazy" decoding="async" />
+      <div class="category-caption">
+        <h3>${escapeHtml(cat.title)}</h3>
+        <span class="category-place-count">${cat.count} places</span>
       </div>
-      <h3>${escapeHtml(cat.title)}</h3>
     </a>`;
 }
 
@@ -1074,6 +1070,7 @@ function guideFooter() {
         <a href="#/browse">Browse categories</a>
         <a href="#/search">Search places</a>
         <a href="#/saved">My Trip List</a>
+        <a href="photo-credits.html">Photo credits</a>
         <a href="mailto:?subject=Outings Guide correction">Report a correction</a>
       </div>
     </footer>`;
