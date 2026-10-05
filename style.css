@@ -1246,15 +1246,6 @@ select:focus {
   letter-spacing: -0.04em;
 }
 .nav-brand strong { font-weight: 800; }
-.nav-brand-mark {
-  width: 28px;
-  height: 28px;
-  fill: none;
-  stroke: var(--teal);
-  stroke-width: 1.7;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
 .nav-brand:focus-visible { outline: 3px solid var(--teal); outline-offset: 3px; border-radius: 4px; }
 .bottom-nav-link {
   position: relative;
@@ -1319,15 +1310,16 @@ select:focus {
 .account-nav-link[aria-current="page"] { background: rgba(255, 255, 255, 0.6); }
 .account-nav-link[aria-current="page"]::after { display: none; }
 .account-panel {
-  width: min(460px, 100%);
-  margin: clamp(28px, 7vh, 72px) auto;
-  padding: clamp(24px, 5vw, 40px);
+  width: min(400px, 100%);
+  margin: clamp(20px, 5vh, 48px) auto;
+  padding: 28px;
   border: 1px solid rgba(255, 255, 255, 0.7);
   border-radius: 18px;
   background: rgba(255, 253, 247, 0.95);
   box-shadow: 0 16px 42px rgba(20, 85, 89, 0.1);
 }
-.account-panel h1 { margin: 18px 0 12px; font-size: 1.75rem; letter-spacing: -0.035em; }
+.account-panel h1 { margin: 0 0 12px; font-size: 1.5rem; letter-spacing: -0.035em; }
+.account-profile + h1 { margin-top: 14px; }
 .account-panel p { line-height: 1.6; color: #526b70; }
 .account-panel .btn { margin-top: 10px; }
 .account-emblem {
@@ -1336,12 +1328,13 @@ select:focus {
 }
 .account-emblem svg { width: 25px; height: 25px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; }
 .account-status { font-size: 0.875rem; }
-.account-field { display: grid; gap: 8px; margin-top: 24px; font-size: 0.875rem; font-weight: 600; }
-.account-field input { width: 100%; min-height: 48px; padding: 12px; background: white; border: 1px solid #8eaeb0; border-radius: 8px; font-size: 1rem; }
+.account-field { display: grid; gap: 6px; margin-top: 16px; font-size: 0.875rem; font-weight: 600; }
+.account-field input { width: 100%; min-height: 44px; padding: 10px 12px; background: white; border: 1px solid #8eaeb0; border-radius: 8px; font-size: 1rem; }
 .account-field input:focus-visible { outline: 3px solid #9fdbd4; outline-offset: 2px; }
 .account-field input[name="code"] { letter-spacing: 0.3em; font-variant-numeric: tabular-nums; }
 #account-form .btn { width: 100%; }
 #account-message { min-height: 20px; font-size: 0.875rem; }
+#account-message:empty { min-height: 0; margin: 0; }
 .account-email { overflow-wrap: anywhere; font-weight: 600; }
 .account-text-button { display: block; padding: 12px 0; min-height: 44px; border: 0; background: none; color: var(--teal-dark); text-align: left; text-decoration: underline; }
 .account-secondary { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; margin-top: 8px; }
@@ -1488,7 +1481,7 @@ button:disabled { cursor: wait; opacity: 0.6; }
   .home-nav a { padding: 8px 7px; font-size: 0.82rem; gap: 4px; }
 }
 
-.account-tabs { display: flex; border-bottom: 1px solid #c6dcd8; margin: 20px 0 24px; }
+.account-tabs { display: flex; border-bottom: 1px solid #c6dcd8; margin: 8px 0 18px; }
 .account-tabs button { flex: 1; border: 0; background: none; color: #526b70; padding: 12px 8px; min-height: 44px; font: inherit; }
 .account-tabs button[aria-pressed="true"] { color: var(--teal-dark); box-shadow: inset 0 -3px var(--teal-dark); font-weight: 700; }
 .google-sign-in { display: flex; align-items: center; justify-content: center; gap: 12px; width: 100%; min-height: 50px; border: 1px solid #747775; border-radius: 999px; background: #fff; color: #1f1f1f; font: inherit; font-size: 15px; font-weight: 600; padding: 12px 20px; cursor: pointer; transition: background .15s, box-shadow .15s; }
@@ -1497,7 +1490,7 @@ button:disabled { cursor: wait; opacity: 0.6; }
 .google-sign-in:focus-visible { outline: 3px solid #167d85; outline-offset: 3px; }
 .google-sign-in:disabled { cursor: wait; opacity: .6; }
 .account-intro { margin: 12px 0 24px; line-height: 1.6; }
-.account-divider { display: flex; align-items: center; gap: 12px; margin: 22px 0; color: #526b70; font-size: 0.875rem; }
+.account-divider { display: flex; align-items: center; gap: 12px; margin: 16px 0; color: #526b70; font-size: 0.875rem; }
 .account-divider::before, .account-divider::after { content: ''; flex: 1; height: 1px; background: #c6dcd8; }
 .password-input { position: relative; display: block; }
 .password-input input { padding-right: 66px; }
@@ -1512,5 +1505,15 @@ button:disabled { cursor: wait; opacity: 0.6; }
   .account-nav-link.has-profile { padding: 3px 2px; gap: 2px; }
   .profile-avatar { width: 25px; height: 25px; font-size: 0.625rem; }
   .profile-nav-name { max-width: 64px; }
-  .account-panel { margin-top: 24px; }
+  .account-panel { width: min(360px, 100%); margin: 12px auto 20px; padding: 20px; border-radius: 14px; }
+  .account-panel h1 { font-size: 1.375rem; margin-bottom: 8px; }
+  .account-panel p { line-height: 1.45; }
+  .account-panel .account-intro { margin: 8px 0 12px; font-size: 0.875rem; }
+  .account-tabs button { font-size: 0.875rem; padding: 10px 4px; }
+  .google-sign-in { min-height: 44px; padding: 10px 14px; font-size: 0.875rem; gap: 10px; }
+  .account-panel .btn { min-height: 44px; padding: 10px 14px; font-size: 0.875rem; }
+  .account-text-button { font-size: 0.875rem; }
+}
+@media (min-width: 768px) {
+  .account-nav-link > svg { display: none; }
 }

@@ -65,7 +65,7 @@ function render() {
         ${!ordinary ? `<button class="account-text-button" data-cancel-reset ${auth.busy ? 'disabled' : ''}>Back to sign in</button>` : ''}`;
     }
   }
-  document.getElementById('app').innerHTML = `<section class="account-panel" aria-labelledby="account-title"><div class="account-emblem${current.user ? ' account-profile' : ''}">${current.user ? avatar(current.user) : personIcon}</div>${content}</section>`;
+  document.getElementById('app').innerHTML = `<section class="account-panel" aria-labelledby="account-title">${current.user ? `<div class="account-emblem account-profile">${avatar(current.user)}</div>` : ''}${content}</section>`;
   document.getElementById('account-form')?.addEventListener('submit', submit);
   document.querySelectorAll('[name="name"], [name="email"]').forEach(input => input.addEventListener('input', () => flow.remember({ [input.name]: input.value })));
   document.querySelectorAll('[data-account-view]').forEach(button => button.addEventListener('click', () => flow.switchView(button.dataset.accountView)));
