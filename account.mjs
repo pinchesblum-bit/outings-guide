@@ -42,11 +42,14 @@ function render() {
       const view = resetting ? 'reset' : auth.view;
       const signup = view === 'signup';
       const ordinary = ['signin', 'signup'].includes(view);
+      const tripsGate = location.hash.split('?')[0] === '#/saved';
       const titles = { signin: 'Sign in', signup: 'Create account', forgot: 'Forgot password?', verify: 'Check your email', confirm: 'Confirm your email', reset: 'Choose a new password' };
+      if (tripsGate && view === 'signin') titles.signin = 'Sign in to My Trips';
       const labels = { signin: 'Sign in', signup: 'Create account', forgot: 'Send reset code', verify: 'Verify code', confirm: 'Finish creating account', reset: 'Save password' };
       content = `<h1 id="account-title">${titles[view]}</h1>
+        ${tripsGate && ordinary ? '<p class="account-intro">Save your favorite places and keep your trips together, on any device.</p>' : ''}
         ${ordinary ? `<div class="account-tabs" aria-label="Account options"><button type="button" data-account-view="signin" aria-pressed="${!signup}" ${auth.busy ? 'disabled' : ''}>Sign in</button><button type="button" data-account-view="signup" aria-pressed="${signup}" ${auth.busy ? 'disabled' : ''}>Create account</button></div>
-          ${config.googleEnabled ? `<button type="button" class="google-sign-in" data-google ${auth.busy ? 'disabled' : ''}>Continue with Google</button><div class="account-divider"><span>or use your email</span></div>` : ''}` : ''}
+          ${config.googleEnabled ? `<button type="button" class="google-sign-in" data-google ${auth.busy ? 'disabled' : ''}><img src="https://developers.google.com/static/identity/images/g-logo.png" width="20" height="20" alt="" aria-hidden="true"><span>Continue with Google</span></button><div class="account-divider"><span>or use your email</span></div>` : ''}` : ''}
         ${view === 'forgot' ? '<p>Enter your email to receive a password reset code.</p>' : ''}
         ${view === 'verify' ? `<p>Enter the eight-digit reset code for <strong>${escape(auth.email)}</strong>.</p>` : ''}
         <form id="account-form" data-account-action="${view}">

@@ -157,16 +157,7 @@ function extractTiming(listing) {
 
 function getSavedIds() {
   const account = window.OutingsAccount?.status();
-  if (account?.user) return account.ids;
-  try {
-    return JSON.parse(localStorage.getItem(savedKey) || '[]');
-  } catch {
-    return [];
-  }
-}
-
-function setSavedIds(ids) {
-  localStorage.setItem(savedKey, JSON.stringify([...new Set(ids)]));
+  return account?.user ? account.ids : [];
 }
 
 function isSaved(id) {
@@ -805,15 +796,17 @@ function renderAccount() {
   app.innerHTML = `
     <section class="account-panel" aria-labelledby="account-title">
       <div class="account-emblem" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="2"/><path d="m3 6 9 7 9-7"/></svg></div>
-      <h1 id="account-title">Your outings, saved</h1>
-      <p>Email sign-in is not available yet.</p>
-      <p class="account-status">For now, your saved trips stay in this browser on this device. You can keep browsing, saving, and sharing your list.</p>
-      <a class="btn primary" href="#/saved">View My Trips</a>
+      <h1 id="account-title">Sign in to My Trips</h1>
+      <p role="status">Loading sign-in options…</p>
+      <p>Your saved places will be available after you sign in.</p>
+      <a class="btn ghost" href="#/">Keep exploring</a>
     </section>
   `;
 }
 
 function renderSaved() {
+  const account = window.OutingsAccount?.status();
+  if (!account?.user || !account.ready) return renderAccount();
   const ids = getSavedIds();
   const listings = ids.map((id) => byListing.get(id)).filter(Boolean);
   app.innerHTML = `
@@ -823,7 +816,7 @@ function renderSaved() {
         <p class="eyebrow">Saved outings</p>
         <h1>My Trip List</h1>
         <p>Save outings while browsing, then print or share this list when you are ready to plan the day.</p>
-        <p class="saved-account-note">${window.OutingsAccount?.status().user ? 'Your trips are saved to your email account.' : 'Your trips are saved on this device.'} <a href="#/account">${window.OutingsAccount?.status().user ? 'Manage account' : 'Sign in'}</a></p>
+        <p class="saved-account-note">Your trips are saved to your account. <a href="#/account">Manage account</a></p>
       </div>
       <div class="hero-actions">
         <button class="btn primary" type="button" data-print>Print</button>
@@ -1003,10 +996,7 @@ function toggleSave(id) {
     window.OutingsAccount.toggle(id);
     return;
   }
-  const ids = getSavedIds();
-  const next = ids.includes(id) ? ids.filter((item) => item !== id) : [...ids, id];
-  setSavedIds(next);
-  router(false);
+  location.hash = '/saved';
 }
 
 function openPageModal(page) {
