@@ -7,13 +7,13 @@ The account UI supports name/email/password registration, email/password sign-in
 - Email/password forms and profile display: implemented.
 - Password reset template: configured in Supabase using `password-reset.html`, eight-digit recovery codes, 600-second expiry, and a 60-second minimum resend interval.
 - **Signup confirmation remains ON.** The requested change to skip signup email verification requires final browser security confirmation before disabling Supabase's `Confirm email` setting. The client supports the existing confirmation flow during this transition so new accounts cannot get stuck.
-- **Google remains OFF.** The Google OAuth flow and photo display are implemented but the public button is gated by `googleEnabled` until the backend provider is configured. Google Cloud Console returned Site Unavailable in the available browser after one reload. Do not expose an unusable Google button or claim Google login works.
+- **Google provider and button enabled on 2026-10-05.** The user configured the dedicated Google Web OAuth client in Supabase. `/auth/v1/settings` reports Google enabled, and the authorization endpoint redirects to Google with the expected callback and email/profile scopes. A complete visitor sign-in and public-audience availability still need interactive verification.
 
-## Google connection remaining
+## Google connection
 
-Create a dedicated Web application OAuth client in the user's Google Cloud project. Use only `openid`, `userinfo.email`, and `userinfo.profile` scopes. Set the JavaScript origin to `https://pinchesblum-bit.github.io` and authorized redirect URI to `https://boplgtgdaklsfmjcckgy.supabase.co/auth/v1/callback`. Set up the app's audience/branding so intended public visitors can sign in.
+A dedicated Web application OAuth client was created in the user's Outings Guide Google Cloud project. Use only `openid`, `userinfo.email`, and `userinfo.profile` scopes. Set the JavaScript origin to `https://pinchesblum-bit.github.io` and authorized redirect URI to `https://boplgtgdaklsfmjcckgy.supabase.co/auth/v1/callback`. Set up the app's audience/branding so intended public visitors can sign in.
 
-Enter the client ID and secret only in Supabase's Google provider configuration; the browser requires a user handoff for new credential entry. Do not store the client secret here. Keep nonce validation on. After configuration, verify Google is enabled in `/auth/v1/settings`, set `googleEnabled: true`, and test the actual OAuth round trip before calling it complete.
+Enter the client ID and secret only in Supabase's Google provider configuration; the browser requires a user handoff for new credential entry. Do not store the client secret here. Keep nonce validation on. Google is enabled in `/auth/v1/settings` and `googleEnabled` is true. Test the actual OAuth round trip before calling sign-in fully verified.
 
 The browser client uses PKCE, Supabase's session handling, and the fixed existing Site URL as its return destination. It cleans the authorization code/error query parameters after return. Google is used only for authentication and basic profile information.
 
