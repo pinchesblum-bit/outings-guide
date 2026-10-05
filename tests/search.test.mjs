@@ -13,7 +13,7 @@ const names = query => run(`applyFilters(DATA.listings, new URLSearchParams({q:$
 test('activity search finds parks whose names omit park',()=>{
  const results=names('indoor park');
  for(const name of ['Billy Beez','SkyZone','Bounce U','Kids Empire','Space Club','Thrillz']) assert.ok(results.includes(name),name);
- for(const name of ['American Girl Place','Montvale Lanes','Central Park']) assert.ok(!results.includes(name),name);
+ for(const name of ['American Girl Place','Montvale Lanes','Central Park','Arch Creek Park & Nature Center']) assert.ok(!results.includes(name),name);
  assert.ok(names('trampoline park').includes('SkyZone'));
  assert.ok(names('indoor playgrounds').includes('Billy Beez'));
  console.log(`${results.length} indoor park matches`);

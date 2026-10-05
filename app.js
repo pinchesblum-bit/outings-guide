@@ -811,7 +811,7 @@ function searchRelevance(item, query) {
   }
   const activities = activitySearchText(item);
   // A street containing ‘Park’ does not make an indoor business a play park.
-  if (terms.includes('indoor') && terms.includes('park') && !searchWords(`${name} ${activities}`).includes('park')) return 0;
+  if (terms.includes('indoor') && terms.includes('park') && !normalize(activities).includes('indoor park')) return 0;
   const location = [extractAddress(item), item.region].filter(Boolean).join(' ');
   if (matches(`${name} ${location}`)) return 600;
   if (matches(`${name} ${activities} ${location}`)) return 400;
