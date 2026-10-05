@@ -7,6 +7,45 @@ const byListing = new Map(DATA.listings.map((listing) => [listing.id, listing]))
 const savedKey = 'outings-guide-trip-list';
 const defaultLimit = 18;
 
+// Light colors echo each cover's scenery without competing with the listings.
+const categoryPalettes = {
+  'indoor-fun': ['#f7f2e3', '#f3d783', '#cce8e5'],
+  'outdoor-fun': ['#edf3e5', '#c4dbb2', '#d0e7ee'],
+  'water-fun': ['#eaf3f0', '#b7dcd9', '#dce8c7'],
+  'zoos-aquariums': ['#f1f3e6', '#d5dfae', '#c1e0df'],
+  'museums-history': ['#f6eee1', '#e5ceb0', '#eee1c9'],
+  'parks-farms': ['#f0f2df', '#d5dfa6', '#f0d5ab'],
+  malls: ['#f3f1e9', '#e1d6be', '#d9e6e2'],
+  catskills: ['#eaf1e7', '#c6d9b8', '#c0dce2'],
+  airports: ['#edf3f4', '#cddfe9', '#e3dfd4'],
+  'niagara-falls': ['#e8f3ef', '#b7ded5', '#d5e5d2'],
+  'newport-rhode-island': ['#f0f3ed', '#cbdfe4', '#e5d6bb'],
+  poconos: ['#edf2e6', '#c9dbb7', '#d1e0d9'],
+  'hudson-valley-catskills': ['#edf2e7', '#cbd9b9', '#cbdfe7'],
+  'amish-town': ['#f3f3e3', '#d9e1ae', '#e9dbc4'],
+  'washington-dc': ['#f1f3ed', '#dde4d0', '#d0e3ed'],
+  'palm-springs': ['#f5eee3', '#e9d4b5', '#d4e4ea'],
+  'tucson-arizona': ['#f5edde', '#e7c9a2', '#dce0ba'],
+  'casa-grande': ['#f6ecdc', '#ebcda6', '#e4dbbd'],
+  'myrtle-beach': ['#f4f2e6', '#f0ddb1', '#c6e4e4'],
+  'west-palm': ['#eff4e9', '#d8e4b9', '#c9e4e6'],
+  'north-miami': ['#ecf1e1', '#c4d6a2', '#d8e2bd'],
+  'tampa-florida': ['#edf3ed', '#c7dfdc', '#e8d9b9'],
+  'local-rentals': ['#f2f1e3', '#d5dfb8', '#e8d7bb'],
+};
+
+function categoryImage(cat) {
+  return `category-images/${encodeURIComponent(cat.id)}-v3.webp`;
+}
+
+function applyCategoryTheme(cat) {
+  document.body.classList.toggle('is-category', Boolean(cat));
+  ['--category-base', '--category-tint', '--category-glow'].forEach((property, index) => {
+    if (cat) document.body.style.setProperty(property, (categoryPalettes[cat.id] || categoryPalettes['outdoor-fun'])[index]);
+    else document.body.style.removeProperty(property);
+  });
+}
+
 const filterLabels = {
   q: 'Search',
   setting: 'Indoor/Outdoor',
@@ -307,10 +346,9 @@ function groupCard(group) {
 }
 
 function categoryCard(cat) {
-  const imageFile = `${cat.id}-v3.webp`;
   return `
     <a class="category-card photo-category-card" href="#/category/${encodeURIComponent(cat.id)}">
-      <img class="category-photo category-photo-${escapeHtml(cat.id)}" src="category-images/${encodeURIComponent(imageFile)}" alt="" width="900" height="600" loading="lazy" decoding="async" />
+      <img class="category-photo category-photo-${escapeHtml(cat.id)}" src="${categoryImage(cat)}" alt="" width="900" height="600" loading="lazy" decoding="async" />
       <div class="category-caption">
         <h3>${escapeHtml(cat.title)}</h3>
         <span class="category-place-count">${cat.count} places</span>
@@ -522,6 +560,7 @@ function renderCategory(id) {
   renderResultsPage({
     route,
     title: cat.title,
+    category: cat,
     intro: cat.description,
     meta: `${cat.count} places · Pages ${cat.pageRange} · ${cat.groupTitle}`,
     listings,
@@ -630,15 +669,16 @@ function renderBrowse() {
   bindInteractiveControls();
 }
 
-function renderResultsPage({ route, title, intro, meta = '', listings, beforeResults = '', afterResults = '' }) {
+function renderResultsPage({ route, title, intro, meta = '', listings, beforeResults = '', afterResults = '', category = null }) {
   const params = currentParams();
   const filtered = sortListings(applyFilters(listings, params), params.get('sort') || 'top', params.get('q') || '');
   const limit = Number(params.get('limit') || defaultLimit);
   const visible = filtered.slice(0, limit);
   app.innerHTML = `
     <div class="breadcrumbs"><a href="#/">Home</a><span>/</span><span>${escapeHtml(title)}</span></div>
-    <section class="page-hero">
-      <div>
+    <section class="page-hero${category ? ' category-hero' : ''}">
+      ${category ? `<img class="category-hero-image" src="${categoryImage(category)}" alt="" width="900" height="600" fetchpriority="high" />` : ''}
+      <div class="page-hero-copy">
         <p class="eyebrow">${escapeHtml(meta || 'Outings Guide')}</p>
         <h1>${escapeHtml(title)}</h1>
         <p>${escapeHtml(intro)}</p>
@@ -1107,6 +1147,7 @@ function router(resetScroll = true) {
   const parts = path.split('/').filter(Boolean).map(decodeURIComponent);
   const isHome = !parts.length;
   document.body.classList.toggle('is-home', isHome);
+  applyCategoryTheme(parts[0] === 'category' ? byCategory.get(parts[1]) : null);
   if (isHome) renderHome();
   else if (parts[0] === 'plan') renderPlan();
   else if (parts[0] === 'browse') renderBrowse();
