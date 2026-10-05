@@ -622,22 +622,25 @@ function searchPage(matches, requestedPage) {
 
 function searchPagination(query, page, totalPages) {
   const link = (number, text, extra = '') => `<a href="${escapeHtml(hashFor('#/search', { q: query, page: String(number) }))}" ${extra}>${text}</a>`;
-  // Keep first/last and neighboring pages available without a wide row on phones.
   const pages = [...new Set([1, page - 1, page, page + 1, totalPages])]
     .filter(number => number >= 1 && number <= totalPages).sort((a, b) => a - b);
   let previous = 0;
   const numbers = pages.map(number => {
     const gap = previous && number - previous > 1 ? '<span class="page-gap" aria-hidden="true">…</span>' : '';
     previous = number;
-    return gap + link(number, number, `aria-label="Page ${number}"${number === page ? ' aria-current="page"' : ''}`);
+    return gap + link(number, number, `class="page-number${Math.abs(number - page) > 1 ? ' page-distant' : ''}" aria-label="Page ${number}"${number === page ? ' aria-current="page"' : ''}`);
   }).join('');
+  const direction = (number, name, enabled) => {
+    const icon = `<svg class="page-arrow" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${name === 'Previous' ? 'm14 6-6 6 6 6' : 'm10 6 6 6-6 6'}"/></svg>`;
+    const content = `${icon}<span class="page-direction-label">${name}</span>`;
+    return enabled ? link(number, content, `class="page-direction" rel="${name === 'Previous' ? 'prev' : 'next'}" aria-label="${name} page"`)
+      : `<span class="page-direction" aria-disabled="true" aria-label="${name} page">${content}</span>`;
+  };
   return `<nav class="search-pagination" aria-label="Search result pages">
-    <p>Page ${page} of ${totalPages}</p>
+    <p class="page-count"><span class="page-count-full">Page ${page} of ${totalPages}</span><span class="page-count-short" aria-hidden="true">${page} / ${totalPages}</span></p>
+    ${direction(page - 1, 'Previous', page > 1)}
     <div class="page-numbers">${numbers}</div>
-    <div class="page-directions">
-      ${page > 1 ? link(page - 1, 'Previous', 'rel="prev"') : '<span aria-disabled="true">Previous</span>'}
-      ${page < totalPages ? link(page + 1, 'Next', 'rel="next"') : '<span aria-disabled="true">Next</span>'}
-    </div>
+    ${direction(page + 1, 'Next', page < totalPages)}
   </nav>`;
 }
 
@@ -666,20 +669,15 @@ function renderSimpleSearch() {
   bindInteractiveControls();
   const form = document.getElementById('filterSearchForm');
   const input = form.querySelector('input[name="q"]');
-  let timer;
-  const update = () => {
-    clearTimeout(timer);
+  // Keep the input and keyboard untouched while typing. Search only on submit.
+  form.addEventListener('submit', event => {
+    event.preventDefault();
     if (!form.isConnected) return;
-    history.replaceState(null, '', hashFor('#/search', { q: input.value }));
-    router(false);
-  };
-  form.addEventListener('submit', event => { event.preventDefault(); update(); });
-  input.addEventListener('input', () => {
-    clearTimeout(timer);
-    if (!input.value) update();
-    else timer = setTimeout(update, 220);
+    const next = hashFor('#/search', { q: input.value.trim() });
+    input.blur();
+    if (location.hash !== next) history.pushState(null, '', next);
+    router();
   });
-  input.addEventListener('search', update);
 }
 
 function renderFilter() {
