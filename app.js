@@ -628,7 +628,7 @@ function searchPagination(query, page, totalPages) {
   const numbers = pages.map(number => {
     const gap = previous && number - previous > 1 ? '<span class="page-gap" aria-hidden="true">…</span>' : '';
     previous = number;
-    return gap + link(number, number, `class="page-number${Math.abs(number - page) > 1 ? ' page-distant' : ''}" aria-label="Page ${number}"${number === page ? ' aria-current="page"' : ''}`);
+    return gap + link(number, number, `class="page-number${number !== 1 && Math.abs(number - page) > 1 ? ' page-distant' : ''}" aria-label="Page ${number}"${number === page ? ' aria-current="page"' : ''}`);
   }).join('');
   const direction = (number, name, enabled) => {
     const icon = `<svg class="page-arrow" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${name === 'Previous' ? 'm14 6-6 6 6 6' : 'm10 6 6 6-6 6'}"/></svg>`;
