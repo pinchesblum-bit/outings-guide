@@ -1403,23 +1403,23 @@ select:focus {
 .sync-notice { padding: 14px; margin-bottom: 16px; color: #713b14; background: #fff4dd; border: 1px solid #e8c488; border-radius: 8px; }
 button:disabled { cursor: wait; opacity: 0.6; }
 @media (max-width: 767px) {
-  :root { --nav-height: 0px; --mobile-nav-height: calc(4.5rem + env(safe-area-inset-bottom, 0px)); }
+  :root { --nav-height: 0px; --mobile-nav-height: calc(3.5rem + env(safe-area-inset-bottom, 0px)); }
   html { scroll-padding-bottom: calc(var(--mobile-nav-height) + 12px); }
   body { padding-bottom: var(--mobile-nav-height); }
   .bottom-nav {
     position: fixed;
     inset: auto 0 0;
-    padding: 4px max(6px, env(safe-area-inset-right, 0px)) env(safe-area-inset-bottom, 0px) max(6px, env(safe-area-inset-left, 0px));
+    padding: 0 max(6px, env(safe-area-inset-right, 0px)) env(safe-area-inset-bottom, 0px) max(6px, env(safe-area-inset-left, 0px));
     border-top: 1px solid rgba(35, 87, 92, 0.14);
     border-bottom: 0;
     background: rgba(247, 252, 250, 0.97);
     box-shadow: 0 -4px 20px rgba(24, 75, 80, 0.06);
   }
-  .bottom-nav-inner { gap: 2px; min-height: 67px; }
+  .bottom-nav-inner { gap: 2px; min-height: calc(3.5rem - 1px); }
   .nav-brand { display: none; }
-  .bottom-nav-link { flex: 1 1 0; flex-direction: column; min-height: 58px; gap: 5px; padding: 6px 2px; border-radius: 10px; font-size: 0.75rem; }
-  .bottom-nav-link svg, .bottom-nav-search svg { width: 22px; height: 22px; }
-  .bottom-nav-link[aria-current="page"] { background: #e3f1ed; color: #0f5d62; font-weight: 800; }
+  .bottom-nav-link { flex: 1 1 0; flex-direction: column; min-height: 48px; gap: 3px; padding: 4px 2px; border-radius: 8px; font-size: 0.75rem; font-weight: 500; line-height: 1.15; }
+  .bottom-nav-link svg, .bottom-nav-search svg { width: 20px; height: 20px; }
+  .bottom-nav-link[aria-current="page"] { background: #e3f1ed; color: #0f5d62; font-weight: 700; }
   .bottom-nav-link[aria-current="page"]::after { display: none; }
   .account-nav-link { margin-left: 0; border: 0; }
   .bottom-nav-count { top: -5px; right: -8px; min-width: 16px; height: 16px; padding: 0 3px; font-size: 10px; }
@@ -1563,7 +1563,7 @@ button:disabled { cursor: wait; opacity: 0.6; }
 .account-profile, .account-profile .profile-avatar { width: 56px; height: 56px; border-radius: 50%; font-size: 1.25rem; }
 @media (max-width: 767px) {
   .account-nav-link.has-profile { padding: 3px 2px; gap: 2px; }
-  .profile-avatar { width: 25px; height: 25px; font-size: 0.625rem; }
+  .profile-avatar { width: 22px; height: 22px; font-size: 0.625rem; }
   .profile-nav-name { max-width: 64px; }
   .account-panel { width: min(360px, 100%); margin: 12px auto 20px; padding: 20px; border-radius: 14px; }
   .account-panel h1 { font-size: 1.375rem; margin-bottom: 8px; }
