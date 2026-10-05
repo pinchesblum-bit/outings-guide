@@ -417,7 +417,7 @@ function outingCard(listing) {
         <button class="page-badge" type="button" data-page-modal="${listing.page}">Booklet p. ${listing.page}</button>
       </div>
       <h3>${escapeHtml(listing.name)}</h3>
-      <p>${escapeHtml(compactSummary(listing))}</p>
+      <p>${address ? `<a class="outing-address" href="${escapeHtml(mapsUrl(address))}" data-map-address="${escapeHtml(address)}" aria-haspopup="dialog">${escapeHtml(address)}</a>` : escapeHtml(compactSummary(listing))}</p>
       <div class="pills card-tags">
         ${tags.map((tag) => `<span class="pill">${escapeHtml(tag)}</span>`).join('')}
       </div>
@@ -427,7 +427,7 @@ function outingCard(listing) {
       </div>
       <div class="card-actions">
         <a class="details-link" href="#/listing/${encodeURIComponent(listing.id)}">Details</a>
-        ${address ? `<a class="details-link map-link" href="${escapeHtml(mapsUrl(address))}" target="_blank" rel="noopener">Map</a>` : ''}
+        ${address ? `<a class="details-link map-link" href="${escapeHtml(mapsUrl(address))}" data-map-address="${escapeHtml(address)}" aria-haspopup="dialog">Map</a>` : ''}
       </div>
     </article>`;
 }
@@ -446,7 +446,7 @@ function miniResult(listing) {
         <h3>${escapeHtml(listing.name)}</h3>
         <p>${escapeHtml(compactSummary(listing))}</p>
         <div class="mini-facts">
-          ${address ? `<a href="${escapeHtml(mapsUrl(address))}" target="_blank" rel="noopener">${escapeHtml(address)}</a>` : '<span>Address not listed</span>'}
+          ${address ? `<a href="${escapeHtml(mapsUrl(address))}" data-map-address="${escapeHtml(address)}" aria-haspopup="dialog">${escapeHtml(address)}</a>` : '<span>Address not listed</span>'}
           <span>${escapeHtml(price)}</span>
         </div>
       </div>
@@ -870,7 +870,7 @@ function renderListing(id) {
   const address = extractAddress(listing);
   const price = extractPrice(listing);
   const facts = [
-    ['Address', address ? `<a href="${escapeHtml(mapsUrl(address))}" target="_blank" rel="noopener">${escapeHtml(address)}</a>` : 'Address not listed', true],
+    ['Address', address ? `<a href="${escapeHtml(mapsUrl(address))}" data-map-address="${escapeHtml(address)}" aria-haspopup="dialog">${escapeHtml(address)}</a>` : 'Address not listed', true],
     ['Booklet price', price],
     ['Ages', (listing.ageFit || []).filter((value) => value !== 'unknown').map(label).join(', ') || 'Unknown'],
     ['Setting', label(listing.setting || 'unknown')],
@@ -896,7 +896,7 @@ function renderListing(id) {
       <section class="panel">
         <h2>Booklet details</h2>
         ${listing.details?.length ? `<ul class="detail-list">${listing.details.map((line) => `<li>${escapeHtml(line)}</li>`).join('')}</ul>` : '<p class="empty">No separate English detail lines were extracted for this entry.</p>'}
-        ${address ? `<a class="btn primary direction-btn" href="${escapeHtml(mapsUrl(address))}" target="_blank" rel="noopener">Map / Directions</a>` : ''}
+        ${address ? `<a class="btn primary direction-btn" href="${escapeHtml(mapsUrl(address))}" data-map-address="${escapeHtml(address)}" aria-haspopup="dialog">Map / Directions</a>` : ''}
       </section>
       <details class="panel source-box">
         <summary>From the ${escapeHtml(DATA.sourceTitle)} booklet, p. ${listing.page}</summary>
@@ -1064,7 +1064,50 @@ function bindFilters() {
   });
 }
 
+function mapChoices(address, android = false) {
+  const query = encodeURIComponent(address);
+  const choices = [
+    ['Google Maps', mapsUrl(address)],
+    ['Waze', `https://waze.com/ul?q=${query}`],
+    ['Apple Maps', `https://maps.apple.com/?q=${query}`],
+  ];
+  if (android) choices.push(['Other map apps', `geo:0,0?q=${query}`]);
+  return choices;
+}
+
+function openMapChooser(address, trigger) {
+  document.querySelector('.map-chooser')?.close();
+  const dialog = document.createElement('dialog');
+  dialog.className = 'map-chooser';
+  dialog.setAttribute('aria-labelledby', 'map-chooser-title');
+  dialog.setAttribute('aria-describedby', 'map-chooser-address');
+  dialog.innerHTML = `
+    <div class="map-chooser-head"><h2 id="map-chooser-title">Open in maps</h2><button type="button" class="map-chooser-close" aria-label="Close map choices">×</button></div>
+    <p id="map-chooser-address">${escapeHtml(address)}</p>
+    <div class="map-choices">${mapChoices(address, /Android/i.test(navigator.userAgent)).map(([name, url]) => `<a href="${escapeHtml(url)}"${url.startsWith('https:') ? ' target="_blank" rel="noopener"' : ''}>${escapeHtml(name)}</a>`).join('')}</div>`;
+  document.body.appendChild(dialog);
+  dialog.querySelector('button').addEventListener('click', () => dialog.close());
+  dialog.addEventListener('click', event => {
+    if (event.target === dialog) {
+      const bounds = dialog.getBoundingClientRect();
+      if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) dialog.close();
+    }
+  });
+  dialog.querySelectorAll('.map-choices a').forEach(link => link.addEventListener('click', () => dialog.close()));
+  dialog.addEventListener('close', () => {
+    dialog.remove();
+    if (trigger?.isConnected) trigger.focus({ preventScroll: true });
+  }, { once: true });
+  dialog.showModal();
+}
+
 function bindInteractiveControls() {
+  document.querySelectorAll('[data-map-address]').forEach(link => {
+    link.addEventListener('click', event => {
+      event.preventDefault();
+      openMapChooser(link.dataset.mapAddress, link);
+    });
+  });
   document.querySelectorAll('[data-save-id]').forEach((button) => {
     button.addEventListener('click', () => toggleSave(button.dataset.saveId));
   });
@@ -1222,6 +1265,7 @@ function guideFooter() {
 }
 
 function router(resetScroll = true) {
+  document.querySelector('.map-chooser')?.close();
   const previousSearch = document.querySelector('#filterSearchForm input[name="q"]');
   const editingSearch = previousSearch && document.activeElement === previousSearch;
   const selection = editingSearch ? [previousSearch.selectionStart, previousSearch.selectionEnd] : null;

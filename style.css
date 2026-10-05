@@ -1612,3 +1612,19 @@ button:disabled { cursor: wait; opacity: 0.6; }
 @media (min-width: 768px) {
   .account-nav-link > svg { display: none; }
 }
+
+/* Map links always offer a provider choice before opening directions. */
+.outing-card .outing-address { color: #36565b; text-decoration: underline; text-decoration-color: #7aa7ac; text-underline-offset: 3px; }
+.map-chooser { width: min(400px, calc(100% - 28px)); max-height: calc(100dvh - 40px); margin: auto; padding: 22px; border: 1px solid #d9e4e3; border-radius: 18px; color: #244e5d; background: #fff; box-shadow: 0 20px 70px #183d4238; overflow-y: auto; }
+.map-chooser::backdrop { background: #17384166; }
+.map-chooser-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.map-chooser h2 { margin: 0; font-size: 1.25rem; }
+.map-chooser-close { display: grid; place-items: center; width: 40px; height: 40px; padding: 0; border: 0; border-radius: 50%; color: #36565b; background: #eef5f5; font: inherit; font-size: 1.5rem; cursor: pointer; }
+.map-chooser p { margin: 10px 0 18px; color: #526b70; font-size: .9375rem; line-height: 1.5; }
+.map-choices { display: grid; gap: 9px; }
+.map-choices a { display: flex; align-items: center; min-height: 48px; padding: 12px 15px; border: 1px solid #cbdeda; border-radius: 10px; color: #244e5d; background: #f6faf9; font-size: 1rem; font-weight: 600; text-decoration: none; }
+.map-choices a:hover { background: #e7f3f1; border-color: #75aaa9; }
+.map-choices a:focus-visible, .map-chooser-close:focus-visible { outline: 3px solid #176477; outline-offset: 3px; }
+@media (max-width: 767px) {
+  .map-chooser { margin: auto auto max(12px, env(safe-area-inset-bottom, 0px)); padding: 18px; }
+}
