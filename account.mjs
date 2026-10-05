@@ -83,12 +83,14 @@ async function submit(event) {
   if (!flow || flow.snapshot().busy) return;
   const action = event.currentTarget.dataset.accountAction;
   const values = new FormData(event.currentTarget);
-  if (action === 'signin') await flow.signIn({ email: String(values.get('email')), password: String(values.get('password')) });
-  if (action === 'signup') await flow.signUp({ name: String(values.get('name')), email: String(values.get('email')), password: String(values.get('password')) });
+  let signedIn = false;
+  if (action === 'signin') signedIn = await flow.signIn({ email: String(values.get('email')), password: String(values.get('password')) });
+  if (action === 'signup') signedIn = await flow.signUp({ name: String(values.get('name')), email: String(values.get('email')), password: String(values.get('password')) }) && flow.snapshot().view === 'signin';
   if (action === 'forgot') await flow.requestReset(String(values.get('email')));
   if (action === 'verify') await flow.verifyReset(String(values.get('code')).trim());
-  if (action === 'confirm') await flow.verifySignup(String(values.get('code')).trim());
+  if (action === 'confirm') signedIn = await flow.verifySignup(String(values.get('code')).trim());
   if (action === 'reset') await flow.setPassword(String(values.get('password')));
+  if (signedIn) { location.hash = '/'; return; }
   if (location.hash.startsWith('#/account')) document.querySelector('#account-form input')?.focus();
 }
 if (config?.enabled && config.url && config.publishableKey) {
@@ -109,8 +111,9 @@ if (config?.enabled && config.url && config.publishableKey) {
     if (oauthReturn || oauthError) {
       const cleanUrl = new URL(location.href);
       ['code', 'error', 'error_code', 'error_description'].forEach(key => cleanUrl.searchParams.delete(key));
-      cleanUrl.hash = '/account'; history.replaceState(null, '', cleanUrl);
-      if (oauthError || !status().user) loadError = 'Google sign-in did not finish. Please try again.';
+      const signedIn = !oauthError && !!status().user;
+      cleanUrl.hash = signedIn ? '/' : '/account'; history.replaceState(null, '', cleanUrl);
+      if (!signedIn) loadError = 'Google sign-in did not finish. Please try again.';
       changed();
     }
     window.addEventListener('focus', () => store.refresh());
