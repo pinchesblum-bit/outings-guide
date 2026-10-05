@@ -1,11 +1,14 @@
 import { createAccountStore } from './account-store.mjs';
 import { createAuthFlow, profileFor } from './account-auth.mjs';
+import { createSignInReturn, signInDestination } from './account-navigation.mjs';
 
 const config = window.OUTINGS_AUTH_CONFIG;
 const changed = () => window.dispatchEvent(new Event('outings-account-change'));
 const escape = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const guestIds = () => { try { const ids = JSON.parse(localStorage.getItem('outings-guide-trip-list') || '[]'); return Array.isArray(ids) ? ids : []; } catch { return []; } };
 let client, store, flow, loadError = '', resendTimer;
+let signInStorage; try { signInStorage = sessionStorage; } catch {}
+const signInReturn = createSignInReturn(signInStorage);
 const status = () => store?.snapshot() || { ready: !!loadError, user: null, ids: [], busy: false, error: loadError };
 const personIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M4.5 21v-2a7.5 7.5 0 0 1 15 0v2"/></svg>';
 const avatar = user => { const p = profileFor(user); return `<span class="profile-avatar" aria-hidden="true"><span>${escape(p.initials)}</span>${p.photo ? `<img src="${escape(p.photo)}" alt="" referrerpolicy="no-referrer">` : ''}</span>`; };
@@ -76,7 +79,11 @@ function render() {
   document.querySelector('[data-import-guest]')?.addEventListener('click', () => store.importGuest(guestIds()));
   document.querySelector('[data-resend-code]')?.addEventListener('click', () => flow.requestReset());
   document.querySelector('[data-cancel-reset]')?.addEventListener('click', () => flow.cancelReset());
-  document.querySelector('[data-google]')?.addEventListener('click', () => flow.google());
+  document.querySelector('[data-google]')?.addEventListener('click', async () => {
+    if (flow.snapshot().busy) return;
+    signInReturn.remember(location.hash);
+    if (!await flow.google()) signInReturn.clear();
+  });
   bindPhotoFallback();
   clearTimeout(resendTimer);
   if (auth?.view === 'verify' && auth.resendAt > Date.now()) resendTimer = setTimeout(() => { const button = document.querySelector('[data-resend-code]'); if (button && !flow.snapshot().busy) button.disabled = false; }, auth.resendAt - Date.now());
@@ -85,6 +92,7 @@ async function submit(event) {
   event.preventDefault();
   if (!flow || flow.snapshot().busy) return;
   const action = event.currentTarget.dataset.accountAction;
+  const destination = signInDestination(location.hash);
   const values = new FormData(event.currentTarget);
   let signedIn = false;
   if (action === 'signin') signedIn = await flow.signIn({ email: String(values.get('email')), password: String(values.get('password')) });
@@ -93,7 +101,7 @@ async function submit(event) {
   if (action === 'verify') await flow.verifyReset(String(values.get('code')).trim());
   if (action === 'confirm') signedIn = await flow.verifySignup(String(values.get('code')).trim());
   if (action === 'reset') await flow.setPassword(String(values.get('password')));
-  if (signedIn) { location.hash = '/'; return; }
+  if (signedIn) { signInReturn.clear(); location.hash = destination; changed(); return; }
   if (location.hash.startsWith('#/account')) document.querySelector('#account-form input')?.focus();
 }
 if (config?.enabled && config.url && config.publishableKey) {
@@ -115,7 +123,8 @@ if (config?.enabled && config.url && config.publishableKey) {
       const cleanUrl = new URL(location.href);
       ['code', 'error', 'error_code', 'error_description'].forEach(key => cleanUrl.searchParams.delete(key));
       const signedIn = !oauthError && !!status().user;
-      cleanUrl.hash = signedIn ? '/' : '/account'; history.replaceState(null, '', cleanUrl);
+      const destination = signInReturn.consume();
+      cleanUrl.hash = signedIn || destination === '/saved' ? destination : '/account'; history.replaceState(null, '', cleanUrl);
       if (!signedIn) loadError = 'Google sign-in did not finish. Please try again.';
       changed();
     }
