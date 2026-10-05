@@ -1093,7 +1093,7 @@ function openMapChooser(address, trigger) {
       if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) dialog.close();
     }
   });
-  dialog.querySelectorAll('.map-choices a').forEach(link => link.addEventListener('click', () => dialog.close()));
+  dialog.querySelectorAll('.map-choices a').forEach(link => link.addEventListener('click', () => setTimeout(() => { if (dialog.open) dialog.close(); }, 0)));
   dialog.addEventListener('close', () => {
     dialog.remove();
     if (trigger?.isConnected) trigger.focus({ preventScroll: true });
