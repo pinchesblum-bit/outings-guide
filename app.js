@@ -591,33 +591,18 @@ function hasRealFilters(params) {
 }
 
 function renderSearch(openFilters = false, mode = 'search') {
+  if (mode === 'search') return renderSimpleSearch();
   const params = currentParams();
-  const exploring = mode === 'explore';
-  const route = exploring ? '#/explore' : '#/search';
-  const pageName = exploring ? 'Explore' : 'Search';
+  const route = '#/explore';
   const query = normalize(params.get('q') || '');
-  if (!exploring && !query && activeFilterCount(params) === 0) {
-    app.innerHTML = `
-      <section class="search-start">
-        <h1>Search places</h1>
-        <form class="result-search" id="filterSearchForm" data-route="#/search" role="search">
-          <label class="search-field">Search
-            <input type="search" name="q" value="" placeholder="Place, activity or town" autocomplete="off" />
-          </label>
-          <button class="btn primary" type="submit">Search</button>
-        </form>
-      </section>`;
-    bindFilters();
-    return;
-  }
   const filtered = sortListings(applyFilters(DATA.listings, params), params.get('sort') || 'top', query);
   app.innerHTML = `
-    <div class="breadcrumbs"><a href="#/">Home</a><span>/</span><span>${pageName}</span></div>
+    <div class="breadcrumbs"><a href="#/">Home</a><span>/</span><span>Explore</span></div>
     <section class="page-hero">
       <div>
-        <p class="eyebrow">${pageName}</p>
-        <h1>${exploring ? 'Explore places' : 'Find a place'}</h1>
-        <p>${exploring ? `Browse all ${DATA.listings.length} places. Choose filters to find the outings that fit your day.` : `Search all ${DATA.listings.length} places by name, town, category, or activity.`}</p>
+        <p class="eyebrow">Explore</p>
+        <h1>Explore places</h1>
+        <p>Browse all ${DATA.listings.length} places. Choose filters to find the outings that fit your day.</p>
       </div>
     </section>
     ${filterBar(route, params, filtered.length, openFilters)}
@@ -625,6 +610,49 @@ function renderSearch(openFilters = false, mode = 'search') {
   `;
   bindInteractiveControls();
   bindFilters();
+}
+
+function renderSimpleSearch() {
+  const params = currentParams();
+  const rawQuery = params.get('q') || '';
+  const query = rawQuery.trim();
+  const searchParams = new URLSearchParams({ q: query });
+  const matches = normalize(query) ? sortListings(applyFilters(DATA.listings, searchParams), 'top', query) : [];
+  const requestedLimit = Number(params.get('limit'));
+  const limit = Number.isFinite(requestedLimit) && requestedLimit > 0 ? requestedLimit : defaultLimit;
+  const visible = matches.slice(0, limit);
+  app.innerHTML = `
+    <section class="search-start simple-search">
+      <h1>Search places</h1>
+      <form class="result-search" id="filterSearchForm" data-route="#/search" role="search">
+        <label class="search-field"><span class="search-input-label">Place, activity or town</span>
+          <input type="search" name="q" value="${escapeHtml(rawQuery)}" placeholder="Zoo, boating, a town…" autocomplete="off" enterkeyhint="search" aria-label="Search places, activities or towns" />
+        </label>
+        <button class="btn primary" type="submit">Search</button>
+      </form>
+    </section>
+    ${normalize(query) ? `<section class="simple-search-results" aria-label="Search results">
+      <p class="search-result-count" role="status">${matches.length} ${matches.length === 1 ? 'place' : 'places'} found for “${escapeHtml(query)}”</p>
+      ${visible.length ? `<div class="outing-grid results-grid">${visible.map(outingCard).join('')}</div>` : '<div class="empty"><h2>No places found</h2><p>Try a different place, activity or town.</p></div>'}
+      ${matches.length > visible.length ? `<div class="show-more-wrap"><a class="btn primary" href="${escapeHtml(hashFor('#/search', { q: query, limit: String(limit + defaultLimit) }))}">Show more</a></div>` : ''}
+    </section>` : ''}`;
+  bindInteractiveControls();
+  const form = document.getElementById('filterSearchForm');
+  const input = form.querySelector('input[name="q"]');
+  let timer;
+  const update = () => {
+    clearTimeout(timer);
+    if (!form.isConnected) return;
+    history.replaceState(null, '', hashFor('#/search', { q: input.value }));
+    router(false);
+  };
+  form.addEventListener('submit', event => { event.preventDefault(); update(); });
+  input.addEventListener('input', () => {
+    clearTimeout(timer);
+    if (!input.value) update();
+    else timer = setTimeout(update, 220);
+  });
+  input.addEventListener('search', update);
 }
 
 function renderFilter() {
@@ -1147,6 +1175,7 @@ function router(resetScroll = true) {
   const parts = path.split('/').filter(Boolean).map(decodeURIComponent);
   const isHome = !parts.length;
   document.body.classList.toggle('is-home', isHome);
+  document.body.classList.toggle('is-search', parts[0] === 'search');
   applyCategoryTheme(parts[0] === 'category' ? byCategory.get(parts[1]) : null);
   if (isHome) renderHome();
   else if (parts[0] === 'plan') renderPlan();
@@ -1164,8 +1193,7 @@ function router(resetScroll = true) {
   else if (parts[0] === 'pages') renderPages();
   else if (parts[0] === 'page') renderPage(parts[1]);
   else renderNotFound();
-  const emptySearch = parts[0] === 'search' && !normalize(currentParams().get('q') || '') && activeFilterCount(currentParams()) === 0;
-  if (!isHome && !emptySearch && parts[0] !== 'account') app.insertAdjacentHTML('beforeend', guideFooter());
+  if (!isHome && parts[0] !== 'search' && parts[0] !== 'account') app.insertAdjacentHTML('beforeend', guideFooter());
   updateBottomNavigation(parts[0]);
   updateSavedBadges();
   const account = window.OutingsAccount?.status();
