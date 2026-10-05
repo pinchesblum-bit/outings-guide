@@ -2,170 +2,299 @@
   {
     "id": "indoor-fun",
     "category": "Indoor Fun",
-    "file": "indoor-fun-v2.webp",
-    "source": "https://commons.wikimedia.org/wiki/File:Bowling_Alley_Pelixir_Oulu_20150110.JPG",
-    "original": "https://upload.wikimedia.org/wikipedia/commons/c/c6/Bowling_Alley_Pelixir_Oulu_20150110.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
-    "artist": "Estormiz",
-    "license": "CC0",
-    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
-    "changes": "AI-edited with the built-in image generation tool to remove all human imagery from the wall mural; resized and converted to WebP. Original photograph by Estormiz, CC0."
+    "file": "indoor-fun-v3.webp",
+    "creation": "Generated artwork using the built-in image generation tool, 2026-10-05. Illustrative category covers, not documentary photographs.",
+    "visual_references": [],
+    "changes": "Resized and encoded as WebP, 900 x 600."
   },
   {
     "id": "outdoor-fun",
     "category": "Outdoor Fun",
-    "file": "outdoor-fun-original.webp",
-    "creation": "Generated with the built-in image generation tool on 2026-10-05; original category illustration, not a venue photograph.",
-    "changes": "Resized to 900 x 600 and encoded as WebP."
+    "file": "outdoor-fun-v3.webp",
+    "creation": "Generated artwork using the built-in image generation tool, 2026-10-05. Illustrative category covers, not documentary photographs.",
+    "visual_references": [],
+    "changes": "Resized and encoded as WebP, 900 x 600."
   },
   {
     "id": "water-fun",
     "category": "Water Fun",
-    "file": "water-fun-original.webp",
-    "creation": "Generated with the built-in image generation tool on 2026-10-05; original category illustration, not a venue photograph.",
-    "changes": "Resized to 900 x 600 and encoded as WebP."
-  },
-  {
-    "id": "zoos-aquariums",
-    "category": "Zoos & Aquariums",
-    "file": "zoos-aquariums-v2.webp",
-    "source": null,
-    "original": null,
-    "artist": "Created for Outings Guide with the built-in image generation tool",
-    "license": "Generated illustration",
-    "licenseUrl": null,
-    "changes": "Generated category illustration combining land animals and aquarium life; reframed for phone crops, resized and converted to WebP. Not a photograph of a specific attraction."
-  },
-  {
-    "id": "museums-history",
-    "category": "Museums & History",
-    "file": "museums-history-original.webp",
-    "creation": "Generated with the built-in image generation tool on 2026-10-05; original category illustration, not a venue photograph.",
-    "changes": "Resized to 900 x 600 and encoded as WebP."
-  },
-  {
-    "id": "parks-farms",
-    "category": "Parks & Farms",
-    "file": "parks-farms-original.webp",
-    "creation": "Generated with the built-in image generation tool on 2026-10-05; original category illustration, not a venue photograph.",
-    "changes": "Resized to 900 x 600 and encoded as WebP."
-  },
-  {
-    "id": "malls",
-    "category": "Malls",
-    "file": "malls-original.webp",
-    "creation": "Generated with the built-in image generation tool on 2026-10-05; original category illustration, not a venue photograph.",
-    "changes": "Resized to 900 x 600 and encoded as WebP."
-  },
-  {
-    "id": "catskills",
-    "category": "Catskills",
-    "file": "catskills-original.webp",
-    "creation": "Generated with the built-in image generation tool on 2026-10-05; original category illustration, not a venue photograph.",
-    "changes": "Resized to 900 x 600 and encoded as WebP."
-  },
-  {
-    "id": "airports",
-    "category": "Airports",
-    "file": "airports-original.webp",
-    "creation": "Generated with the built-in image generation tool on 2026-10-05; original category illustration, not a venue photograph.",
-    "changes": "Resized to 900 x 600 and encoded as WebP."
-  },
-  {
-    "id": "niagara-falls",
-    "category": "Niagara Falls",
-    "file": "niagara-falls-original.webp",
-    "creation": "Generated with the built-in image generation tool on 2026-10-05; original category illustration, not a venue photograph.",
-    "changes": "Resized to 900 x 600 and encoded as WebP."
-  },
-  {
-    "id": "newport-rhode-island",
-    "category": "Newport / Rhode Island",
-    "file": "newport-rhode-island-original.webp",
-    "creation": "Generated with the built-in image generation tool on 2026-10-05; original category illustration, not a venue photograph.",
-    "changes": "Resized to 900 x 600 and encoded as WebP."
-  },
-  {
-    "id": "poconos",
-    "category": "Poconos",
-    "file": "poconos-original.webp",
-    "creation": "Generated with the built-in image generation tool on 2026-10-05; original category illustration, not a venue photograph.",
-    "changes": "Resized to 900 x 600 and encoded as WebP."
-  },
-  {
-    "id": "hudson-valley-catskills",
-    "category": "Hudson Valley & Catskills",
-    "file": "hudson-valley-catskills-original.webp",
-    "creation": "Generated with the built-in image generation tool on 2026-10-05; original category illustration, not a venue photograph.",
-    "changes": "Resized to 900 x 600 and encoded as WebP."
-  },
-  {
-    "id": "amish-town",
-    "category": "Amish Town",
-    "file": "amish-town-original.webp",
-    "creation": "Generated with the built-in image generation tool on 2026-10-05; original category illustration, not a venue photograph.",
-    "changes": "Resized to 900 x 600 and encoded as WebP."
+    "file": "water-fun-v3.webp",
+    "creation": "Generated artwork using the built-in image generation tool, 2026-10-05. Illustrative category covers, not documentary photographs.",
+    "visual_references": [],
+    "changes": "Resized and encoded as WebP, 900 x 600."
   },
   {
     "id": "washington-dc",
     "category": "Washington DC",
-    "file": "washington-dc-original.webp",
-    "creation": "Generated with the built-in image generation tool on 2026-10-05; original category illustration, not a venue photograph.",
-    "changes": "Resized to 900 x 600 and encoded as WebP."
+    "file": "washington-dc-v3.webp",
+    "creation": "Generated artwork using the built-in image generation tool, 2026-10-05. Illustrative category covers, not documentary photographs.",
+    "visual_references": [
+      {
+        "url": "https://www.whitehousehistory.org/photos/depiction-of-the-north-portico",
+        "facts": "Historic north portico has a triangular pediment and tall columns; north entrance differs from rounded south portico."
+      },
+      {
+        "url": "https://www.wosu.org/show/all-sides/2024-09-13/cast-members-discuss-the-enduring-legacy-of-the-west-wing",
+        "facts": "Reference photo visually inspected for north facade, window rows, proportions and roofline; not copied."
+      }
+    ],
+    "changes": "Resized and encoded as WebP, 900 x 600."
   },
   {
-    "id": "palm-springs",
-    "category": "Palm Springs",
-    "file": "palm-springs-original.webp",
-    "creation": "Generated with the built-in image generation tool on 2026-10-05; original category illustration, not a venue photograph.",
-    "changes": "Resized to 900 x 600 and encoded as WebP."
+    "id": "niagara-falls",
+    "category": "Niagara Falls",
+    "file": "niagara-falls-v3.webp",
+    "creation": "Generated artwork using the built-in image generation tool, 2026-10-05. Illustrative category covers, not documentary photographs.",
+    "visual_references": [
+      {
+        "url": "https://www.visitniagaracanada.com/do/the-falls/",
+        "facts": "Official tourism aerial photograph visually inspected: concave horseshoe crest, broad rapids above, turquoise water, flat wooded banks and infrastructure; no mountains."
+      },
+      {
+        "url": "https://www.niagaraparks.com/visit/attractions/journey-behind-the-falls/",
+        "facts": "Official Horseshoe Falls location and scale."
+      }
+    ],
+    "changes": "Resized and encoded as WebP, 900 x 600."
   },
   {
-    "id": "tucson-arizona",
-    "category": "Tucson Arizona",
-    "file": "tucson-arizona-original.webp",
-    "creation": "Generated with the built-in image generation tool on 2026-10-05; original category illustration, not a venue photograph.",
-    "changes": "Resized to 900 x 600 and encoded as WebP."
+    "id": "zoos-aquariums",
+    "category": "Zoos & Aquariums",
+    "file": "zoos-aquariums-v3.webp",
+    "creation": "Generated artwork using the built-in image generation tool, 2026-10-05. Illustrative category covers, not documentary photographs.",
+    "visual_references": [],
+    "changes": "Resized and encoded as WebP, 900 x 600."
   },
   {
-    "id": "casa-grande",
-    "category": "Casa Grande",
-    "file": "casa-grande-original.webp",
-    "creation": "Generated with the built-in image generation tool on 2026-10-05; original category illustration, not a venue photograph.",
-    "changes": "Resized to 900 x 600 and encoded as WebP."
+    "id": "museums-history",
+    "category": "Museums & History",
+    "file": "museums-history-v3.webp",
+    "creation": "Generated artwork using the built-in image generation tool, 2026-10-05. Illustrative category covers, not documentary photographs.",
+    "visual_references": [],
+    "changes": "Resized and encoded as WebP, 900 x 600."
   },
   {
-    "id": "myrtle-beach",
-    "category": "Myrtle Beach",
-    "file": "myrtle-beach-original.webp",
-    "creation": "Generated with the built-in image generation tool on 2026-10-05; original category illustration, not a venue photograph.",
-    "changes": "Resized to 900 x 600 and encoded as WebP."
+    "id": "parks-farms",
+    "category": "Parks & Farms",
+    "file": "parks-farms-v3.webp",
+    "creation": "Generated artwork using the built-in image generation tool, 2026-10-05. Illustrative category covers, not documentary photographs.",
+    "visual_references": [],
+    "changes": "Resized and encoded as WebP, 900 x 600."
   },
   {
-    "id": "west-palm",
-    "category": "West Palm",
-    "file": "west-palm-original.webp",
-    "creation": "Generated with the built-in image generation tool on 2026-10-05; original category illustration, not a venue photograph.",
-    "changes": "Resized to 900 x 600 and encoded as WebP."
+    "id": "malls",
+    "category": "Malls",
+    "file": "malls-v3.webp",
+    "creation": "Generated artwork using the built-in image generation tool, 2026-10-05. Illustrative category covers, not documentary photographs.",
+    "visual_references": [],
+    "changes": "Resized and encoded as WebP, 900 x 600."
   },
   {
-    "id": "north-miami",
-    "category": "North Miami",
-    "file": "north-miami-original.webp",
-    "creation": "Generated with the built-in image generation tool on 2026-10-05; original category illustration, not a venue photograph.",
-    "changes": "Resized to 900 x 600 and encoded as WebP."
-  },
-  {
-    "id": "tampa-florida",
-    "category": "Tampa Florida",
-    "file": "tampa-florida-original.webp",
-    "creation": "Generated with the built-in image generation tool on 2026-10-05; original category illustration, not a venue photograph.",
-    "changes": "Resized to 900 x 600 and encoded as WebP."
+    "id": "airports",
+    "category": "Airports",
+    "file": "airports-v3.webp",
+    "creation": "Generated artwork using the built-in image generation tool, 2026-10-05. Illustrative category covers, not documentary photographs.",
+    "visual_references": [],
+    "changes": "Resized and encoded as WebP, 900 x 600."
   },
   {
     "id": "local-rentals",
     "category": "Local Rentals",
-    "file": "local-rentals-original.webp",
-    "creation": "Generated with the built-in image generation tool on 2026-10-05; original category illustration, not a venue photograph.",
-    "changes": "Resized to 900 x 600 and encoded as WebP."
+    "file": "local-rentals-v3.webp",
+    "creation": "Generated artwork using the built-in image generation tool, 2026-10-05. Illustrative category covers, not documentary photographs.",
+    "visual_references": [],
+    "changes": "Resized and encoded as WebP, 900 x 600."
+  },
+  {
+    "id": "newport-rhode-island",
+    "category": "Newport / Rhode Island",
+    "file": "newport-rhode-island-v3.webp",
+    "creation": "Generated artwork using the built-in image generation tool, 2026-10-05. Illustrative category covers, not documentary photographs.",
+    "visual_references": [
+      {
+        "url": "https://www.history.uscg.mil/Browse-by-Topic/Assets/Land/Lighthouses-Light-Stations/Article/1912499/castle-hill-lighthouse/",
+        "facts": "USCG identifies real Castle Hill Lighthouse in Newport."
+      },
+      {
+        "url": "https://www.locationscout.net/usa/32619-castle-hill-lighthouse",
+        "facts": "Photo visually inspected: short tapering granite tower, white upper masonry, unpainted lower masonry, black lantern and railing on rocky ledge. Fresh daytime angle rather than source sunset composition."
+      }
+    ],
+    "changes": "Resized and encoded as WebP, 900 x 600."
+  },
+  {
+    "id": "casa-grande",
+    "category": "Casa Grande",
+    "file": "casa-grande-v3.webp",
+    "creation": "Generated artwork using the built-in image generation tool, 2026-10-05. Illustrative category covers, not documentary photographs.",
+    "visual_references": [
+      {
+        "url": "https://www.nps.gov/cagr/index.htm",
+        "facts": "Official NPS photo inspected: caliche Great House under broad low roof canopy with four exterior splayed supports and steel trusses; central taller core."
+      }
+    ],
+    "changes": "Resized and encoded as WebP, 900 x 600."
+  },
+  {
+    "id": "tucson-arizona",
+    "category": "Tucson Arizona",
+    "file": "tucson-arizona-v3.webp",
+    "creation": "Generated artwork using the built-in image generation tool, 2026-10-05. Illustrative category covers, not documentary photographs.",
+    "visual_references": [
+      {
+        "url": "https://www.nps.gov/sagu/index.htm",
+        "facts": "Official park source locates Sonoran saguaro landscape east/west of Tucson; NPS hiking photo inspected for low brush, rocky slopes and ridges."
+      }
+    ],
+    "changes": "Resized and encoded as WebP, 900 x 600."
+  },
+  {
+    "id": "palm-springs",
+    "category": "Palm Springs",
+    "file": "palm-springs-v3.webp",
+    "creation": "Generated artwork using the built-in image generation tool, 2026-10-05. Illustrative category covers, not documentary photographs.",
+    "visual_references": [
+      {
+        "url": "https://pstramway.com/media/photos/tramcar-photos/",
+        "facts": "Official Tramcar Exterior7 photo visually inspected: modern round cabin, yellow lower body, black grid windows, silver double suspension hanger; granite Chino Canyon, scattered pine trees and desert plain below. Source not supplied to generation or copied."
+      }
+    ],
+    "changes": "Resized and encoded as WebP, 900 x 600."
+  },
+  {
+    "id": "catskills",
+    "category": "Catskills",
+    "file": "catskills-v3.webp",
+    "creation": "Generated artwork using the built-in image generation tool, 2026-10-05. Illustrative category covers, not documentary photographs.",
+    "visual_references": [
+      {
+        "url": "https://dec.ny.gov/places/north-south-lake-campground-and-day-use-area",
+        "facts": "NYSDEC photo visually inspected: rock ledge above compact lake basins and broad wooded low ridges; reference used for terrain, with original daytime composition."
+      }
+    ],
+    "changes": "Resized and encoded as WebP, 900 x 600."
+  },
+  {
+    "id": "hudson-valley-catskills",
+    "category": "Hudson Valley & Catskills",
+    "file": "hudson-valley-catskills-v3.webp",
+    "creation": "Generated artwork using the built-in image generation tool, 2026-10-05. Illustrative category covers, not documentary photographs.",
+    "visual_references": [
+      {
+        "url": "https://www.scenichudson.org/explore-the-valley/scenic-hudson-parks/stowell-trailhead/",
+        "facts": "Storm King overlooks Hudson and is managed as park."
+      },
+      {
+        "url": "https://hudsonvalleylove.wordpress.com/2015/07/09/hiking-storm-king-state-park/",
+        "facts": "Real photo visually inspected: broad river across view, forested ridge on opposite bank with gray granite exposure and track along shore. Changed weather and lens composition."
+      }
+    ],
+    "changes": "Resized and encoded as WebP, 900 x 600."
+  },
+  {
+    "id": "amish-town",
+    "category": "Amish Town",
+    "file": "amish-town-v3.webp",
+    "creation": "Generated artwork using the built-in image generation tool, 2026-10-05. Illustrative category covers, not documentary photographs.",
+    "visual_references": [
+      {
+        "url": "https://www.discoverlancaster.com/regions-towns/amish-countryside/",
+        "facts": "Official tourism source: rolling crop fields, farms and horse-and-buggy roads."
+      },
+      {
+        "url": "https://lancastercountyamish.org/",
+        "facts": "Reference photo inspected for gray/black enclosed buggy with narrow spoked wheels, white bank barn and silo, low rolling farmland; original daytime composition with empty parked buggy."
+      }
+    ],
+    "changes": "Resized and encoded as WebP, 900 x 600."
+  },
+  {
+    "id": "myrtle-beach",
+    "category": "Myrtle Beach",
+    "file": "myrtle-beach-v3.webp",
+    "creation": "Generated artwork using the built-in image generation tool, 2026-10-05. Illustrative category covers, not documentary photographs.",
+    "visual_references": [
+      {
+        "url": "https://www.visitmyrtlebeach.com/things-to-do/attractions/boardwalk",
+        "facts": "Official boardwalk photograph inspected: thin white wheel, enclosed dark cabins, palmettos, curved lamps and low beachfront shops."
+      },
+      {
+        "url": "https://www.visitmyrtlebeach.com/coupon/skywheel-myrtle-beach-2-off",
+        "facts": "Official source: SkyWheel187feet and42 enclosed gondolas."
+      }
+    ],
+    "changes": "Resized and encoded as WebP, 900 x 600."
+  },
+  {
+    "id": "west-palm",
+    "category": "West Palm",
+    "file": "west-palm-v3.webp",
+    "creation": "Generated artwork using the built-in image generation tool, 2026-10-05. Illustrative category covers, not documentary photographs.",
+    "visual_references": [
+      {
+        "url": "https://www.thepalmbeaches.com/explore-cities/west-palm-beach",
+        "facts": "Official tourism source for downtown and Flagler waterfront."
+      },
+      {
+        "url": "https://www.thepalmbeaches.com/blog/20-most-instagrammable-places-palm-beaches",
+        "facts": "Waterfront image inspected: yellow-tan stepped-crown midrise towers, palm seawall, white-railed wooden public docks and broad open Intracoastal water."
+      },
+      {
+        "url": "https://www.thepalmbeaches.com/listing/west-palm-beach-city-docks",
+        "facts": "Official destination photo inspected: stepped yellow-tan waterfront towers, palms, floating docks with white posts, broad Intracoastal water."
+      }
+    ],
+    "changes": "Resized and encoded as WebP, 900 x 600."
+  },
+  {
+    "id": "north-miami",
+    "category": "North Miami",
+    "file": "north-miami-v3.webp",
+    "creation": "Generated artwork using the built-in image generation tool, 2026-10-05. Illustrative category covers, not documentary photographs.",
+    "visual_references": [
+      {
+        "url": "https://www.floridastateparks.org/OletaRiver",
+        "facts": "Official state park: mangrove estuary paddling."
+      },
+      {
+        "url": "https://www.floridastateparks.org/parks-and-trails/oleta-river-state-park/experiences-amenities",
+        "facts": "Oleta photo inspected: narrow channel with arching mangrove canopy, exposed brown prop roots and dark olive-green water, used for habitat accuracy."
+      },
+      {
+        "url": "https://www.getyourguide.com/oleta-river-state-park-l159394/",
+        "facts": "Third-party photo reference inspected for a mangrove-lined channel, arching foliage and exposed roots; official park pages separately support the habitat facts."
+      }
+    ],
+    "changes": "Resized and encoded as WebP, 900 x 600."
+  },
+  {
+    "id": "tampa-florida",
+    "category": "Tampa Florida",
+    "file": "tampa-florida-v3.webp",
+    "creation": "Generated artwork using the built-in image generation tool, 2026-10-05. Illustrative category covers, not documentary photographs.",
+    "visual_references": [
+      {
+        "url": "https://www.visittampabay.com/listings/riverwalk-at-tampa-convention-center/9199/",
+        "facts": "Official riverwalk photo visually inspected: white tubular railing beside broad Hillsborough River, tan cylindrical Rivergate Tower, nearby rectangular towers and low bridge. Changed viewpoint and lighting for original composition."
+      }
+    ],
+    "changes": "Resized and encoded as WebP, 900 x 600."
+  },
+  {
+    "id": "poconos",
+    "category": "Poconos",
+    "file": "poconos-v3.webp",
+    "creation": "Generated artwork using the built-in image generation tool, 2026-10-05. Illustrative category covers, not documentary photographs.",
+    "visual_references": [
+      {
+        "url": "https://www.nps.gov/dewa/planyourvisit/red-dot-trail.htm",
+        "facts": "NPS verifies Tammany overlook facing Water Gap/Minsi."
+      },
+      {
+        "url": "https://www.aol.com/articles/5-best-destinations-visit-between-224400203.html",
+        "facts": "Photo inspected: river curves below steep wooded Minsi slope, road following bank, gray rock ledge; original daylight reframing."
+      }
+    ],
+    "changes": "Resized and encoded as WebP, 900 x 600."
   }
 ]

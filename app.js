@@ -307,10 +307,10 @@ function groupCard(group) {
 }
 
 function categoryCard(cat) {
-  const imageFile = ['indoor-fun', 'zoos-aquariums'].includes(cat.id) ? `${cat.id}-v2.webp` : `${cat.id}-original.webp`;
+  const imageFile = `${cat.id}-v3.webp`;
   return `
     <a class="category-card photo-category-card" href="#/category/${encodeURIComponent(cat.id)}">
-      <img class="category-photo category-photo-${escapeHtml(cat.id)}" src="category-images/${encodeURIComponent(imageFile)}" alt="" width="720" height="440" loading="lazy" decoding="async" />
+      <img class="category-photo category-photo-${escapeHtml(cat.id)}" src="category-images/${encodeURIComponent(imageFile)}" alt="" width="900" height="600" loading="lazy" decoding="async" />
       <div class="category-caption">
         <h3>${escapeHtml(cat.title)}</h3>
         <span class="category-place-count">${cat.count} places</span>

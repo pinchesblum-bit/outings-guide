@@ -620,7 +620,7 @@ select:focus {
   width: 100%;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
 }
-.category-photo-zoos-aquariums { object-position: 60% center; }
+.category-photo-zoos-aquariums { object-position: center; }
 .photo-category-card .category-caption h3 {
   font-family: inherit;
   font-size: 1.2rem;

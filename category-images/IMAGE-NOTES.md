@@ -1,182 +1,282 @@
-# Category image update
+# Category artwork, revision 3
 
-Created with the built-in image generation tool. The Indoor Fun image is an edit of Estormiz's CC0 bowling alley photograph. The Zoos & Aquariums image is a generated category illustration, not a photograph of a named attraction.
+Created using the built-in image generation tool. Named destination scenes were guided by factual visual references; compositions are newly generated, not reproductions of a source photograph. Generated illustrations are not exact documentary photographs or a guarantee of legal status. The original homepage hero is unchanged.
 
-Final assets:
-- `category-images/indoor-fun-v2.webp` (720 x 440)
-- `category-images/zoos-aquariums-v2.webp` (720 x 440)
+## Indoor Fun
 
-## Indoor Fun prompt
+Asset: `category-images/indoor-fun-v3.webp` (900 × 600).
 
-Use case: precise-object-edit
-Asset type: landscape photograph for the Indoor Fun category card on a family outings website.
-Edit target: the provided bowling alley photograph.
-Primary request: Remove EVERY person and EVERY human depiction from this image, including all the faces, people, photographs of people, figures, and portraits in the mural spanning the back wall. Replace that entire mural with attractive simple abstract teal and blue bowling-ball and bowling-pin graphic panels with no lettering and no human imagery. Remove the words and brands from the mural. Keep the actual empty bowling alley, lanes, pins, perspective, ceiling and foreground ball-return equipment unchanged. Keep the photographic look and original composition, with a slightly clearer well-lit appearance. No people anywhere, including no silhouettes, reflections, mannequins, portraits or posters of people. No text, watermark, or logos. Output one clean professional landscape image.
+Prompt:
 
-## Zoos & Aquariums prompt
+Use case: photorealistic-natural. Asset: original travel-guide category cover, landscape 3:2. Natural believable photographic realism, bright clean daytime colors and crisp inviting details, no fantasy enhancements or orange/gold filters. Main identifying subject centered upper-middle; crop-safe for a central square on phone. Original composition, not a duplication of any particular source photograph. No people or human depictions anywhere, no text, signage, logos or watermarks. An inviting modern indoor family leisure center, architecturally plausible high-ceiling skylit hall: center has colorful contained two-story soft-play climbing structure and a short slide with proper railings and padded flooring, right side a row of generic unbranded arcade cabinets with abstract glowing screens, through broad glass partition in rear left a small indoor leisure pool with a modest enclosed water slide. Distinct dry and wet areas physically separated. Clean tasteful vibrant primary colors, no bowling lanes. Do not blend equipment into impossible structures.
 
-Use case: ads-marketing
-Asset type: professional landscape category-cover image for the Zoos & Aquariums tile on a family outings website.
-Primary request: A beautiful photo-realistic editorial composite that clearly represents BOTH zoo land animals AND underwater aquarium life in a single clean small image. This is a category illustration, not a photo of a named real attraction.
-Composition: Landscape 720:440 ratio. Left half: a clearly recognizable giraffe's head and elegant neck with a zebra nearby, in a lush natural zoo habitat in warm daylight. Right half: a sea turtle and a small school of colorful tropical fish swimming in luminous turquoise aquarium water. Arrange the giraffe head at roughly 35% across and turtle at 65% across so both main subjects remain clearly visible when the image is center-cropped to a nearly square phone tile. Heads and main subjects must occupy the upper and middle portions. Keep the bottom quarter quieter for a website text overlay, but DO NOT render any text. The two distinct environments are joined by a tasteful soft organic edge of foliage and aquarium rock; visually harmonious, no hard divider or decorative frame. Land animals are entirely on land; sea life entirely underwater. Clear anatomical accuracy and recognizable species.
-Style: Premium realistic wildlife photography art direction, natural rich greens, clean aqua and warm sunlight, crisp subjects, professional restrained composition, exciting and welcoming. Not cartoon, not a busy collage.
-Constraints: Absolutely no people, human silhouettes, crowds, faces, human photos, text, signage, logos or watermark. No extra panels. Avoid cut-off main animal faces. One cohesive category cover.
+References:
 
-## Phone framing refinement
 
-Use case: precise-object-edit
-Edit target: the provided zoo-and-aquarium composite. Keep the same attractive realistic giraffe, zebra, sea turtle, fish, land habitat on the left and underwater habitat on the right, lighting and professional style. The ONLY change is responsive framing: the image must work when its leftmost 23% and rightmost 23% are cropped off for a narrow phone card. Reposition/scale the subjects so the entire giraffe face and both ears sit between 30% and 43% of the image width, and the entire sea turtle face and eye sit between 62% and 74% of the image width. Move the turtle appreciably toward the center and make its body a little smaller; its head must NOT be near the right edge. Place the zebra's head nearer the giraffe rather than at the far left. The main heads must be between 15% and 48% of the image height, safely above lower caption text. Retain a natural photographic composition. Keep the outer edges as attractive habitat only. No added text, people, silhouettes, logos, watermark or frame. Landscape image, same aspect ratio.
+## Outdoor Fun
 
+Asset: `category-images/outdoor-fun-v3.webp` (900 × 600).
 
-## Original category artwork — 2026-10-05
+Prompt:
 
-Replaced all 21 attribution-requiring category photographs with newly generated artwork. No reference photographs were supplied. Existing generated hero and zoo artwork and CC0-based indoor image are retained. Region covers are illustrative, not photographs of exact destinations. Former licensed assets and public photo-credit page were removed from the current site.
+Use case: photorealistic-natural. Asset: original travel-guide category cover, landscape 3:2. Natural believable photographic realism, bright clean daytime colors and crisp inviting details, no fantasy enhancements or orange/gold filters. Main identifying subject centered upper-middle; crop-safe for a central square on phone. Original composition, not a duplication of any particular source photograph. No people or human depictions anywhere, no text, signage, logos or watermarks. A real-world plausible landscaped small amusement park in the northeastern United States in summer: centered medium-size Ferris wheel with enclosed gondolas and structurally accurate spokes, a gently looping family rollercoaster behind manicured green lawn, empty paved walking paths and a colorful stationary carousel pavilion. Broad daylight blue sky. Dry land rides only, absolutely no lake, pool, river, waterfall or water slide. Keep ride scale believable.
 
-Shared prompt direction: Original 3:2 landscape category cover; premium photorealistic travel illustration, warm inviting sunshine, vivid natural color; main subjects in upper two thirds for mobile crops; calm lower quarter; no people, text, brands, watermarks, border or collage.
+References:
 
-### outdoor-fun
 
-Original inviting outdoor amusement park with a roller coaster in warm sunshine, no people or brands.
+## Water Fun
 
-Final asset: `category-images/outdoor-fun-original.webp` (900 × 600).
-Generated output: `exec-dca5406a-fba9-4038-aa7b-925096637d25.png`.
+Asset: `category-images/water-fun-v3.webp` (900 × 600).
 
-### water-fun
+Prompt:
 
-An inviting generic outdoor water park with curving aqua and coral waterslides descending into a sparkling turquoise pool, palm trees and bright summer sunshine. No riders.
+Use case: photorealistic-natural. Asset: original travel-guide category cover, landscape 3:2. Natural believable photographic realism, bright clean daytime colors and crisp inviting details, no fantasy enhancements or orange/gold filters. Main identifying subject centered upper-middle; crop-safe for a central square on phone. Original composition, not a duplication of any particular source photograph. No people or human depictions anywhere, no text, signage, logos or watermarks. A tranquil northeastern US freshwater lake boating area, a small clean wooden dock in lower-left reaching toward center with two empty kayaks, yellow and teal, neatly moored alongside; a single empty conventional two-seat pedal boat tied on the other side, a small sailboat moored far across water. Calm blue-green lake, low tree-covered green hills in the distance, authentic natural scale. Boating and lake leisure, no waterpark, swimming-pool or waterslides.
 
-Final asset: `category-images/water-fun-original.webp` (900 × 600).
-Generated output: `exec-18f24bf5-57bc-486f-8c2d-239e2a5b93be.png`.
+References:
 
-### museums-history
 
-An original imagined grand natural history museum interior: airy stone hall, an impressive anatomically plausible dinosaur skeleton under a high glass ceiling, warm sunbeams, elegant exhibits without signs. No people or statues of people.
+## Washington DC
 
-Final asset: `category-images/museums-history-original.webp` (900 × 600).
-Generated output: `exec-0e7934f4-c1c0-48b1-bb00-e90f8efe8897.png`.
+Asset: `category-images/washington-dc-v3.webp` (900 × 600).
 
-### parks-farms
+Prompt:
 
-A sunlit apple orchard and welcoming red barn with a winding grassy path, ripe red apples on foreground branches and rolling green farmland, charming fresh autumn sunshine.
+Use case: photorealistic-natural. Asset: original travel-guide category cover, landscape 3:2. Natural believable photographic realism, bright clean daytime colors and crisp inviting details, no fantasy enhancements or orange/gold filters. Main identifying subject centered upper-middle; crop-safe for a central square on phone. Original composition, not a duplication of any particular source photograph. No people or human depictions anywhere, no text, signage, logos or watermarks. The actual WHITE HOUSE executive residence in Washington DC, recognizable authentic NORTH FACADE, close architectural view from the North Lawn with a subtle slight west-of-center angle. Centered front triangular pediment supported by tall Ionic columns, rectangular building with accurate symmetrical rows of sash windows and white stone balustrade atop flat roof. NOT the curved south portico. The main residence fills 88% image width and 65% height, centered upper-middle, straight verticals and moderate telephoto lens. Small simple strip of lawn below, clean pale blue sky above. Absolutely NO framing trees, tree branches, giant gardens, fountain or extra foreground scenery. No dome, no Capitol, no added wings or invented columns. A timeless architectural depiction matching the historic north facade rather than any ongoing construction. Study factual architecture, create a new original camera composition.
 
-Final asset: `category-images/parks-farms-original.webp` (900 × 600).
-Generated output: `exec-f2ec32f4-2dd3-4cba-bef4-a608129ddd4e.png`.
+References:
 
-### malls
+- https://www.whitehousehistory.org/photos/depiction-of-the-north-portico — Historic north portico has a triangular pediment and tall columns; north entrance differs from rounded south portico.
+- https://www.wosu.org/show/all-sides/2024-09-13/cast-members-discuss-the-enduring-legacy-of-the-west-wing — Reference photo visually inspected for north facade, window rows, proportions and roofline; not copied.
 
-An inviting contemporary shopping mall atrium, elegant cream stone, tall skylight, palms, escalators, clean empty walkways and glass storefronts without any lettering, logos or human mannequins.
+## Niagara Falls
 
-Final asset: `category-images/malls-original.webp` (900 × 600).
-Generated output: `exec-160846b3-41bc-47c5-b345-6372dca176b7.png`.
+Asset: `category-images/niagara-falls-v3.webp` (900 × 600).
 
-### catskills
+Prompt:
 
-A Catskills-inspired New York mountain landscape, layers of forested peaks, fall gold and green foliage, tranquil clear lake in foreground, warm morning sunshine. Scenic illustration, not a particular named property's photograph.
+Use case: photorealistic-natural. Asset: original travel-guide category cover, landscape 3:2. Natural believable photographic realism, bright clean daytime colors and crisp inviting details, no fantasy enhancements or orange/gold filters. Main identifying subject centered upper-middle; crop-safe for a central square on phone. Original composition, not a duplication of any particular source photograph. No people or human depictions anywhere, no text, signage, logos or watermarks. Actual Canadian HORSESHOE FALLS at Niagara, geographically accurate elevated oblique view from Canadian side looking across the sweeping concave horseshoe brink toward the flat wooded Goat Island shore. The huge broad U-shaped curtain of white falling water fills center, turquoise upstream Niagara River becomes white rapids at the brink, thick natural mist rises inside horseshoe, deep emerald downstream basin below. Height about 57m versus curved crest about 790m so waterfall is broad and low, never narrow mountain waterfall. Flat gently wooded banks, low Niagara escarpment. No invented mountains, no tall peaks, no extra waterfalls, no exotic cliffs or tropical foliage. No boat occupants. Original photographic composition, use accurate horseshoe shape and flat real Niagara terrain; only Horsehoe Falls within this framing.
 
-Final asset: `category-images/catskills-original.webp` (900 × 600).
-Generated output: `exec-2ee34afb-3d1f-4d6a-81ae-58b4edd04922.png`.
+References:
 
-### airports
+- https://www.visitniagaracanada.com/do/the-falls/ — Official tourism aerial photograph visually inspected: concave horseshoe crest, broad rapids above, turquoise water, flat wooded banks and infrastructure; no mountains.
+- https://www.niagaraparks.com/visit/attractions/journey-behind-the-falls/ — Official Horseshoe Falls location and scale.
 
-A small unbranded white high-wing propeller airplane parked on a scenic rural airfield, runway leading into green hills under a bright open sky, inviting aviation day-trip atmosphere. No people or readable registration.
+## Zoos & Aquariums
 
-Final asset: `category-images/airports-original.webp` (900 × 600).
-Generated output: `exec-e39b2193-1493-4743-8ecc-78e454d36d14.png`.
+Asset: `category-images/zoos-aquariums-v3.webp` (900 × 600).
 
-### niagara-falls
+Prompt:
 
-An original scenic illustration of Niagara's broad Horseshoe Falls viewed from the rim, powerful turquoise water, luminous rising mist and a subtle rainbow, green shoreline, clear summer daylight. Invent an original viewpoint, do not reproduce any photograph.
+Use case: photorealistic-natural. Asset: original travel-guide category cover, landscape 3:2. Natural believable photographic realism, bright clean daytime colors and crisp inviting details, no fantasy enhancements or orange/gold filters. Main identifying subject centered upper-middle; crop-safe for a central square on phone. Original composition, not a duplication of any particular source photograph. No people or human depictions anywhere, no text, signage, logos or watermarks. Create a tasteful scientifically naturalistic editorial animal illustration with realistic anatomy and natural textures (this cover is a painted illustration rather than photograph). Seamlessly composed two clearly distinct habitats: upper two-thirds a single anatomically accurate giraffe standing on green grass beside one zebra in a natural zoo savanna habitat; lower third a clearly underwater cutaway with a sea turtle and three colorful reef fish in blue water above small coral. The land animals never enter water and turtle never floats in sky. Center giraffe's head/neck and zebra together in crop safe middle. All animals complete correct limbs, no hybrid animals. Gentle clean colors and convincing light, no cartoon faces.
 
-Final asset: `category-images/niagara-falls-original.webp` (900 × 600).
-Generated output: `exec-2a09b67b-9be3-4723-bf27-655ce666aa2a.png`.
+References:
 
-### newport-rhode-island
 
-A Newport Rhode Island-inspired coastal scene: small classic white lighthouse on a rocky Atlantic headland, deep blue ocean and sea grass, one distant sailboat, bright warm sunshine. Original travel illustration.
+## Museums & History
 
-Final asset: `category-images/newport-rhode-island-original.webp` (900 × 600).
-Generated output: `exec-5474ee6a-183d-4a55-8859-4ca0538baf59.png`.
+Asset: `category-images/museums-history-v3.webp` (900 × 600).
 
-### poconos
+Prompt:
 
-A Pocono Mountains-inspired scenic river gap between forested rounded mountains, sparkling river curving through green and autumn-gold trees, inviting lakeside trail and sunlit blue sky.
+Use case: photorealistic-natural. Asset: original travel-guide category cover, landscape 3:2. Natural believable photographic realism, bright clean daytime colors and crisp inviting details, no fantasy enhancements or orange/gold filters. Main identifying subject centered upper-middle; crop-safe for a central square on phone. Original composition, not a duplication of any particular source photograph. No people or human depictions anywhere, no text, signage, logos or watermarks. A plausible handsome natural-history museum gallery with warm limestone walls, high barrel-vault ceiling and a scientifically credible Triceratops fossil skeleton as central exhibit on a low pedestal, accurate four-legged ceratopsian anatomy, three horns and neck frill; behind it quiet glass cases of geological minerals, no human statues or portraits. Empty clean museum, daylight from high windows, inviting educational atmosphere, clearly museum/historical discovery category, no invented outdoor monument.
 
-Final asset: `category-images/poconos-original.webp` (900 × 600).
-Generated output: `exec-34d354a3-2bc6-4e64-ac45-6e948951c2bf.png`.
+References:
 
-### hudson-valley-catskills
 
-An original Hudson Valley-inspired landscape: broad blue river winding between lush forested mountains, small stone overlook in foreground and warm fall foliage, clear golden afternoon light.
+## Parks & Farms
 
-Final asset: `category-images/hudson-valley-catskills-original.webp` (900 × 600).
-Generated output: `exec-8dea1238-3289-4322-bfc1-6827fdf33e5e.png`.
+Asset: `category-images/parks-farms-v3.webp` (900 × 600).
 
-### amish-town
+Prompt:
 
-An original Lancaster countryside-inspired illustration, a black horse-drawn buggy parked beside a red barn, peaceful rolling patchwork farmland and a wooden fence, warm sunshine. No person, driver, silhouette or human depiction.
+Use case: photorealistic-natural. Asset: original travel-guide category cover, landscape 3:2. Natural believable photographic realism, bright clean daytime colors and crisp inviting details, no fantasy enhancements or orange/gold filters. Main identifying subject centered upper-middle; crop-safe for a central square on phone. Original composition, not a duplication of any particular source photograph. No people or human depictions anywhere, no text, signage, logos or watermarks. A plausible northeastern American pick-your-own farm and country park in early autumn, a modest authentic red timber barn with white trim centered midground, orderly rows of apple trees on one side and a small real pumpkin patch in the other, grassy walking path leading gently toward barn. Rolling green farm fields, no mountains, no extravagant fantasy architecture. Calm bright natural daylight, tasteful muted red and living greens, no decorative tree framing.
 
-Final asset: `category-images/amish-town-original.webp` (900 × 600).
-Generated output: `exec-7c35f0df-6c73-40d3-bab4-1da9df09ea37.png`.
+References:
 
-### washington-dc
 
-An original scenic travel illustration of the US Capitol building and landscaped grounds in Washington DC, white dome framed by lush trees, bright clear sky and warm sunshine, no people, statues, flags with text, or lettering.
+## Malls
 
-Final asset: `category-images/washington-dc-original.webp` (900 × 600).
-Generated output: `exec-8fd6d2c5-01a3-4147-92ac-ed6aeef8cb0b.png`.
+Asset: `category-images/malls-v3.webp` (900 × 600).
 
-### palm-springs
+Prompt:
 
-Palm Springs-inspired sunny desert landscape with tall palms, mountains and an unbranded aerial tram cabin ascending toward rocky peaks, landscaped foreground and beautiful warm golden light. No people visible.
+Use case: photorealistic-natural. Asset: original travel-guide category cover, landscape 3:2. Natural believable photographic realism, bright clean daytime colors and crisp inviting details, no fantasy enhancements or orange/gold filters. Main identifying subject centered upper-middle; crop-safe for a central square on phone. Original composition, not a duplication of any particular source photograph. No people or human depictions anywhere, no text, signage, logos or watermarks. Interior of a plausible upscale suburban American shopping mall, spacious two-story atrium with glass skylight, curved glass railings, elegant paired escalators centered in upper-middle, cream stone polished floors, planted green indoor palms. Shopfronts have clean blank fascia without any writing, modest colorful merchandise beyond glass but no mannequins, portraits or human images. Architecture physically correct, sophisticated inviting daylight rather than cyberpunk. View from ground floor toward central atrium.
 
-Final asset: `category-images/palm-springs-original.webp` (900 × 600).
-Generated output: `exec-f080ea99-1c85-47e4-ae16-32af12f9866e.png`.
+References:
 
-### tucson-arizona
 
-Tucson Arizona-inspired Sonoran Desert, elegant towering saguaro cacti, flowering desert plants, red-gold mountains and soft luminous blue sky in golden late afternoon sunshine.
+## Airports
 
-Final asset: `category-images/tucson-arizona-original.webp` (900 × 600).
-Generated output: `exec-b7cdc507-a0c3-4524-a880-9028dda082cf.png`.
+Asset: `category-images/airports-v3.webp` (900 × 600).
 
-### casa-grande
+Prompt:
 
-Casa Grande Arizona-inspired original travel illustration, ancient earthen adobe ruins in a sunlit desert with distant mountains and hardy native plants, warm sand tones and turquoise sky, no text or people.
+Use case: photorealistic-natural. Asset: original travel-guide category cover, landscape 3:2. Natural believable photographic realism, bright clean daytime colors and crisp inviting details, no fantasy enhancements or orange/gold filters. Main identifying subject centered upper-middle; crop-safe for a central square on phone. Original composition, not a duplication of any particular source photograph. No people or human depictions anywhere, no text, signage, logos or watermarks. Normal major US passenger commercial airport seen from bright empty terminal lounge through broad glass windows. One full-sized modern twin-engine narrowbody passenger jet with pure white unbranded fuselage parked nose-in at a gate, realistic swept wings, one engine beneath each wing, tricycle landing gear and connected jet bridge; another ordinary commercial jet far away. Airliner centered in upper-middle visible outside. A few rows of blue airport chairs lower frame, wide apron and terminal buildings, blue sky. Absolutely no propeller plane, no rural airfield, no novelty plane, no airline logos or lettering, no human figures.
 
-Final asset: `category-images/casa-grande-original.webp` (900 × 600).
-Generated output: `exec-1e305114-70f9-47a1-8fd9-dfd539de6993.png`.
+References:
 
-### myrtle-beach
 
-Myrtle Beach-inspired seaside boardwalk with a large Ferris wheel, bright ocean water and a golden sandy beach, cheerful summer light, empty promenade, no signs or text.
+## Local Rentals
 
-Final asset: `category-images/myrtle-beach-original.webp` (900 × 600).
-Generated output: `exec-87d46c89-1c32-432f-896c-4f89de92b462.png`.
+Asset: `category-images/local-rentals-v3.webp` (900 × 600).
 
-### west-palm
+Prompt:
 
-West Palm Beach-inspired tropical waterfront, graceful palm trees, turquoise intracoastal water, manicured paths and elegant low-rise waterfront buildings, brilliant sunshine and a few distant sailboats.
+Use case: photorealistic-natural. Asset: original travel-guide category cover, landscape 3:2. Natural believable photographic realism, bright clean daytime colors and crisp inviting details, no fantasy enhancements or orange/gold filters. Main identifying subject centered upper-middle; crop-safe for a central square on phone. Original composition, not a duplication of any particular source photograph. No people or human depictions anywhere, no text, signage, logos or watermarks. An inviting generic vacation rental cottage exterior and neat small garden, a believable cream-painted clapboard two-bedroom cottage with charcoal shingle pitched roof, sage green front door, modest covered porch with two empty wooden chairs, hydrangeas and native flowering beds beside path. Center cottage upper-middle. Bright clear daytime, natural garden color, realistic proportions, not mansion or fantasy house. Deliberately fictional generic property without implying an actual bookable address, no house number or sign.
 
-Final asset: `category-images/west-palm-original.webp` (900 × 600).
-Generated output: `exec-29e33823-d37b-48e5-89a5-74d13ee63dec.png`.
+References:
 
-### north-miami
 
-North Miami-inspired peaceful mangrove lagoon, crystal turquoise shallow water, two unoccupied colorful kayaks at a sandy shoreline, lush palms and bright green mangroves, beautiful tropical sun.
+## Newport / Rhode Island
 
-Final asset: `category-images/north-miami-original.webp` (900 × 600).
-Generated output: `exec-5b239d2d-d272-4942-bcf0-0f444e3d4c34.png`.
+Asset: `category-images/newport-rhode-island-v3.webp` (900 × 600).
 
-### tampa-florida
+Prompt:
 
-Tampa Florida-inspired riverwalk scene, graceful palm-lined promenade, sparkling water and a tasteful distant city skyline, warm Florida sunshine, no people or text.
+Use case: photorealistic-natural. Asset: original travel-guide category cover, landscape 3:2. Natural believable photographic realism, bright clean daytime colors and crisp inviting details, no fantasy enhancements or orange/gold filters. Main identifying subject centered upper-middle; crop-safe for a central square on phone. Original composition, not a duplication of any particular source photograph. No people or human depictions anywhere, no text, signage, logos or watermarks. The actual CASTLE HILL LIGHTHOUSE at Newport Rhode Island, accurate short stout tapered round granite tower about 34 feet tall on sloping layered coastal rocks beside Narragansett Bay. Tower lower portion unpainted brown-gray granite blocks, upper portion whitewashed granite blocks, compact black metal lantern and black gallery railing, low conical black lantern roof. Small entry door at base, believable authentic proportions not a tall storybook lighthouse. Center tower upper-middle with open blue-gray bay behind and low distant shoreline, granite ledge lower frame. Original fresh side-angle close view on clear bright late morning, not sunset. No giant waves, no imaginary keeper mansion, no framing trees.
 
-Final asset: `category-images/tampa-florida-original.webp` (900 × 600).
-Generated output: `exec-778ccda0-5ae3-470b-b1ec-ec5d7c61bfb2.png`.
+References:
 
-### local-rentals
+- https://www.history.uscg.mil/Browse-by-Topic/Assets/Land/Lighthouses-Light-Stations/Article/1912499/castle-hill-lighthouse/ — USCG identifies real Castle Hill Lighthouse in Newport.
+- https://www.locationscout.net/usa/32619-castle-hill-lighthouse — Photo visually inspected: short tapering granite tower, white upper masonry, unpainted lower masonry, black lantern and railing on rocky ledge. Fresh daytime angle rather than source sunset composition.
 
-An inviting unbranded vacation rental cottage interior with large windows overlooking a green garden, beautifully made bed, cozy cream and turquoise textiles and a sunlit private patio. Premium warm hospitality photography style.
+## Casa Grande
 
-Final asset: `category-images/local-rentals-original.webp` (900 × 600).
-Generated output: `exec-11a2c6e0-193a-4597-89e6-4d7260fe5fe4.png`.
+Asset: `category-images/casa-grande-v3.webp` (900 × 600).
+
+Prompt:
+
+Use case: photorealistic-natural. Asset: original travel-guide category cover, landscape 3:2. Natural believable photographic realism, bright clean daytime colors and crisp inviting details, no fantasy enhancements or orange/gold filters. Main identifying subject centered upper-middle; crop-safe for a central square on phone. Original composition, not a duplication of any particular source photograph. No people or human depictions anywhere, no text, signage, logos or watermarks. The actual Great House at CASA GRANDE RUINS National Monument in Coolidge Arizona. Accurate irregular pale tan caliche earthen walls with tall central four-story core and shorter outer rooms, weathered uneven roofless wall edges and few small rectangular openings. Crucially the entire Great House stands UNDER the actual huge 1932 protective canopy: very broad low-hipped rectangular metal roof with projecting eaves, open steel trusses beneath, supported by four tall slender outward-splayed pale metal columns well outside the ruin corners. Canopy elevated above the ancient structure with a clear air gap and fully visible in shot. Level sandy Sonoran desert foreground, a few low ruin foundations at perimeter, sparse scrub beyond. Building and protective roof centered upper-middle filling most image. New eye-level three-quarter architectural camera angle, bright natural day. Not an uncovered sandcastle, no domes, no invented towers or stacked pueblo fantasy.
+
+References:
+
+- https://www.nps.gov/cagr/index.htm — Official NPS photo inspected: caliche Great House under broad low roof canopy with four exterior splayed supports and steel trusses; central taller core.
+
+## Tucson Arizona
+
+Asset: `category-images/tucson-arizona-v3.webp` (900 × 600).
+
+Prompt:
+
+Use case: photorealistic-natural. Asset: original travel-guide category cover, landscape 3:2. Natural believable photographic realism, bright clean daytime colors and crisp inviting details, no fantasy enhancements or orange/gold filters. Main identifying subject centered upper-middle; crop-safe for a central square on phone. Original composition, not a duplication of any particular source photograph. No people or human depictions anywhere, no text, signage, logos or watermarks. Real Sonoran Desert landscape in SAGUARO NATIONAL PARK's Tucson Mountain District west of Tucson Arizona. A stately mature ribbed saguaro with three naturally curving upright arms stands near center upper-middle, surrounded by many smaller upright saguaros on gently rolling desert slopes, low creosote shrubs, prickly pear and cholla with accurate anatomy, granular tan ground and scattered reddish-brown rocks. Low rugged Tucson Mountain ridges recede behind under clear blue midday sky. Plausible real desert vegetation density, no sand dunes, no palm oasis, no Monument Valley buttes, no giant cartoon cacti or snow peaks. Original viewpoint within real regional terrain.
+
+References:
+
+- https://www.nps.gov/sagu/index.htm — Official park source locates Sonoran saguaro landscape east/west of Tucson; NPS hiking photo inspected for low brush, rocky slopes and ridges.
+
+## Palm Springs
+
+Asset: `category-images/palm-springs-v3.webp` (900 × 600).
+
+Prompt:
+
+Use case: photorealistic-natural. Asset: original travel-guide category cover, landscape 3:2. Natural believable photographic realism, bright clean daytime colors and crisp inviting details, no fantasy enhancements or orange/gold filters. Main identifying subject centered upper-middle; crop-safe for a central square on phone. Original composition, not a duplication of any particular source photograph. No people or human depictions anywhere, no text, signage, logos or watermarks. Actual Palm Springs Aerial Tramway above Chino Canyon in California. Authentic modern round rotating tram cabin, broad curved cylindrical shape with black window grid encircling clear dark reflective glass, yellow-gold lower metal skirt, large silver double curved suspension hanger extending up to correctly aligned overhead steel cables. Cabin is centered upper-middle and empty with no visible passengers, no text markings. Real rugged light-gray granite canyon slopes with scattered high-elevation pine trees around it and far below the broad hazy dry Coachella Valley desert plain. Create an original clear midmorning side-on composition different from famous cliff photographs. Accurately sized tram supported by cable, no ski gondola cabin, no unsupported floating car, no tropical landscape.
+
+References:
+
+- https://pstramway.com/media/photos/tramcar-photos/ — Official Tramcar Exterior7 photo visually inspected: modern round cabin, yellow lower body, black grid windows, silver double suspension hanger; granite Chino Canyon, scattered pine trees and desert plain below. Source not supplied to generation or copied.
+
+## Catskills
+
+Asset: `category-images/catskills-v3.webp` (900 × 600).
+
+Prompt:
+
+Use case: photorealistic-natural. Asset: original travel-guide category cover, landscape 3:2. Natural believable photographic realism, bright clean daytime colors and crisp inviting details, no fantasy enhancements or orange/gold filters. Main identifying subject centered upper-middle; crop-safe for a central square on phone. Original composition, not a duplication of any particular source photograph. No people or human depictions anywhere, no text, signage, logos or watermarks. Recognizable real North-South Lake and Catskill Escarpment landscape in New York from a rocky overlook near Sunset Rock. The connected lake basins appear in middle distance surrounded by dense green deciduous forest, modest broad rounded Catskill ridges in background rather than sharp alpine peaks. Flat gray weathered sandstone ledge in small foreground lower edge, clear late-summer daylight, small clouds. Center the lake and characteristic low forested ridge upper-middle. Original composition closer and at a new angle versus common sunset view; no orange sunset, no invented waterfalls, no huge snow mountains, no decorative framing branches.
+
+References:
+
+- https://dec.ny.gov/places/north-south-lake-campground-and-day-use-area — NYSDEC photo visually inspected: rock ledge above compact lake basins and broad wooded low ridges; reference used for terrain, with original daytime composition.
+
+## Hudson Valley & Catskills
+
+Asset: `category-images/hudson-valley-catskills-v3.webp` (900 × 600).
+
+Prompt:
+
+Use case: photorealistic-natural. Asset: original travel-guide category cover, landscape 3:2. Natural believable photographic realism, bright clean daytime colors and crisp inviting details, no fantasy enhancements or orange/gold filters. Main identifying subject centered upper-middle; crop-safe for a central square on phone. Original composition, not a duplication of any particular source photograph. No people or human depictions anywhere, no text, signage, logos or watermarks. Actual Hudson River Highlands in New York, a new original elevated viewpoint from Storm King Mountain looking across the broad Hudson River toward Breakneck Ridge on the opposite EAST bank. The river runs horizontally across middle of frame, realistically broad blue-gray water; opposite bank steep green forested rounded ridge with distinctive exposed slanting gray granite outcrops and rail line along the water at its foot. In distant left river opens toward Newburgh Bay. No narrow winding creek, no alpine mountains, no waterfalls, no gigantic fjord walls. Authentic modest Hudson Highlands elevations and deciduous forest. Clear summer midday, small rock ledge lower edge, no decorative foreground tree frames. Geographic specificity more important than dramatic fantasy scenery.
+
+References:
+
+- https://www.scenichudson.org/explore-the-valley/scenic-hudson-parks/stowell-trailhead/ — Storm King overlooks Hudson and is managed as park.
+- https://hudsonvalleylove.wordpress.com/2015/07/09/hiking-storm-king-state-park/ — Real photo visually inspected: broad river across view, forested ridge on opposite bank with gray granite exposure and track along shore. Changed weather and lens composition.
+
+## Amish Town
+
+Asset: `category-images/amish-town-v3.webp` (900 × 600).
+
+Prompt:
+
+Use case: photorealistic-natural. Asset: original travel-guide category cover, landscape 3:2. Natural believable photographic realism, bright clean daytime colors and crisp inviting details, no fantasy enhancements or orange/gold filters. Main identifying subject centered upper-middle; crop-safe for a central square on phone. Original composition, not a duplication of any particular source photograph. No people or human depictions anywhere, no text, signage, logos or watermarks. Lancaster County Pennsylvania Amish countryside, authentic low rolling patchwork green crop fields and a traditional white Pennsylvania bank barn on stone lower foundation with simple gray pitched roof, modest cylindrical silo nearby. Parked unoccupied authentic Lancaster Amish gray-top buggy with black spoked wheels and a SINGLE brown horse standing calmly harnessed to it at the edge of a narrow farm lane, visibly empty driver's seat, no humans anywhere. The horse has correct four legs and proper harness traces. Center barn and buggy in upper-middle/main central crop, natural proportion; ordinary tidy working farm, no tourist fantasy village, no mountains. Fresh clear daytime with green fields; an original composition unlike existing misty farmhouse photographs.
+
+References:
+
+- https://www.discoverlancaster.com/regions-towns/amish-countryside/ — Official tourism source: rolling crop fields, farms and horse-and-buggy roads.
+- https://lancastercountyamish.org/ — Reference photo inspected for gray/black enclosed buggy with narrow spoked wheels, white bank barn and silo, low rolling farmland; original daytime composition with empty parked buggy.
+
+## Myrtle Beach
+
+Asset: `category-images/myrtle-beach-v3.webp` (900 × 600).
+
+Prompt:
+
+Use case: photorealistic-natural. Asset: original travel-guide category cover, landscape 3:2. Natural believable photographic realism, bright clean daytime colors and crisp inviting details, no fantasy enhancements or orange/gold filters. Main identifying subject centered upper-middle; crop-safe for a central square on phone. Original composition, not a duplication of any particular source photograph. No people or human depictions anywhere, no text, signage, logos or watermarks. Actual Myrtle Beach South Carolina oceanfront: recognizable SkyWheel with WHITE slender circular rim, thin white spokes and 42 enclosed dark-glass oval passenger gondolas, about187feet tall, centered upper-middle. Authentic low boardwalk shops near base, palmetto palms, curved dark streetlamps; boardwalk and pale sandy Atlantic beach extending beside it with gentle blue ocean surf and a few real modest beachfront hotel towers farther off. Empty attraction and beach, no people even tiny ones, no readable lettering. Original daytime slightly elevated oblique camera angle with wheel central and beach visible to right, not an exact source photo composition. No open fairground seats, no invented skyline, no tropical mountains.
+
+References:
+
+- https://www.visitmyrtlebeach.com/things-to-do/attractions/boardwalk — Official boardwalk photograph inspected: thin white wheel, enclosed dark cabins, palmettos, curved lamps and low beachfront shops.
+- https://www.visitmyrtlebeach.com/coupon/skywheel-myrtle-beach-2-off — Official source: SkyWheel187feet and42 enclosed gondolas.
+
+## West Palm
+
+Asset: `category-images/west-palm-v3.webp` (900 × 600).
+
+Prompt:
+
+Use case: photorealistic-natural. Asset: original travel-guide category cover, landscape 3:2. Natural believable photographic realism, bright clean daytime colors and crisp inviting details, no fantasy enhancements or orange/gold filters. Main identifying subject centered upper-middle; crop-safe for a central square on phone. Original composition, not a duplication of any particular source photograph. No people or human depictions anywhere, no text, signage, logos or watermarks. Actual downtown WEST PALM BEACH Florida waterfront along Flagler Drive, viewed from the public city docks over Lake Worth Lagoon/Intracoastal. Broad calm blue-green water in lower half, accurate real West Palm midrise waterfront buildings: warm yellow-tan and cream waterfront towers with characteristic stepped crown rooftops and orderly balcony rows, mixed pale rectangular buildings behind, palms along straight seawall. Small empty wood floating dock with white railings at lower edge. Skyline centered upper-middle, original clear daytime modestly elevated camera composition. Urban subtropical lakefront, not ocean surf, not Miami glass supertalls, not Greek white villas, no fabricated domes, no humans or readable signs.
+
+References:
+
+- https://www.thepalmbeaches.com/explore-cities/west-palm-beach — Official tourism source for downtown and Flagler waterfront.
+- https://www.thepalmbeaches.com/blog/20-most-instagrammable-places-palm-beaches — Waterfront image inspected: yellow-tan stepped-crown midrise towers, palm seawall, white-railed wooden public docks and broad open Intracoastal water.
+- https://www.thepalmbeaches.com/listing/west-palm-beach-city-docks — Official destination photo inspected: stepped yellow-tan waterfront towers, palms, floating docks with white posts, broad Intracoastal water.
+
+## North Miami
+
+Asset: `category-images/north-miami-v3.webp` (900 × 600).
+
+Prompt:
+
+Use case: photorealistic-natural. Asset: original travel-guide category cover, landscape 3:2. Natural believable photographic realism, bright clean daytime colors and crisp inviting details, no fantasy enhancements or orange/gold filters. Main identifying subject centered upper-middle; crop-safe for a central square on phone. Original composition, not a duplication of any particular source photograph. No people or human depictions anywhere, no text, signage, logos or watermarks. Actual OLETA RIVER STATE PARK in North Miami Florida: a natural narrow calm mangrove paddling channel, dense South Florida red mangroves lining both banks, tangled slender brown prop roots clearly visible at waterline, green mangrove canopy gently arching over the water, realistic dark olive-green brackish water reflecting leaves. One clean empty yellow kayak securely moored at a small wooden launch in center-lower frame, paddle laid across cockpit, no person or silhouette. Center view draws eye into navigable channel in upper-middle. Original bright but softly shaded daytime composition. No resort, no fantasy turquoise ocean, no coral reef, no waterfall, no mountains, no tropical sand beach or city skyline.
+
+References:
+
+- https://www.floridastateparks.org/OletaRiver — Official state park: mangrove estuary paddling.
+- https://www.floridastateparks.org/parks-and-trails/oleta-river-state-park/experiences-amenities — Oleta photo inspected: narrow channel with arching mangrove canopy, exposed brown prop roots and dark olive-green water, used for habitat accuracy.
+- https://www.getyourguide.com/oleta-river-state-park-l159394/ — Third-party photo reference inspected for a mangrove-lined channel, arching foliage and exposed roots; official park pages separately support the habitat facts.
+
+## Tampa Florida
+
+Asset: `category-images/tampa-florida-v3.webp` (900 × 600).
+
+Prompt:
+
+Use case: photorealistic-natural. Asset: original travel-guide category cover, landscape 3:2. Natural believable photographic realism, bright clean daytime colors and crisp inviting details, no fantasy enhancements or orange/gold filters. Main identifying subject centered upper-middle; crop-safe for a central square on phone. Original composition, not a duplication of any particular source photograph. No people or human depictions anywhere, no text, signage, logos or watermarks. Actual Tampa Florida RIVERWALK along the Hillsborough River downtown. Recognizable distinctive tall tan cylindrical Rivergate Tower with rounded flat top centered upper-middle, alongside the real downtown cluster of rectangular glass-and-stone towers including taller pale stepped-top 100 North Tampa farther back. Broad calm blue-green Hillsborough River, pale paved Riverwalk path running along near side with characteristic white tubular railings and a low actual-style city bridge across mid-distance. Few subtropical palms on urban banks, no decorative framing branches. Original fresh daytime eye-level view along path, empty with no people or boats with occupants. Accurate Tampa scale and skyline silhouettes, no fantasy spires, no invented castles or giant beach resort.
+
+References:
+
+- https://www.visittampabay.com/listings/riverwalk-at-tampa-convention-center/9199/ — Official riverwalk photo visually inspected: white tubular railing beside broad Hillsborough River, tan cylindrical Rivergate Tower, nearby rectangular towers and low bridge. Changed viewpoint and lighting for original composition.
+
+## Poconos
+
+Asset: `category-images/poconos-v3.webp` (900 × 600).
+
+Prompt:
+
+Use case: photorealistic-natural. Asset: original travel-guide category cover, landscape 3:2. Natural believable photographic realism, bright clean daytime colors and crisp inviting details, no fantasy enhancements or orange/gold filters. Main identifying subject centered upper-middle; crop-safe for a central square on phone. Original composition, not a duplication of any particular source photograph. No people or human depictions anywhere, no text, signage, logos or watermarks. The actual DELAWARE WATER GAP, eastern edge of Pennsylvania Pocono region, viewed from a Mount Tammany overlook looking across the Delaware River toward the broad rounded forest-covered bulk of Mount Minsi. River forms a clear sinuous curve in valley below, wooded steep slopes with a few exposed pale quartzite bands, a narrow real roadway follows bank. Regional scale: low Appalachian ridges, dense summer forest, no alpine peaks. Broad scenic view with blue-green river bend and mountain in centered upper-middle, very small rock ledge along bottom edge, bright soft daylight. Original new lens framing, accurate landforms not generic invented mountain lake. No framing trees or waterfalls. CRITICAL GEOGRAPHY CORRECTION: Delaware River is a single river passing THROUGH the gap between Mount Tammany (camera side) and Mount Minsi opposite. It MUST NOT wrap around Mount Minsi and reappear at both left and right sides. Compose a close view looking DOWN into the gap: Mount Minsi fills LEFT HALF with steep wooded slope and exposed gray rock scars; the single river extends from BOTTOM CENTER toward UPPER RIGHT in one gentle diagonal curve. A road follows far RIGHT riverbank. Crop out any second river or horseshoe loop. Preserve low Appalachian forest terrain.
+
+References:
+
+- https://www.nps.gov/dewa/planyourvisit/red-dot-trail.htm — NPS verifies Tammany overlook facing Water Gap/Minsi.
+- https://www.aol.com/articles/5-best-destinations-visit-between-224400203.html — Photo inspected: river curves below steep wooded Minsi slope, road following bank, gray rock ledge; original daylight reframing.
+
