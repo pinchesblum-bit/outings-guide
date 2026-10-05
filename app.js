@@ -637,10 +637,12 @@ function searchPagination(query, page, totalPages) {
       : `<span class="page-direction" aria-disabled="true" aria-label="${name} page">${content}</span>`;
   };
   return `<nav class="search-pagination" aria-label="Search result pages">
+    <div class="page-controls">
+      ${direction(page - 1, 'Previous', page > 1)}
+      <div class="page-numbers">${numbers}</div>
+      ${direction(page + 1, 'Next', page < totalPages)}
+    </div>
     <p class="page-count"><span class="page-count-full">Page ${page} of ${totalPages}</span><span class="page-count-short" aria-hidden="true">${page} / ${totalPages}</span></p>
-    ${direction(page - 1, 'Previous', page > 1)}
-    <div class="page-numbers">${numbers}</div>
-    ${direction(page + 1, 'Next', page < totalPages)}
   </nav>`;
 }
 
