@@ -612,15 +612,42 @@ function renderSearch(openFilters = false, mode = 'search') {
   bindFilters();
 }
 
+function searchPage(matches, requestedPage) {
+  const totalPages = Math.max(1, Math.ceil(matches.length / defaultLimit));
+  const number = Number(requestedPage);
+  const page = Math.min(totalPages, Math.max(1, Number.isFinite(number) ? Math.floor(number) : 1));
+  const start = (page - 1) * defaultLimit;
+  return { page, totalPages, start, visible: matches.slice(start, start + defaultLimit) };
+}
+
+function searchPagination(query, page, totalPages) {
+  const link = (number, text, extra = '') => `<a href="${escapeHtml(hashFor('#/search', { q: query, page: String(number) }))}" ${extra}>${text}</a>`;
+  // Keep first/last and neighboring pages available without a wide row on phones.
+  const pages = [...new Set([1, page - 1, page, page + 1, totalPages])]
+    .filter(number => number >= 1 && number <= totalPages).sort((a, b) => a - b);
+  let previous = 0;
+  const numbers = pages.map(number => {
+    const gap = previous && number - previous > 1 ? '<span class="page-gap" aria-hidden="true">…</span>' : '';
+    previous = number;
+    return gap + link(number, number, `aria-label="Page ${number}"${number === page ? ' aria-current="page"' : ''}`);
+  }).join('');
+  return `<nav class="search-pagination" aria-label="Search result pages">
+    <p>Page ${page} of ${totalPages}</p>
+    <div class="page-numbers">${numbers}</div>
+    <div class="page-directions">
+      ${page > 1 ? link(page - 1, 'Previous', 'rel="prev"') : '<span aria-disabled="true">Previous</span>'}
+      ${page < totalPages ? link(page + 1, 'Next', 'rel="next"') : '<span aria-disabled="true">Next</span>'}
+    </div>
+  </nav>`;
+}
+
 function renderSimpleSearch() {
   const params = currentParams();
   const rawQuery = params.get('q') || '';
   const query = rawQuery.trim();
   const searchParams = new URLSearchParams({ q: query });
   const matches = normalize(query) ? sortListings(applyFilters(DATA.listings, searchParams), 'top', query) : [];
-  const requestedLimit = Number(params.get('limit'));
-  const limit = Number.isFinite(requestedLimit) && requestedLimit > 0 ? requestedLimit : defaultLimit;
-  const visible = matches.slice(0, limit);
+  const { page, totalPages, start, visible } = searchPage(matches, params.get('page'));
   app.innerHTML = `
     <section class="search-start simple-search">
       <h1>Search places</h1>
@@ -632,9 +659,9 @@ function renderSimpleSearch() {
       </form>
     </section>
     ${normalize(query) ? `<section class="simple-search-results" aria-label="Search results">
-      <p class="search-result-count" role="status">${matches.length} ${matches.length === 1 ? 'place' : 'places'} found for “${escapeHtml(query)}”</p>
+      <p class="search-result-count" role="status">${matches.length} ${matches.length === 1 ? 'place' : 'places'} found for “${escapeHtml(query)}”${matches.length ? ` · Showing ${start + 1}–${start + visible.length}` : ''}</p>
       ${visible.length ? `<div class="outing-grid results-grid">${visible.map(outingCard).join('')}</div>` : '<div class="empty"><h2>No places found</h2><p>Try a different place, activity or town.</p></div>'}
-      ${matches.length > visible.length ? `<div class="show-more-wrap"><a class="btn primary" href="${escapeHtml(hashFor('#/search', { q: query, limit: String(limit + defaultLimit) }))}">Show more</a></div>` : ''}
+      ${matches.length ? searchPagination(query, page, totalPages) : ''}
     </section>` : ''}`;
   bindInteractiveControls();
   const form = document.getElementById('filterSearchForm');
@@ -742,6 +769,32 @@ function searchWords(value) {
     word.length > 3 && word.endsWith('s') && !word.endsWith('ss') ? word.slice(0, -1) : word);
 }
 
+// Activity aliases supplement sparse booklet records, without treating every
+// venue in a mixed category as the same activity. Sources: SEARCH-NOTES.md.
+const activitySearchCache = new WeakMap();
+function activitySearchText(item) {
+  if (activitySearchCache.has(item)) return activitySearchCache.get(item);
+  const name = normalize(item.name);
+  const descriptiveLines = (item.details || []).filter(line => !looksLikeAddress(line));
+  const description = normalize([item.summary || '', ...descriptiveLines].join(' '));
+  const evidence = `${name} ${description}`;
+  const aliases = [];
+  const indoorCategory = item.categoryId === 'indoor-fun';
+  const knownPlayPark = /^(billy beez|sky ?zone|bounce u|catch air playground|kids empire|pump it up|thrillz|space club)$/.test(name);
+  const playType = /\b(playground|playcenter|playland|playspace|playhouse|trampoline|ninja park|adventure park)\b/.test(evidence);
+  const indoorPlayPark = knownPlayPark || (indoorCategory && playType) || /\bindoor (playground|play park|play center|play area|water park)\b/.test(evidence);
+  if (indoorPlayPark) aliases.push('indoor park playground play center play area');
+  if (/^sky ?zone$/.test(name) || /\btrampoline/.test(evidence)) aliases.push('trampoline jumping jump park');
+  if (/^(bounce u|pump it up)$/.test(name) || /\binflatable/.test(evidence)) aliases.push('inflatable bounce house bouncy castle');
+  if (/\b(kayak|canoe|rowboat|paddle ?boat|boat rental)/.test(evidence)) aliases.push('boating boat');
+  if (/\b(rock climb|climbing gym)/.test(evidence)) aliases.push('climbing rock climb');
+  if (/\bwater ?park/.test(evidence)) aliases.push('water park waterslide');
+  const setting = indoorPlayPark ? 'indoor' : item.setting;
+  const text = [setting, ...aliases, ...(item.searchTerms || []), ...(item.tags || []), ...(item.vibes || [])].map(label).join(' ');
+  activitySearchCache.set(item, text);
+  return text;
+}
+
 function searchRelevance(item, query) {
   const terms = searchWords(query);
   if (!terms.length) return 0;
@@ -756,9 +809,11 @@ function searchRelevance(item, query) {
     if (name.startsWith(phrase)) return 900;
     return 800;
   }
+  const activities = activitySearchText(item);
+  // A street containing ‘Park’ does not make an indoor business a play park.
+  if (terms.includes('indoor') && terms.includes('park') && !searchWords(`${name} ${activities}`).includes('park')) return 0;
   const location = [extractAddress(item), item.region].filter(Boolean).join(' ');
   if (matches(`${name} ${location}`)) return 600;
-  const activities = [item.setting, ...(item.tags || []), ...(item.vibes || [])].map(label).join(' ');
   if (matches(`${name} ${activities} ${location}`)) return 400;
   // A full category name is useful; one word from a mixed category is too broad.
   const categoryWords = searchWords(item.categoryTitle);
