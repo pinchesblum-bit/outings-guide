@@ -307,7 +307,7 @@ function groupCard(group) {
 }
 
 function categoryCard(cat) {
-  const imageFile = ['indoor-fun', 'zoos-aquariums'].includes(cat.id) ? `${cat.id}-v2.webp` : `${cat.id}.webp`;
+  const imageFile = ['indoor-fun', 'zoos-aquariums'].includes(cat.id) ? `${cat.id}-v2.webp` : `${cat.id}-original.webp`;
   return `
     <a class="category-card photo-category-card" href="#/category/${encodeURIComponent(cat.id)}">
       <img class="category-photo category-photo-${escapeHtml(cat.id)}" src="category-images/${encodeURIComponent(imageFile)}" alt="" width="720" height="440" loading="lazy" decoding="async" />
@@ -1087,13 +1087,12 @@ function guideFooter() {
     <footer class="guide-footer">
       <div>
         <h2>Use the guide wisely</h2>
-        <p>Details come from the booklet. Always confirm hours and prices before you go.</p>
+        <p>Details come from the booklet. Always confirm hours and prices before you go. Category artwork is illustrative.</p>
       </div>
       <div class="footer-links">
         <a href="#/browse">Browse categories</a>
         <a href="#/search">Search places</a>
         <a href="#/saved">My Trip List</a>
-        <a href="photo-credits.html">Photo credits</a>
         <a href="mailto:?subject=Outings Guide correction">Report a correction</a>
       </div>
     </footer>`;
