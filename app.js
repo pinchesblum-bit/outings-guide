@@ -652,7 +652,7 @@ function renderSimpleSearch() {
   const query = rawQuery.trim();
   const searchParams = new URLSearchParams({ q: query });
   const matches = normalize(query) ? sortListings(applyFilters(DATA.listings, searchParams), 'top', query) : [];
-  const { page, totalPages, start, visible } = searchPage(matches, params.get('page'));
+  const { page, totalPages, visible } = searchPage(matches, params.get('page'));
   app.innerHTML = `
     <section class="search-start simple-search">
       <h1>Search places</h1>
@@ -664,7 +664,7 @@ function renderSimpleSearch() {
       </form>
     </section>
     ${normalize(query) ? `<section class="simple-search-results" aria-label="Search results">
-      <p class="search-result-count" role="status">${matches.length} ${matches.length === 1 ? 'place' : 'places'} found for “${escapeHtml(query)}”${matches.length ? ` · Showing ${start + 1}–${start + visible.length}` : ''}</p>
+      <p class="search-result-count" role="status">${matches.length} ${matches.length === 1 ? 'place' : 'places'} found for “${escapeHtml(query)}”</p>
       ${visible.length ? `<div class="outing-grid results-grid">${visible.map(outingCard).join('')}</div>` : '<div class="empty"><h2>No places found</h2><p>Try a different place, activity or town.</p></div>'}
       ${matches.length ? searchPagination(query, page, totalPages) : ''}
     </section>` : ''}`;
